@@ -6,6 +6,7 @@ use App\Entity\Admin\Member;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,28 +22,28 @@ class MemberType extends AbstractType
                 ]
             ])
             ->add('password')
-            ->add('firstName', TextareaType::class, [
+            ->add('firstName', TextType::class, [
                 'label' => 'Prénom'
             ])
-            ->add('lastName', TextareaType::class, [
+            ->add('lastName', TextType::class, [
                 'label' => 'Nom'
             ])
-            ->add('adress', TextareaType::class, [
+            ->add('adress', TextType::class, [
                 'label' => 'Adresse'
             ])
-            ->add('complement', TextareaType::class, [
+            ->add('complement', TextType::class, [
                 'label' => ''
             ])
-            ->add('zipcode', TextareaType::class, [
+            ->add('zipcode', TextType::class, [
                 'label' => 'Code Postal'
             ])
-            ->add('city', TextareaType::class, [
+            ->add('city', TextType::class, [
                 'label' => 'Commune'
             ])
-            ->add('Mobile', TextareaType::class, [
+            ->add('Mobile', TextType::class, [
                 'label' => 'Mobile'
             ])
-            ->add('home', TextareaType::class, [
+            ->add('home', TextType::class, [
                 'label' => 'Domicile'
             ])
         ;
