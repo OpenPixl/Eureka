@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Member index{% endblock %}
+
+{% block body %}
+    <h1>Member index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Password</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Adress</th>
+                <th>Complement</th>
+                <th>Zipcode</th>
+                <th>City</th>
+                <th>Mobile</th>
+                <th>Home</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for member in members %}
+            <tr>
+                <td>{{ member.id }}</td>
+                <td>{{ member.email }}</td>
+                <td>{{ member.roles ? member.roles|json_encode : '' }}</td>
+                <td>{{ member.password }}</td>
+                <td>{{ member.firstName }}</td>
+                <td>{{ member.lastName }}</td>
+                <td>{{ member.adress }}</td>
+                <td>{{ member.complement }}</td>
+                <td>{{ member.zipcode }}</td>
+                <td>{{ member.city }}</td>
+                <td>{{ member.Mobile }}</td>
+                <td>{{ member.home }}</td>
+                <td>{{ member.createdAt ? member.createdAt|date('Y-m-d') : '' }}</td>
+                <td>{{ member.updatedAt ? member.updatedAt|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_admin_member_show', {'id': member.id}) }}">show</a>
+                    <a href="{{ path('app_admin_member_edit', {'id': member.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_member_new') }}">Create new</a>
+{% endblock %}

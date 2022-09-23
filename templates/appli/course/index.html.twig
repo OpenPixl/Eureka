@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}course index{% endblock %}
+
+{% block body %}
+    <h1>course index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Level</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cour in course %}
+            <tr>
+                <td>{{ cour.id }}</td>
+                <td>{{ cour.name }}</td>
+                <td>{{ cour.level }}</td>
+                <td>{{ cour.createdAt ? cour.createdAt|date('Y-m-d') : '' }}</td>
+                <td>{{ cour.updatedAt ? cour.updatedAt|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_appli_course_show', {'id': cour.id}) }}">show</a>
+                    <a href="{{ path('app_appli_course_edit', {'id': cour.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_appli_course_new') }}">Create new</a>
+{% endblock %}

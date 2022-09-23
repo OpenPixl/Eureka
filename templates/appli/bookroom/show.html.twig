@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bookroom{% endblock %}
+
+{% block body %}
+    <h1>Bookroom</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bookroom.id }}</td>
+            </tr>
+            <tr>
+                <th>DateBookAt</th>
+                <td>{{ bookroom.dateBookAt ? bookroom.dateBookAt|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>HourBookOpenAt</th>
+                <td>{{ bookroom.hourBookOpenAt ? bookroom.hourBookOpenAt|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>HourBookClosedAt</th>
+                <td>{{ bookroom.hourBookClosedAt ? bookroom.hourBookClosedAt|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsActive</th>
+                <td>{{ bookroom.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Forme</th>
+                <td>{{ bookroom.forme }}</td>
+            </tr>
+            <tr>
+                <th>LinkDistanciel</th>
+                <td>{{ bookroom.linkDistanciel }}</td>
+            </tr>
+            <tr>
+                <th>Place</th>
+                <td>{{ bookroom.place }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ bookroom.createdAt ? bookroom.createdAt|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ bookroom.updatedAt ? bookroom.updatedAt|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_appli_bookroom_index') }}">back to list</a>
+
+    <a href="{{ path('app_appli_bookroom_edit', {'id': bookroom.id}) }}">edit</a>
+
+    {{ include('appli/bookroom/_delete_form.html.twig') }}
+{% endblock %}
