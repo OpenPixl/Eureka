@@ -1,0 +1,14 @@
+<h1>Demande de confimation de mail</h1>
+
+<p>Bonjour</p>
+
+<p>
+    En cliquant sur le lien ci-dessous, vous confirmerez votre adresse mail et que vous n'êtes pas un robot.
+    <br><br>
+    <a href="{{ signedUrl }}">Lien de confirmation</a>.
+    Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>
+
+<p>
+    Merci !
+</p>
