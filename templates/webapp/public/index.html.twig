@@ -2,19 +2,16 @@
 
 {% block title %}Hello PublicController!{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block main %}
+<section id="blockUser">
+    <div class="row mt-1 mb-1 align-items-center">
+        <div class="col-3">
+            <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+        </div>
+        <div class="col-9">
+            <h1 class="text-end" style="color: #FFFFFF;">Réservation</h1>
+        </div>
+    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/Dev/Eureka/src/Controller/Webapp/PublicController.php'|file_link(0) }}">src/Controller/Webapp/PublicController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/Dev/Eureka/templates/webapp/public/index.html.twig'|file_link(0) }}">templates/webapp/public/index.html.twig</a></code></li>
-    </ul>
-</div>
+</section>
 {% endblock %}

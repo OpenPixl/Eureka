@@ -1,0 +1,85 @@
+body{
+  margin: 0;
+  background-image: url("../images/background/Background.png");
+  background-size: cover;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  font-family: 'Comfortaa-Light', sans-serif;
+  header{}
+  main{
+    h1{
+      color: #FFFFFF;
+      font-family: 'Comfortaa-Regular', sans-serif;
+    }
+    h2, h3{
+      color: #FFFFFF;
+      font-family: 'Comfortaa-Light', sans-serif;
+      font-size: 1.2rem;
+    }
+    #blockLogin{
+      button{
+        background: #92B923;
+        border: 2px solid #FFFFFF;
+        border-radius: 8px;
+      }
+      label{
+        color: #92B923;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 14px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+      }
+      ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #92B923;
+        opacity: 1; /* Firefox */
+        text-align: center;
+        font-family: 'Comfortaa-Light', sans-serif;
+      }
+    }
+    #blockAdmin{
+      .btn-primary{
+        font-family: 'Comfortaa-Light', sans-serif;
+        height: 48px;
+        background: #2E6699;
+        border: 2px solid #FFFFFF;
+        border-radius: 8px;
+      }
+      .btn-success{
+        font-family: 'Comfortaa-Light', sans-serif;
+        background: #92B923;
+        border: 2px solid #FFFFFF;
+        border-radius: 8px;
+      }
+      label{
+        color: #92B923;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 14px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+      }
+      ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #92B923;
+        opacity: 1; /* Firefox */
+        text-align: left;
+        font-family: 'Comfortaa-Light', sans-serif;
+      }
+    }
+    #blockUser{
+
+    }
+  }
+  footer{
+    color:#ffffff;
+    p{
+      font-family: 'Comfortaa-Light', sans-serif;
+    }
+  }
+}
+

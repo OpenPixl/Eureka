@@ -43,8 +43,8 @@
                 <td>{{ member.createdAt ? member.createdAt|date('Y-m-d') : '' }}</td>
                 <td>{{ member.updatedAt ? member.updatedAt|date('Y-m-d') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_admin_member_show', {'id': member.id}) }}">show</a>
-                    <a href="{{ path('app_admin_member_edit', {'id': member.id}) }}">edit</a>
+                    <a href="{{ path('op_admin_member_show', {'id': member.id}) }}">show</a>
+                    <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -55,5 +55,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_admin_member_new') }}">Create new</a>
+    <a href="{{ path('op_admin_member_new') }}">Create new</a>
 {% endblock %}

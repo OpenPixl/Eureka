@@ -1,0 +1,36 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Hello DashboardController!{% endblock %}
+
+{% block main %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    <section id="blockUser">
+        <div class="row mt-1 mb-1 align-items-center">
+            <div class="col-3">
+                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+            </div>
+            <div class="col-9">
+                <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
+            </div>
+        </div>
+    </section>
+    <section id="blockAdmin">
+        <div class="row mt-1 mb-1 justify-content-center">
+            <div class="col-10 pt-1 pb-1">
+                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_teacher') }}">Ajout d'un Enseignant</a>
+            </div>
+            <div class="col-10 pt-1 pb-1">
+                <button class="btn btn-primary w-100">Ajout d'une Matière</button>
+            </div>
+            <div class="col-10 pt-1 pb-1">
+                <button class="btn btn-primary w-100">Ajout d'un Etudiant</button>
+            </div>
+        </div>
+        <div class="row mt-1 mb-1 justify-content-center">
+            <div class="col-10 pt-1 pb-1">
+                <button class="btn btn-success w-100">Accéder à son Administration</button>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+{% endblock %}

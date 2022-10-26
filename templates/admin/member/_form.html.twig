@@ -1,4 +1,62 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-sm btn-primary">{{ button_label|default('Save') }}</button>
+<div class="mb-4">
+    {# STRING : Ligne du prénom et du nom - Membre enseignant #}
+    <div class="row mb-1 mt-1 g-1">
+        <div class="col-5">
+            {{ form_widget(form.firstName, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Prénom'}}) }}
+        </div>
+        <div class="col-7">
+            {{ form_widget(form.lastName, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Nom'}}) }}
+        </div>
+    </div>
+    {# STRING : Ligne du mail - Membre enseignant #}
+    <div class="row mb-1 mt-1 g-1">
+        <div class="col-12">
+            {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Email de l\'enseignant'}}) }}
+        </div>
+    </div>
+    {# STRING : Ligne du password - Membre enseignant #}
+    <div class="row mb-1 mt-1 g-1">
+        <div class="col-12">
+            {{ form_widget(form.password, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Mot de passe'}}) }}
+        </div>
+    </div>
+</div>
+<div class="mt-4 mb-4">
+    {# STRING : Ligne du mail du membre #}
+    <div class="row mb-1 mt-1 g-1">
+        <div class="col-12">
+            {{ form_widget(form.adress, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Adresse'}}) }}
+        </div>
+    </div>
+    {# STRING : Ligne du mail du membre #}
+    <div class="row mb-1 mt-1 g-1">
+        <div class="col-12">
+            {{ form_widget(form.complement, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'complément'}}) }}
+        </div>
+    </div>
+    {# STRING : Ligne du mail du membre #}
+    <div class="row mb-1 mt-1 g-1">
+        <div class="col-3">
+            {{ form_widget(form.zipcode, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'CP'}}) }}
+        </div>
+        <div class="col-9">
+            {{ form_widget(form.city, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Ville'}}) }}
+        </div>
+    </div>
+</div>
+<div class="mt-4 mb-4">
+    {# STRING : Ligne du mail du membre #}
+    <div class="row mb-1 mt-1 g-1">
+        <div class="col-6">
+            {{ form_widget(form.Mobile, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Mobile*'}}) }}
+        </div>
+        <div class="col-6">
+            {{ form_widget(form.home, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Domicile'}}) }}
+        </div>
+    </div>
+</div>
+<div class="mt-4 mb-4">
+    <button class="btn btn-sm btn-primary w-100">{{ button_label|default('Ajouter') }}</button>
+</div>
 {{ form_end(form) }}

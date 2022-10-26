@@ -5,17 +5,17 @@
 {% block main %}
 <div class="row" id="blockLogin">
 
-    <div class="col-12 mt-3 mt-3">
+    <div class="col-12 mt-3 mt-2">
         <div class="d-flex justify-content-center">
             <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid">
         </div>
     </div>
-    <div class="col-12 d-flex justify-content-center mt-3 mt-3">
+    <div class="col-12 d-flex justify-content-center mt-2 mt-2">
         <div class="d-flex justify-content-center">
             <img src="{{ asset('images/svg/TitleEuréka.svg') }}" class="img-fluid">
         </div>
     </div>
-    <div class="col-12 mt-4 mt-4">
+    <div class="col-12 mt-3 mt-4">
         {% for flash_error in app.flashes('verify_email_error') %}
         <div class="row">
             <div class="col-12">
@@ -32,24 +32,30 @@
         <div class="row justify-content-center">
             <div class="col-8">
                 {{ form_start(registrationForm) }}
-                {# STRING : Ligne du mail du membre de l'annonce du bien #}
+                {# STRING : Ligne du mail du membre #}
                 <div class="row mb-1 mt-1 g-1">
                     <div class="col-12">
                         {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Votre email'}}) }}
                     </div>
                 </div>
-                {# STRING : Ligne du password du membre de l'annonce du bien #}
+                {# STRING : Ligne du mobile du membre#}
+                <div class="row mb-1 mt-1 g-1">
+                    <div class="col-12">
+                        {{ form_widget(registrationForm.mobile, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Mobile'}}) }}
+                    </div>
+                </div>
+                {# STRING : Ligne du password du membre #}
                 <div class="row mb-1 mt-1 g-1">
                     <div class="col-12">
                         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Mot de passe'}}) }}
                     </div>
                 </div>
-                {# CHECKBOX : Ligne accord du membre de l'annonce du bien #}
-                <div class="col-8 align-items-center">
+                {# CHECKBOX : Ligne accord du membre #}
+                <div class="col-12 align-items-center">
                     <fieldset>
                         <div class="form-check">
                             {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
-                            {{ form_label(registrationForm.agreeTerms, '', {'label_attr': {'class':'form-check-label'}}) }}
+                            {{ form_label(registrationForm.agreeTerms, "Acceptation des termes d'utilisation", {'label_attr': {'class':'form-check-label'}}) }}
                         </div>
                     </fieldset>
                 </div>

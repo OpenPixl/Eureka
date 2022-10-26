@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/member')]
 class MemberController extends AbstractController
 {
-    #[Route('/', name: 'app_admin_member_index', methods: ['GET'])]
+    #[Route('/', name: 'op_admin_member_index', methods: ['GET'])]
     public function index(MemberRepository $memberRepository): Response
     {
         return $this->render('admin/member/index.html.twig', [
@@ -21,17 +21,18 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_admin_member_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'op_admin_member_new', methods: ['GET', 'POST'])]
     public function new(Request $request, MemberRepository $memberRepository): Response
     {
         $member = new Member();
+        $member->setMobile('00.00.00.00.00');
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $memberRepository->add($member, true);
 
-            return $this->redirectToRoute('app_admin_member_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/member/new.html.twig', [
@@ -40,7 +41,27 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_admin_member_show', methods: ['GET'])]
+    #[Route('/super/teacher', name: 'op_admin_member_teacher', methods: ['GET', 'POST'])]
+    public function teacher(Request $request, MemberRepository $memberRepository): Response
+    {
+        $member = new Member();
+        $member->setRoles(array('ROLE_ADMIN'));
+        $form = $this->createForm(MemberType::class, $member);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $memberRepository->add($member, true);
+            $this->addFlash('success', "L'enseignant a été correctement ajouté.<br>Il doit vérifier et valider son adresse mail.");
+            return $this->redirectToRoute('op_admin_dashboard_super', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/member/teacher.html.twig', [
+            'member' => $member,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'op_admin_member_show', methods: ['GET'])]
     public function show(Member $member): Response
     {
         return $this->render('admin/member/show.html.twig', [
@@ -48,7 +69,7 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_admin_member_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'op_admin_member_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Member $member, MemberRepository $memberRepository): Response
     {
         $form = $this->createForm(MemberType::class, $member);
@@ -57,7 +78,7 @@ class MemberController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $memberRepository->add($member, true);
 
-            return $this->redirectToRoute('app_admin_member_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/member/edit.html.twig', [
@@ -66,13 +87,13 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_admin_member_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'op_admin_member_delete', methods: ['POST'])]
     public function delete(Request $request, Member $member, MemberRepository $memberRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$member->getId(), $request->request->get('_token'))) {
             $memberRepository->remove($member, true);
         }
 
-        return $this->redirectToRoute('app_admin_member_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
     }
 }

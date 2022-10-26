@@ -17,6 +17,14 @@ class PublicController extends AbstractController
     #[Route('/home', name: 'op_webapp_public_home')]
     public function home(): Response
     {
+        $hasAccessSuper = $this->isGranted('ROLE_SUPER_ADMIN');
+        $hasAccessAdmin = $this->isGranted('ROLE_ADMIN');
+        if($hasAccessSuper == true){
+            return $this->redirectToRoute('op_admin_dashboard_super');
+        }
+        else if($hasAccessAdmin == true){
+            return $this->redirectToRoute('op_admin_dashboard_home');
+        }
         return $this->render('webapp/public/index.html.twig');
     }
 }
