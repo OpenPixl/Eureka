@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\Member;
 use App\Form\Admin\MemberType;
 use App\Repository\Admin\MemberRepository;
+use App\Repository\Appli\CourseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,14 @@ class MemberController extends AbstractController
     {
         return $this->render('admin/member/index.html.twig', [
             'members' => $memberRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/{idTeacher}', name: 'op_admin_member_listcourses', methods: ['GET'])]
+    public function ListCourses(CourseRepository $courseRepository): Response
+    {
+        return $this->render('admin/member/listcourse.html.twig', [
+            'members' => $courseRepository->findAll(),
         ]);
     }
 
@@ -57,6 +66,26 @@ class MemberController extends AbstractController
 
         return $this->renderForm('admin/member/teacher.html.twig', [
             'member' => $member,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/super/studient', name: 'op_admin_member_studient', methods: ['GET', 'POST'])]
+    public function studient(Request $request, MemberRepository $studientRepository): Response
+    {
+        $studient = new Member();
+        $studient->setRoles(array('ROLE_USER'));
+        $form = $this->createForm(MemberType::class, $studient);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $studientRepository->add($studient, true);
+            $this->addFlash('success', "L'étudiant a été correctement ajouté.<br>Il doit vérifier et valider son adresse mail.");
+            return $this->redirectToRoute('op_admin_dashboard_super', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/member/studient.html.twig', [
+            'studient' => $studient,
             'form' => $form,
         ]);
     }
