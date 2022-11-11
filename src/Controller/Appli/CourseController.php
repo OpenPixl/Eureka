@@ -40,8 +40,16 @@ class CourseController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_appli_course_show', methods: ['GET'])]
-    public function show(Course $course): Response
+    #[Route('/teacher/{id}', name: 'app_appli_course_showteacher', methods: ['GET'])]
+    public function showTeacher(Course $course): Response
+    {
+        return $this->render('appli/course/show.html.twig', [
+            'course' => $course,
+        ]);
+    }
+
+    #[Route('/studiant/{id}', name: 'app_appli_course_showstudient', methods: ['GET'])]
+    public function showStudient(Course $course): Response
     {
         return $this->render('appli/course/show.html.twig', [
             'course' => $course,
