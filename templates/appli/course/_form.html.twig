@@ -3,21 +3,21 @@
     {# STRING : Ligne du prénom et du nom - Membre enseignant #}
     <div class="row mb-1 mt-1 g-1">
         <div class="col-5">
-            {{ form_widget(form.firstName, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Nom du cours'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Nom du cours'}}) }}
         </div>
     </div>
     {# STRING : Ligne du mail - Membre enseignant #}
-    {% if app.request.attributes.get('_route') == 'op_admin_member_teacher' %}
+    {% if app.request.attributes.get('_route') == 'op_appli_course_new' %}
         <div class="row mb-1 mt-1 g-1">
             <div class="col-12">
-                {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Email de l\'enseignant'}}) }}
+                {{ form_widget(form.teacher, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Nom de l''enseignant'}}) }}
             </div>
         </div>
 <div class="mt-4 mb-4">
     {# STRING : Ligne du mail du membre #}
     <div class="row mb-1 mt-1 g-1">
         <div class="col-6">
-            {{ form_widget(form.Mobile, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Mobile*'}}) }}
+            {{ form_widget(form.level, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Classe'}}) }}
         </div>
     </div>
 </div>
