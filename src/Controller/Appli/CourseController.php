@@ -21,7 +21,7 @@ class CourseController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_appli_course_new', methods: ['GET', 'POST'])]
+    #[Route('/super/new', name: 'op_appli_course_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CourseRepository $courseRepository): Response
     {
         $course = new Course();
