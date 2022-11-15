@@ -17,21 +17,18 @@ class CourseType extends AbstractType
         $builder
             ->add('name')
             ->add('level')
-            ->add('createdAt')
-            ->add('updatedAt')
             ->add('teacher', EntityType::class, [
                 'label'=> 'Catégorie de bien',
                 'class' => Member::class,
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('d')
-                        ->orderBy('d.name', 'ASC');
+                    return $er->createQueryBuilder('m')
+                        ->orderBy('m.firstName', 'ASC');
                 },
-                'choice_label' => 'name',
+                'choice_label' => 'firstName',
                 'choice_attr' => function (Member $member, $key, $index) {
-                    return ['data-data' => $member->getFirstName() ];
+                    return ['data-data' => $member->getFirstName()." ". $member->getLastName()];
                 }
                 ])
-            ->add('bookrooms')
         ;
     }
 

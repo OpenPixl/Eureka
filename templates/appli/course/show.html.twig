@@ -1,42 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}course{% endblock %}
+{% block title %}coursese{% endblock %}
 
 {% block main %}
-    <h1>Cours</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ cour.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ cour.name }}</td>
-
-            <tr>
-                <th>Level</th>
-                <td>{{ cour.teacher }}</td>
-            </tr>
-            <tr>
-                <th>Level</th>
-                <td>{{ cour.level }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ cour.createdAt ? cour.createdAt|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ cour.updatedAt ? cour.updatedAt|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_appli_course_index') }}">back to list</a>
-
-    <a href="{{ path('app_appli_course_edit', {'id': cour.id}) }}">edit</a>
+    <section id="blockUser">
+        <div class="row mt-1 mb-1 align-items-center">
+            <div class="col-3">
+                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+            </div>
+            <div class="col-9">
+                <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
+            </div>
+        </div>
+    </section>
+    <section id="blockAdmin">
+        <div class="row mt-1 mb-1">
+            <div class="col-12">
+                <h2 class="text-end">Matière : {{ course.name }}</h2>
+            </div>
+            <div class="col-12">
+                <dl>
+                    <dt>Ref :</dt>
+                    <dd>{{ course.id }}</dd>
+                </dl>
+                <dl>
+                    <dt>niveaux :</dt>
+                    <dd>{{ course.level }}</dd>
+                </dl>
+                <dl>
+                    <dt>Enseignants :</dt>
+                    <dd>{{ course.teacher }}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-10">
+            <a href="{{ path('op_appli_course_index') }}"><i class="bi bi-skip-backward"></i></a>
+            <a href="{{ path('op_appli_course_edit', {'id': course.id}) }}">edit</a>
+        </div>
+    </section>
 
     {{ include('appli/course/_delete_form.html.twig') }}
 {% endblock %}

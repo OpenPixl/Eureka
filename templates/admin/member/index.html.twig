@@ -3,25 +3,26 @@
 {% block title %}Member index{% endblock %}
 
 {% block main %}
-    <h1>Member index</h1>
-
-    <table class="table">
+    <section id="blockUser">
+        <div class="row mt-1 mb-1 align-items-center">
+            <div class="col-3">
+                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+            </div>
+            <div class="col-9">
+                <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
+            </div>
+        </div>
+    </section>
+<section id="blockAdmin">
+    <div class="row mt-1 mb-1">
+        <div class="col-12">
+            <h2 class="text-end">Liste des étudiants</h2>
+            <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Nom</th>
                 <th>Email</th>
-                <th>Roles</th>
-                <th>Password</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Adress</th>
-                <th>Complement</th>
-                <th>Zipcode</th>
-                <th>City</th>
-                <th>Mobile</th>
-                <th>Home</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -29,19 +30,8 @@
         {% for member in members %}
             <tr>
                 <td>{{ member.id }}</td>
+                <td>{{ member.firstName }} {{ member.lastName }}</td>
                 <td>{{ member.email }}</td>
-                <td>{{ member.roles ? member.roles|json_encode : '' }}</td>
-                <td>{{ member.password }}</td>
-                <td>{{ member.firstName }}</td>
-                <td>{{ member.lastName }}</td>
-                <td>{{ member.adress }}</td>
-                <td>{{ member.complement }}</td>
-                <td>{{ member.zipcode }}</td>
-                <td>{{ member.city }}</td>
-                <td>{{ member.Mobile }}</td>
-                <td>{{ member.home }}</td>
-                <td>{{ member.createdAt ? member.createdAt|date('Y-m-d') : '' }}</td>
-                <td>{{ member.updatedAt ? member.updatedAt|date('Y-m-d') : '' }}</td>
                 <td>
                     <a href="{{ path('op_admin_member_show', {'id': member.id}) }}">show</a>
                     <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}">edit</a>
@@ -54,6 +44,8 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('op_admin_member_new') }}">Create new</a>
+            <a href="{{ path('op_admin_member_new') }}">Create new</a>
+        </div>
+    </div>
+</section>
 {% endblock %}

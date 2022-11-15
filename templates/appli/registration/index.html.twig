@@ -21,8 +21,8 @@
                 <td>{{ registration.createdAt ? registration.createdAt|date('Y-m-d') : '' }}</td>
                 <td>{{ registration.updatedAt ? registration.updatedAt|date('Y-m-d') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_appli_registration_show', {'id': registration.id}) }}">show</a>
-                    <a href="{{ path('app_appli_registration_edit', {'id': registration.id}) }}">edit</a>
+                    <a href="{{ path('op_appli_registration_show', {'id': registration.id}) }}">show</a>
+                    <a href="{{ path('op_appli_registration_edit', {'id': registration.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +33,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_appli_registration_new') }}">Create new</a>
+    <a href="{{ path('op_appli_registration_new') }}">Create new</a>
 {% endblock %}

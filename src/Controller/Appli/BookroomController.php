@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/appli/bookroom')]
 class BookroomController extends AbstractController
 {
-    #[Route('/', name: 'app_appli_bookroom_index', methods: ['GET'])]
+    #[Route('/', name: 'op_appli_bookroom_index', methods: ['GET'])]
     public function index(BookroomRepository $bookroomRepository): Response
     {
         return $this->render('appli/bookroom/index.html.twig', [
@@ -21,7 +21,7 @@ class BookroomController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_appli_bookroom_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'op_appli_bookroom_new', methods: ['GET', 'POST'])]
     public function new(Request $request, BookroomRepository $bookroomRepository): Response
     {
         $bookroom = new Bookroom();
@@ -31,7 +31,7 @@ class BookroomController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $bookroomRepository->add($bookroom, true);
 
-            return $this->redirectToRoute('app_appli_bookroom_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_appli_bookroom_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('appli/bookroom/new.html.twig', [
@@ -40,7 +40,7 @@ class BookroomController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_appli_bookroom_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'op_appli_bookroom_show', methods: ['GET'])]
     public function show(Bookroom $bookroom): Response
     {
         return $this->render('appli/bookroom/show.html.twig', [
@@ -48,7 +48,7 @@ class BookroomController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_appli_bookroom_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'op_appli_bookroom_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bookroom $bookroom, BookroomRepository $bookroomRepository): Response
     {
         $form = $this->createForm(BookroomType::class, $bookroom);
@@ -57,7 +57,7 @@ class BookroomController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $bookroomRepository->add($bookroom, true);
 
-            return $this->redirectToRoute('app_appli_bookroom_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_appli_bookroom_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('appli/bookroom/edit.html.twig', [
@@ -66,13 +66,13 @@ class BookroomController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_appli_bookroom_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'op_appli_bookroom_delete', methods: ['POST'])]
     public function delete(Request $request, Bookroom $bookroom, BookroomRepository $bookroomRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$bookroom->getId(), $request->request->get('_token'))) {
             $bookroomRepository->remove($bookroom, true);
         }
 
-        return $this->redirectToRoute('app_appli_bookroom_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('op_appli_bookroom_index', [], Response::HTTP_SEE_OTHER);
     }
 }

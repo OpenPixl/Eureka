@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/appli/room')]
 class RoomController extends AbstractController
 {
-    #[Route('/', name: 'app_appli_room_index', methods: ['GET'])]
+    #[Route('/', name: 'op_appli_room_index', methods: ['GET'])]
     public function index(RoomRepository $roomRepository): Response
     {
         return $this->render('appli/room/index.html.twig', [
@@ -21,7 +21,7 @@ class RoomController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_appli_room_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'op_appli_room_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RoomRepository $roomRepository): Response
     {
         $room = new Room();
@@ -31,7 +31,7 @@ class RoomController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $roomRepository->add($room, true);
 
-            return $this->redirectToRoute('app_appli_room_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_appli_room_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('appli/room/new.html.twig', [
@@ -40,7 +40,7 @@ class RoomController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_appli_room_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'op_appli_room_show', methods: ['GET'])]
     public function show(Room $room): Response
     {
         return $this->render('appli/room/show.html.twig', [
@@ -48,7 +48,7 @@ class RoomController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_appli_room_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'op_appli_room_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Room $room, RoomRepository $roomRepository): Response
     {
         $form = $this->createForm(RoomType::class, $room);
@@ -57,7 +57,7 @@ class RoomController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $roomRepository->add($room, true);
 
-            return $this->redirectToRoute('app_appli_room_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_appli_room_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('appli/room/edit.html.twig', [
@@ -66,13 +66,13 @@ class RoomController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_appli_room_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'op_appli_room_delete', methods: ['POST'])]
     public function delete(Request $request, Room $room, RoomRepository $roomRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
             $roomRepository->remove($room, true);
         }
 
-        return $this->redirectToRoute('app_appli_room_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('op_appli_room_index', [], Response::HTTP_SEE_OTHER);
     }
 }

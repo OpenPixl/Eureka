@@ -22,6 +22,14 @@ class MemberController extends AbstractController
         ]);
     }
 
+    #[Route('/', name: 'op_admin_member_liststudient', methods: ['GET'])]
+    public function listStudient(MemberRepository $memberRepository): Response
+    {
+        return $this->render('admin/member/index.html.twig', [
+            'members' => $memberRepository->findBy(['roles'=> '']),
+        ]);
+    }
+
     #[Route('/{idTeacher}', name: 'op_admin_member_listcourses', methods: ['GET'])]
     public function ListCourses(CourseRepository $courseRepository): Response
     {

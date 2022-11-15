@@ -29,22 +29,27 @@ class MemberType extends AbstractType
                 'label' => 'Nom'
             ])
             ->add('adress', TextType::class, [
-                'label' => 'Adresse'
+                'label' => 'Adresse',
+                'required' => false
             ])
             ->add('complement', TextType::class, [
-                'label' => ''
+                'label' => '',
+                'required' => false
             ])
             ->add('zipcode', TextType::class, [
-                'label' => 'Code Postal'
+                'label' => 'Code Postal',
+                'required' => false
             ])
             ->add('city', TextType::class, [
-                'label' => 'Commune'
+                'label' => 'Commune',
+                'required' => false
             ])
             ->add('Mobile', TextType::class, [
                 'label' => 'Mobile'
             ])
             ->add('home', TextType::class, [
-                'label' => 'Domicile'
+                'label' => 'Domicile',
+                'required' => false
             ])
         ;
     }

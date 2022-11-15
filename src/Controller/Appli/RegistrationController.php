@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/appli/registration')]
 class RegistrationController extends AbstractController
 {
-    #[Route('/', name: 'app_appli_registration_index', methods: ['GET'])]
+    #[Route('/', name: 'op_appli_registration_index', methods: ['GET'])]
     public function index(RegistrationRepository $registrationRepository): Response
     {
         return $this->render('appli/registration/index.html.twig', [
@@ -21,7 +21,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_appli_registration_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'op_appli_registration_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RegistrationRepository $registrationRepository): Response
     {
         $registration = new Registration();
@@ -31,7 +31,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $registrationRepository->add($registration, true);
 
-            return $this->redirectToRoute('app_appli_registration_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_appli_registration_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('appli/registration/new.html.twig', [
@@ -40,7 +40,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_appli_registration_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'op_appli_registration_show', methods: ['GET'])]
     public function show(registration $registration): Response
     {
         return $this->render('appli/registration/show.html.twig', [
@@ -48,7 +48,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_appli_registration_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'op_appli_registration_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, registration $registration, RegistrationRepository $registrationRepository): Response
     {
         $form = $this->createForm(RegistrationType::class, $registration);
@@ -57,7 +57,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $registrationRepository->add($registration, true);
 
-            return $this->redirectToRoute('app_appli_registration_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_appli_registration_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('appli/registration/edit.html.twig', [
@@ -66,13 +66,13 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_appli_registration_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'op_appli_registration_delete', methods: ['POST'])]
     public function delete(Request $request, Registration $registration, RegistrationRepository $registrationRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$registration->getId(), $request->request->get('_token'))) {
             $registrationRepository->remove($registration, true);
         }
 
-        return $this->redirectToRoute('app_appli_registration_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('op_appli_registration_index', [], Response::HTTP_SEE_OTHER);
     }
 }

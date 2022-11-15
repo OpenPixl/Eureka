@@ -35,8 +35,8 @@
                 <td>{{ bookroom.createdAt ? bookroom.createdAt|date('Y-m-d') : '' }}</td>
                 <td>{{ bookroom.updatedAt ? bookroom.updatedAt|date('Y-m-d') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_appli_bookroom_show', {'id': bookroom.id}) }}">show</a>
-                    <a href="{{ path('app_appli_bookroom_edit', {'id': bookroom.id}) }}">edit</a>
+                    <a href="{{ path('op_appli_bookroom_show', {'id': bookroom.id}) }}">show</a>
+                    <a href="{{ path('op_appli_bookroom_edit', {'id': bookroom.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -47,5 +47,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_appli_bookroom_new') }}">Create new</a>
+    <a href="{{ path('op_appli_bookroom_new') }}">Create new</a>
 {% endblock %}
