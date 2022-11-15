@@ -84,6 +84,15 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $AvatarFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $AvatarName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $AvatarSize = null;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -423,5 +432,41 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(){
         return $this->lastName;
+    }
+
+    public function getAvatarFile(): ?string
+    {
+        return $this->AvatarFile;
+    }
+
+    public function setAvatarFile(string $AvatarFile): self
+    {
+        $this->AvatarFile = $AvatarFile;
+
+        return $this;
+    }
+
+    public function getAvatarName(): ?string
+    {
+        return $this->AvatarName;
+    }
+
+    public function setAvatarName(?string $AvatarName): self
+    {
+        $this->AvatarName = $AvatarName;
+
+        return $this;
+    }
+
+    public function getAvatarSize(): ?string
+    {
+        return $this->AvatarSize;
+    }
+
+    public function setAvatarSize(?string $AvatarSize): self
+    {
+        $this->AvatarSize = $AvatarSize;
+
+        return $this;
     }
 }

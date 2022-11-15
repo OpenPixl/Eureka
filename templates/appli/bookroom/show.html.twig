@@ -5,50 +5,44 @@
 {% block main %}
     <h1>Bookroom</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ bookroom.id }}</td>
-            </tr>
-            <tr>
-                <th>DateBookAt</th>
-                <td>{{ bookroom.dateBookAt ? bookroom.dateBookAt|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>HourBookOpenAt</th>
-                <td>{{ bookroom.hourBookOpenAt ? bookroom.hourBookOpenAt|date('H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>HourBookClosedAt</th>
-                <td>{{ bookroom.hourBookClosedAt ? bookroom.hourBookClosedAt|date('H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>IsActive</th>
-                <td>{{ bookroom.isActive ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Forme</th>
-                <td>{{ bookroom.forme }}</td>
-            </tr>
-            <tr>
-                <th>LinkDistanciel</th>
-                <td>{{ bookroom.linkDistanciel }}</td>
-            </tr>
-            <tr>
-                <th>Place</th>
-                <td>{{ bookroom.place }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ bookroom.createdAt ? bookroom.createdAt|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ bookroom.updatedAt ? bookroom.updatedAt|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {% if app.request.attributes.get('_route') == 'app_appli_course_showteacher' %}
+    <section>
+        <div class="row mt-1 mb-1">
+            <div class="col-12">
+                <h1>Enseignants</h1>
+            </div>
+        </div>
+        <div class="col-12">
+            <p>
+                {{ bookroom.id }}
+            </p>
+            <p>
+                {{ bookroom.dateBookAt ? bookroom.dateBookAt|date('Y-m-d') : '' }}
+            </p>
+            <p>
+                {{ bookroom.hourBookOpenAt ? bookroom.hourBookOpenAt|date('H:i:s') : '' }}
+            </p>
+            <p>
+                {{ bookroom.hourBookClosedAt ? bookroom.hourBookClosedAt|date('H:i:s') : '' }}
+            </p>
+            <p>
+                {{ bookroom.forme }}
+            </p>
+            <p>
+                {{ bookroom.isActive ? 'Yes' : 'No' }}
+            </p>
+            <p>
+                {{ bookroom.linkDistanciel }}
+            </p>
+            <p>
+                {{ bookroom.createdAt ? bookroom.createdAt|date('Y-m-d') : '' }}
+            </p>
+            <p>
+                {{ bookroom.updatedAt ? bookroom.updatedAt|date('Y-m-d') : '' }}
+            </p>
+        </div>
+
+    </section>
 
     <a href="{{ path('app_appli_bookroom_index') }}">back to list</a>
 
