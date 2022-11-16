@@ -5,10 +5,12 @@ namespace App\Form\Admin;
 use App\Entity\Admin\Member;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class MemberType extends AbstractType
 {
@@ -46,9 +48,23 @@ class MemberType extends AbstractType
             ->add('home', TextType::class, [
                 'label' => 'Domicile'
             ])
+            ->add('AvatarFile', FileType::class, [
+                'label' => 'Avatar au format : png ou jpg',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '10000k',
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/jpg',
+                        ],
+                        'mimeTypesMessage' => 'Attention, veuillez charger un fichier au format jpg ou png',
+                    ])
+                ],
+            ])
         ;
     }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
