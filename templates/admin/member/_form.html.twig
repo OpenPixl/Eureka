@@ -69,6 +69,11 @@
         <div class="col-8">
             {{ form_widget(form.AvatarFile) }}
         </div>
+        {% if member.AvatarName is not null %}
+            <div class="col-4 text-center">
+                <img class="img-fluid" src="{{ asset('images/svg/' ~ Member.AvatarName) }}" alt="{{ Member.AvatarName }}">
+            </div>
+        {% endif %}
     </div>
 </div>
 <div class="mt-4 mb-4">
