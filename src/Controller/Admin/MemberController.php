@@ -7,9 +7,12 @@ use App\Form\Admin\MemberType;
 use App\Repository\Admin\MemberRepository;
 use App\Repository\Appli\CourseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/admin/member')]
 class MemberController extends AbstractController
@@ -59,7 +62,7 @@ class MemberController extends AbstractController
     }
 
     #[Route('/super/teacher', name: 'op_admin_member_teacher', methods: ['GET', 'POST'])]
-    public function teacher(Request $request, MemberRepository $memberRepository): Response
+    public function teacher(Request $request, MemberRepository $memberRepository, SluggerInterface $slugger): Response
     {
         $member = new Member();
         $member->setRoles(array('ROLE_ADMIN'));
@@ -68,6 +71,33 @@ class MemberController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $memberRepository->add($member, true);
+
+                /** @var UploadedFile $avatarFile */
+                $avatarFileInput = $form->get('avatarFile')->getData();
+                $logoFileInput = $form->get('logoFile')->getData();
+
+            // Ajout de la nouvelle bannière
+            $originalavatarFilename = pathinfo($avatarFileInput->getClientOriginalName(), PATHINFO_FILENAME);
+            // this is needed to safely include the file name as part of the URL
+            $safeavatarFilename = $slugger->slug($originalavatarFilename);
+            $newavatarFilename = $safeavatarFilename . '-' . uniqid() . '.' . $avatarFileInput->guessExtension();
+
+            // Move the file to the directory where brochures are stored
+            try {
+                $avatarFileInput->move(
+                    $this->getParameter('member_directory'),
+                    $newavatarFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+
+            // updates the 'brochureFilename' property to store the PDF file name
+            // instead of its contents
+            $member->setavatarName($newavatarFilename);
+
+        $this->getDoctrine()->getManager()->flush();
+
             $this->addFlash('success', "L'enseignant a été correctement ajouté.<br>Il doit vérifier et valider son adresse mail.");
             return $this->redirectToRoute('op_admin_dashboard_super', [], Response::HTTP_SEE_OTHER);
         }
@@ -79,7 +109,7 @@ class MemberController extends AbstractController
     }
 
     #[Route('/super/studient', name: 'op_admin_member_studient', methods: ['GET', 'POST'])]
-    public function studient(Request $request, MemberRepository $studientRepository): Response
+    public function studient(Request $request, MemberRepository $studientRepository, SluggerInterface $slugger): Response
     {
         $studient = new Member();
         $studient->setRoles(array('ROLE_USER'));
@@ -88,7 +118,33 @@ class MemberController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $studientRepository->add($studient, true);
-            $this->addFlash('success', "L'étudiant a été correctement ajouté.<br>Il doit vérifier et valider son adresse mail.");
+
+            /** @var UploadedFile $avatarFile */
+            $avatarFileInput = $form->get('avatarFile')->getData();
+
+            // Ajout de la nouvelle bannière
+            $originalavatarFilename = pathinfo($avatarFileInput->getClientOriginalName(), PATHINFO_FILENAME);
+            // this is needed to safely include the file name as part of the URL
+            $safeavatarFilename = $slugger->slug($originalavatarFilename);
+            $newavatarFilename = $safeavatarFilename . '-' . uniqid() . '.' . $avatarFileInput->guessExtension();
+
+            // Move the file to the directory where brochures are stored
+            try {
+                $avatarFileInput->move(
+                    $this->getParameter('member_directory'),
+                    $newavatarFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+
+            // updates the 'brochureFilename' property to store the PDF file name
+            // instead of its contents
+            $studient->setavatarName($newavatarFilename);
+
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', "L'apprenant a été correctement ajouté.<br>Il doit vérifier et valider son adresse mail.");
             return $this->redirectToRoute('op_admin_dashboard_super', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -107,13 +163,50 @@ class MemberController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'op_admin_member_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Member $member, MemberRepository $memberRepository): Response
+    public function edit(Request $request, Member $member, MemberRepository $memberRepository, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $memberRepository->add($member, true);
+            /** @var UploadedFile $avatarFile */
+            $avatarFileInput = $form->get('avatarFile')->getData();
+            $logoFileInput = $form->get('logoFile')->getData();
+
+            if ($avatarFileInput) {
+                // Effacement du fichier bannièreFileName si il est présent en BDD
+                // récupération du nom de l'image
+                $avatarName = $member->getavatarName();
+                // suppression du Fichier
+                if($avatarName){
+                    $pathavatar = $this->getParameter('member_directory').'/'.$avatarName;
+                    // On vérifie si l'image existe
+                    if(file_exists($pathavatar)){
+                        unlink($pathavatar);
+                    }
+                }
+                // Ajout de la nouvelle bannière
+                $originalavatarFilename = pathinfo($avatarFileInput->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeavatarFilename = $slugger->slug($originalavatarFilename);
+                $newavatarFilename = $safeavatarFilename . '-' . uniqid() . '.' . $avatarFileInput->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $avatarFileInput->move(
+                        $this->getParameter('member_directory'),
+                        $newavatarFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $member->setavatarName($newavatarFilename);
+            }
+
+            $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -133,4 +226,5 @@ class MemberController extends AbstractController
 
         return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

@@ -4,31 +4,28 @@
 
 {% block main %}
     <h1>room</h1>
+    <section id="blockroom">
+            <div class="col-9">
+                <h1 class="text-end" style="color: #FFFFFF;">Cours</h1>
+            </div>
+        </div>
+    </section>
+    <section>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ room.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ room.name }}</td>
-            </tr>
-            <tr>
-                <th>MaxPlace</th>
-                <td>{{ room.maxPlace }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ room.createdAt ? room.createdAt|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ room.updatedAt ? room.updatedAt|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="col-12">
+            <p>
+                Identifiant :{{ room.id }} Cours :{{ room.name }}
+            </p>
+            <p>
+                Place maximal : {{ room.maxPlace }}
+            </p>
+            <p>
+                Crée le :{{ room.createdAt ? room.createdAt|date('Y-m-d') : '' }}
+            </p>
+            <p>
+                Mise à jour le :{{ room.updatedAt ? room.updatedAt|date('Y-m-d') : '' }}
+            </p>
+        </div>
 
     <a href="{{ path('op_appli_room_index') }}">back to list</a>
 
