@@ -14,25 +14,28 @@
         </div>
     </section>
     <section id="blockAdmin">
-        <div class="row mt-1 mb-1">
-            <div class="col-12">
-                <h2 class="text-end">Matière : {{ course.name }}</h2>
+        <section>
+            <div class="row mt-1 mb-1">
+                <div class="col-12">
+                    <h2 class="text-end">Matière : {{ course.name }}</h2>
+                </div>
             </div>
             <div class="col-12">
-                <dl>
-                    <dt>Ref :</dt>
-                    <dd>{{ course.id }}</dd>
-                </dl>
-                <dl>
-                    <dt>niveaux :</dt>
-                    <dd>{{ course.level }}</dd>
-                </dl>
-                <dl>
-                    <dt>Enseignants :</dt>
-                    <dd>{{ course.teacher }}</dd>
-                </dl>
+                <p>
+                    Ref : <br>
+                    {{ course.id }}
+                </p>
+                <p>
+                    niveaux :<br>
+                    {{ course.level }}
+                </p>
+                <p>
+                    Enseignants :<br>
+                    {{ course.teacher }}
+                </p>
             </div>
-        </div>
+
+        </section>
         <div class="col-10">
             <a href="{{ path('op_appli_course_index') }}"><i class="bi bi-skip-backward"></i></a>
             <a href="{{ path('op_appli_course_edit', {'id': course.id}) }}">edit</a>
