@@ -61,7 +61,7 @@ class MemberController extends AbstractController
             );
             $memberRepository->add($member, true);
 
-            return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_admin_member_liststudient', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/member/new.html.twig', [
@@ -112,7 +112,7 @@ class MemberController extends AbstractController
             // instead of its contents
             $member->setavatarName($newavatarFilename);
 
-        $this->getDoctrine()->getManager()->flush();
+            $memberRepository->add($member, true);
 
             $this->addFlash('success', "L'enseignant a été correctement ajouté.<br>Il doit vérifier et valider son adresse mail.");
             return $this->redirectToRoute('op_admin_dashboard_super', [], Response::HTTP_SEE_OTHER);
@@ -165,7 +165,8 @@ class MemberController extends AbstractController
             // instead of its contents
             $studient->setavatarName($newavatarFilename);
 
-            $this->getDoctrine()->getManager()->flush();
+            $studientRepository->add($studient, true);
+
 
             $this->addFlash('success', "L'apprenant a été correctement ajouté.<br>Il doit vérifier et valider son adresse mail.");
             return $this->redirectToRoute('op_admin_dashboard_super', [], Response::HTTP_SEE_OTHER);
@@ -188,18 +189,19 @@ class MemberController extends AbstractController
     #[Route('/{id}/edit', name: 'op_admin_member_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Member $member, MemberRepository $memberRepository, SluggerInterface $slugger): Response
     {
+        //dd($member);
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
+        //dd($form);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $avatarFile */
-            $avatarFileInput = $form->get('avatarFile')->getData();
-            $logoFileInput = $form->get('logoFile')->getData();
+
+            $avatarFileInput = $form->get('AvatarFile')->getData();
 
             if ($avatarFileInput) {
                 // Effacement du fichier bannièreFileName si il est présent en BDD
                 // récupération du nom de l'image
-                $avatarName = $member->getavatarName();
+                $avatarName = $member->getAvatarName();
                 // suppression du Fichier
                 if($avatarName){
                     $pathavatar = $this->getParameter('member_directory').'/'.$avatarName;
@@ -227,9 +229,9 @@ class MemberController extends AbstractController
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 $member->setavatarName($newavatarFilename);
+                $memberRepository->add($member, true);
             }
 
-            $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
         }
