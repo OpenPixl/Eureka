@@ -23,7 +23,6 @@ class MemberType extends AbstractType
                     'placeholder' => 'Entrez votre Email'
                 ]
             ])
-            ->add('password')
             ->add('firstName', TextType::class, [
                 'label' => 'Prénom'
             ])

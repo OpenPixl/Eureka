@@ -27,14 +27,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for cour in course %}
+                    {% for course in course %}
                         <tr>
-                            <td>{{ cour.id }}</td>
-                            <td>{{ cour.name }}</td>
-                            <td>{{ cour.level }}</td>
+                            <td>{{ course.id }}</td>
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.level }}</td>
                             <td>
-                                <a href="{{ path('op_appli_course_show', {'id': cour.id}) }}">Voir</a>
-                                <a href="{{ path('op_appli_course_edit', {'id': cour.id}) }}">edit</a>
+                                <a href="{{ path('op_appli_course_show', {'id': course.id}) }}">Voir</a>
+                                <a href="{{ path('op_appli_course_edit', {'id': course.id}) }}">edit</a>
                             </td>
                         </tr>
                     {% else %}

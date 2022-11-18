@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/admin/member')]
@@ -33,16 +35,16 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{idTeacher}', name: 'op_admin_member_listcourses', methods: ['GET'])]
-    public function ListCourses(CourseRepository $courseRepository): Response
+    #[Route('/{idTeacher}', name: 'op_admin_member_listcourses', methods: ['POST'])]
+    public function ListCourses($idTeacher, CourseRepository $courseRepository): Response
     {
         return $this->render('admin/member/listcourse.html.twig', [
-            'members' => $courseRepository->findAll(),
+            'courses' => $courseRepository->findBy(['teacher'=> $idTeacher]),
         ]);
     }
 
     #[Route('/new', name: 'op_admin_member_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, MemberRepository $memberRepository): Response
+    public function new(Request $request, UserPasswordHasherInterface $userPasswordHasher, MemberRepository $memberRepository ): Response
     {
         $member = new Member();
         $member->setMobile('00.00.00.00.00');
@@ -50,6 +52,13 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // hash du mot de passe
+            $member->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $member,
+                    $form->get('Password')->getData()
+                )
+            );
             $memberRepository->add($member, true);
 
             return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
@@ -62,7 +71,7 @@ class MemberController extends AbstractController
     }
 
     #[Route('/super/teacher', name: 'op_admin_member_teacher', methods: ['GET', 'POST'])]
-    public function teacher(Request $request, MemberRepository $memberRepository, SluggerInterface $slugger): Response
+    public function teacher(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger): Response
     {
         $member = new Member();
         $member->setRoles(array('ROLE_ADMIN'));
@@ -70,6 +79,13 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // hasher le mot de passe
+            $member->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $member,
+                    $form->get('Password')->getData()
+                )
+            );
             $memberRepository->add($member, true);
 
                 /** @var UploadedFile $avatarFile */
@@ -109,7 +125,7 @@ class MemberController extends AbstractController
     }
 
     #[Route('/super/studient', name: 'op_admin_member_studient', methods: ['GET', 'POST'])]
-    public function studient(Request $request, MemberRepository $studientRepository, SluggerInterface $slugger): Response
+    public function studient(Request $request, MemberRepository $studientRepository, UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger): Response
     {
         $studient = new Member();
         $studient->setRoles(array('ROLE_USER'));
@@ -117,6 +133,13 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // hasher le mot de passe
+            $studient->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $studient,
+                    $form->get('Password')->getData()
+                )
+            );
             $studientRepository->add($studient, true);
 
             /** @var UploadedFile $avatarFile */
