@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     member_directory: '%kernel.project_dir%/public/images/member'
+    course_directory: '%kernel.project_dir%/public/images/course'
 
 services:
     # default configuration for services in *this* file
