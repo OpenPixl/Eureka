@@ -15,19 +15,32 @@
         </div>
     </section>
     <section id="blockAdmin">
-        <div class="row mt-1 mb-1 justify-content-center">
-            <div class="col-10 pt-1 pb-1">
-                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_teacher') }}">Ajout d'un Enseignant</a>
-            </div>
-            <div class="col-10 pt-1 pb-1">
-                <a class="btn btn-primary w-75" href="{{ path('op_appli_course_new') }}">Ajout d'une Matière</a><a class="btn btn-primary w-25" href="{{ path('op_appli_course_index') }}">Voir</a>
-            </div>
-            <div class="col-10 pt-1 pb-1">
-                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_studient') }}">Ajout d'un Etudiant</a><a class="btn btn-primary w-25" href="{{ path('op_admin_member_liststudient') }}">Voir</a>
+        <div class="col-12">
+            <h2 class="text-end">Ajout des différents membres</h2>
+        </div>
+        <div class="row g-2 justify-content-center">
+            <div class="col-12 pt-1 pb-1">
+                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_newteacher') }}">Ajout d'un Enseignant</a>
             </div>
         </div>
-        <div class="row mt-1 mb-1 justify-content-center">
+        <div class="row g-2 justify-content-center">
             <div class="col-10 pt-1 pb-1">
+                <a class="btn btn-primary w-100" href="{{ path('op_appli_course_new') }}">Ajout d'une Matière</a>
+            </div>
+            <div class="col-2 pt-1 pb-1">
+                <a class="btn btn-primary w-100" href="{{ path('op_appli_course_index') }}">Voir</a>
+            </div>
+        </div>
+        <div class="row g-2 justify-content-center">
+            <div class="col-10 pt-1 pb-1">
+                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_newstudient') }}">Ajout d'un Etudiant</a>
+            </div>
+            <div class="col-2 pt-1 pb-1">
+                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_liststudient') }}">Voir</a>
+            </div>
+        </div>
+        <div class="row g-2 justify-content-center">
+            <div class="col-12 pt-1 pb-1">
                 <button class="btn btn-success w-100">Accéder à son Administration</button>
             </div>
         </div>

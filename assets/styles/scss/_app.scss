@@ -43,10 +43,13 @@ body{
     #blockAdmin{
       .btn-primary{
         font-family: 'Comfortaa-Light', sans-serif;
+        font-size: 1rem;
+        line-height: 2rem;
         height: 48px;
         background: #2E6699;
         border: 2px solid #FFFFFF;
         border-radius: 8px;
+
       }
       .btn-success{
         font-family: 'Comfortaa-Light', sans-serif;
@@ -56,6 +59,7 @@ body{
       }
       label{
         color: #92B923;
+        font-family: 'Comfortaa-Light', sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 13px;

@@ -27,6 +27,15 @@ class Course
     #[ORM\Column(length: 20)]
     private ?string $level = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logoFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logoName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logoSize = null;
+
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
@@ -78,6 +87,42 @@ class Course
     public function setLevel(string $level): self
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    public function getLogoFile(): ?string
+    {
+        return $this->logoFile;
+    }
+
+    public function setLogoFile(string $logoFile): self
+    {
+        $this->logoFile = $logoFile;
+
+        return $this;
+    }
+
+    public function getLogoName(): ?string
+    {
+        return $this->logoName;
+    }
+
+    public function setLogoName(?string $logoName): self
+    {
+        $this->logoName = $logoName;
+
+        return $this;
+    }
+
+    public function getLogoSize(): ?string
+    {
+        return $this->logoSize;
+    }
+
+    public function setLogoSize(?string $logoSize): self
+    {
+        $this->logoSize = $logoSize;
 
         return $this;
     }

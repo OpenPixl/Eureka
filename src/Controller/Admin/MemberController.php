@@ -70,7 +70,7 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/super/teacher', name: 'op_admin_member_teacher', methods: ['GET', 'POST'])]
+    #[Route('/super/teacher', name: 'op_admin_member_newteacher', methods: ['GET', 'POST'])]
     public function teacher(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger): Response
     {
         $member = new Member();
@@ -88,9 +88,9 @@ class MemberController extends AbstractController
             );
             $memberRepository->add($member, true);
 
-                /** @var UploadedFile $avatarFile */
-                $avatarFileInput = $form->get('avatarFile')->getData();
-                $logoFileInput = $form->get('logoFile')->getData();
+            /** @var UploadedFile $avatarFile */
+            $avatarFileInput = $form->get('avatarFile')->getData();
+
 
             // Ajout de la nouvelle bannière
             $originalavatarFilename = pathinfo($avatarFileInput->getClientOriginalName(), PATHINFO_FILENAME);
@@ -124,7 +124,7 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/super/studient', name: 'op_admin_member_studient', methods: ['GET', 'POST'])]
+    #[Route('/super/studient', name: 'op_admin_member_newstudient', methods: ['GET', 'POST'])]
     public function studient(Request $request, MemberRepository $studientRepository, UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger): Response
     {
         $studient = new Member();

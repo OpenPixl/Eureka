@@ -69,11 +69,16 @@
         <div class="col-8">
             {{ form_widget(form.AvatarFile) }}
         </div>
-        {% if member.AvatarName is not null %}
+        {% if app.request.attributes.get('_route') == 'op_admin_member_new' %}
+        {% elseif app.request.attributes.get('_route') == 'op_admin_member_newteacher'%}
+        {% elseif app.request.attributes.get('_route') == 'op_admin_member_newstudient' %}
+        {% if studient.AvatarName is not null %}
             <div class="col-4 text-center">
-                <img class="img-fluid" src="{{ asset('images/member/' ~ Member.AvatarName) }}" alt="{{ Member.AvatarName }}">
+                <img class="img-fluid" src="{{ asset('images/member/' ~ studient.AvatarName) }}" alt="{{ studient.AvatarName }}">
             </div>
         {% endif %}
+        {% endif %}
+
     </div>
 </div>
 <div class="mt-4 mb-4">

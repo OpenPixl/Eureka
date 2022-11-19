@@ -34,37 +34,31 @@ class CourseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Code d'ajout d'une image dans l'entité
+            // -----------------------------
+            // 1. On récupére le fichier depuis le formulaire
+            $logoFileInput = $form->get('logoFile')->getData();
+            // 2. On récupére le nom initial du fichier téléchargé
+            $originallogoFilename = pathinfo($logoFileInput->getClientOriginalName(), PATHINFO_FILENAME);
+            // 3. On encode les caractères particuliers en miniscule avec SluggerInterface et on créée un nouveau nom de fichier
+            $safelogoFilename = $slugger->slug($originallogoFilename);
+            $newlogoFilename = $safelogoFilename . '-' . uniqid() . '.' . $logoFileInput->guessExtension();
+            // 4. on déplace le fichier du dossier Temp vers le dossier du Site
+            try {
+                $logoFileInput->move(
+                    $this->getParameter('member_directory'),
+                    $newlogoFilename
+                );
+            } catch (FileException $e) {
+                // ... en cas d'erreur
+            }
+            // 5. on hydrate l'entité avec le nom du fichier déplacé.
+            $course->setLogoName($newlogoFilename);
+
             $courseRepository->add($course, true);
 
             return $this->redirectToRoute('op_appli_course_index', [], Response::HTTP_SEE_OTHER);
         }
-        $courseRepository->add($course, true);
-
-        /** @var UploadedFile $avatarFile */
-        $logoFileInput = $form->get('avatarFile')->getData();
-
-        // Ajout de la nouvelle bannière
-        $originallogoFilename = pathinfo($logoFileInput->getClientOriginalName(), PATHINFO_FILENAME);
-        // this is needed to safely include the file name as part of the URL
-        $safelogoFilename = $slugger->slug($originallogoFilename);
-        $newlogoFilename = $safelogoFilename . '-' . uniqid() . '.' . $logoFileInput->guessExtension();
-
-        // Move the file to the directory where brochures are stored
-        try {
-            $logoFileInput->move(
-                $this->getParameter('course_directory'),
-                $newlogoFilename
-            );
-        } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
-        }
-
-        // updates the 'brochureFilename' property to store the PDF file name
-        // instead of its contents
-        $course->setavatarName($newlogoFilename);
-
-        $courseRepository->add($course, true);
-
 
         return $this->renderForm('appli/course/new.html.twig', [
             'course' => $course,
