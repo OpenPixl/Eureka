@@ -3,24 +3,14 @@
 {% block title %}Hello DashboardController!{% endblock %}
 
 {% block main %}
-    <section id="blockUser">
-        <div class="row mt-1 mb-1 align-items-center">
-            <div class="col-3">
-                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
-            </div>
-            <div class="col-9">
-                <h1 class="text-end" style="color: #FFFFFF;">Administration</h1>
-            </div>
-        </div>
-
-    </section>
+    {{ include('include/_blockuser.html.twig') }}
     <section id="blockAdmin">
         <div class="row mt-1 mb-1 justify-content-center">
             <div class="col-10 pt-1 pb-1">
                 <a class="btn btn-primary w-100" href="{{ path('op_admin_member_teacher') }}">Voir le calendrier</a>
             </div>
             <div class="col-10 pt-1 pb-1">
-                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_studient') }}">Saisie du planning</a>
+                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_student') }}">Saisie du planning</a>
             </div>
         </div>
     </section>

@@ -28,9 +28,6 @@ class Course
     private ?string $level = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $logoFile = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
     private ?string $logoName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -87,18 +84,6 @@ class Course
     public function setLevel(string $level): self
     {
         $this->level = $level;
-
-        return $this;
-    }
-
-    public function getLogoFile(): ?string
-    {
-        return $this->logoFile;
-    }
-
-    public function setLogoFile(string $logoFile): self
-    {
-        $this->logoFile = $logoFile;
 
         return $this;
     }

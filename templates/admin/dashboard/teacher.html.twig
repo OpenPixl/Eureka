@@ -1,0 +1,70 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Hello DashboardController!{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        window.onload = function(){
+            // mise en place du datapicker flatpickr sur les champs de date
+            flatpickr(".flatpickr", {
+                "locale": "fr",
+                enableTime: false,
+                altFormat: "j F Y",
+                dateFormat: "d/m/Y",
+            });
+
+            // mise en place du datapicker flatpickr sur les champs de date
+            flatpickr(".flatpickrtime", {
+                "locale": "fr",
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block main %}
+    {{ include('include/_blockuser.html.twig') }}
+    <section id="blockAdmin">
+        <div class="row mt-1 mb-1 justify-content-center">
+            <h2 class="text-end">Mon espace Enseignant.e</h2>
+        </div>
+        {% for course in courses %}
+        <div class="row mt-1 mb-1 justify-content-center">
+            <div>
+                <p>{{ course.name }}</p>
+            </div>
+            <div class="col-12">
+                <a href="#">Mon planning</a>
+            </div>
+            <div class="col-12">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookroom">Saisie du planning</button>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+{% endblock %}
+
+{% block modal %}
+    <!-- Ajout de séances -->
+    <div class="modal fade" id="addBookroom" tabindex="-1" aria-labelledby="addBookroom" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('App\\Controller\\Appli\\BookroomController::modalnew')) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

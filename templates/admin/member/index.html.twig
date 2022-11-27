@@ -16,35 +16,45 @@
     <section id="blockAdmin">
         <div class="row mt-1 mb-1">
             <div class="col-12">
-            <h2 class="text-end">Liste des étudiants</h2>
+            {% for member in members %}
+            <h2 class="text-end">Liste des {% if member.typemember == 'Enseignant.e' %}enseignants{% elseif member.typemember == 'Etudiant.e' %}étudiants{% endif %}</h2>
+            {% endfor %}
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Nom</th>
                         <th>Email</th>
-                        <th>actions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for member in members %}
                     <tr>
-                        <td>{{ member.id }}</td>
                         <td>{{ member.firstName }} {{ member.lastName }}</td>
                         <td>{{ member.email }}</td>
                         <td>
-                            <a href="{{ path('op_admin_member_show', {'id': member.id}) }}"><i class="fa-duotone fa-eye"></i></a>
+                            {% if member.typemember == 'Enseignant.e' %}
+                            <a href="{{ path('op_admin_member_showteacher', {'id': member.id}) }}"><i class="fa-duotone fa-eye"></i></a>
+                            {% elseif member.typemember == 'Etudiant.e' %}
+                            <a href="{{ path('op_admin_member_showstudent', {'id': member.id}) }}"><i class="fa-duotone fa-eye"></i></a>
+                            {% endif %}
                             <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
                         </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="15">no records found</td>
+                        <td colspan="15">Pas d'enregistrement</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-            <a class="btn btn-primary w-100" href="{{ path('op_admin_member_new') }}">Ajouter un nouvel étudiant</a>
+            {% for member in members %}
+            {% if member.typemember == 'Enseignant.e' %}
+            <a class="btn btn-primary w-100" href="{{ path('op_admin_member_newteacher') }}">Ajouter un nouvel enseignant</a>
+            {% elseif member.typemember == 'Etudiant.e' %}
+            <a class="btn btn-primary w-100" href="{{ path('op_admin_member_newstudent') }}">Ajouter un nouvel étudiant</a>
+            {% endif %}
+            {% endfor %}
         </div>
         </div>
     </section>

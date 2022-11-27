@@ -1,11 +1,18 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
 {% block title %}New room{% endblock %}
 
 {% block main %}
-    <h1>Create new room</h1>
+    {{ include('include/_blockuser.html.twig') }}
+    <section id="blockAdmin">
+        <div class="row mt-1 mb-1">
+            <div class="col-12">
+                <h2 class="text-end">Ajout d'une salle</h2>
 
-    {{ include('appli/room/_form.html.twig') }}
+                {{ include('appli/room/_form.html.twig') }}
 
-    <a href="{{ path('op_appli_room_index') }}">back to list</a>
+                <a href="{{ path('op_appli_room_index') }}">back to list</a>
+            </div>
+        </div>
+    </section>
 {% endblock %}

@@ -37,26 +37,27 @@ class CourseController extends AbstractController
             // Code d'ajout d'une image dans l'entité
             // -----------------------------
             // 1. On récupére le fichier depuis le formulaire
-            $logoFileInput = $form->get('logoFile')->getData();
-            // 2. On récupére le nom initial du fichier téléchargé
-            $originallogoFilename = pathinfo($logoFileInput->getClientOriginalName(), PATHINFO_FILENAME);
-            // 3. On encode les caractères particuliers en miniscule avec SluggerInterface et on créée un nouveau nom de fichier
-            $safelogoFilename = $slugger->slug($originallogoFilename);
-            $newlogoFilename = $safelogoFilename . '-' . uniqid() . '.' . $logoFileInput->guessExtension();
-            // 4. on déplace le fichier du dossier Temp vers le dossier du Site
-            try {
-                $logoFileInput->move(
-                    $this->getParameter('member_directory'),
-                    $newlogoFilename
-                );
-            } catch (FileException $e) {
-                // ... en cas d'erreur
+            $logoFileInput = $form->get('logo')->getData();
+            if ($logoFileInput) {
+                // 2. On récupére le nom initial du fichier téléchargé
+                $originallogoFilename = pathinfo($logoFileInput->getClientOriginalName(), PATHINFO_FILENAME);
+                // 3. On encode les caractères particuliers en miniscule avec SluggerInterface et on créée un nouveau nom de fichier
+                $safelogoFilename = $slugger->slug($originallogoFilename);
+                $newlogoFilename = $safelogoFilename . '-' . uniqid() . '.' . $logoFileInput->guessExtension();
+                // 4. on déplace le fichier du dossier Temp vers le dossier du Site
+                try {
+                    $logoFileInput->move(
+                        $this->getParameter('course_directory'),
+                        $newlogoFilename
+                    );
+                } catch (FileException $e) {
+                    // ... en cas d'erreur
+                }
+                // 5. on hydrate l'entité avec le nom du fichier déplacé.
+                $course->setLogoName($newlogoFilename);
             }
-            // 5. on hydrate l'entité avec le nom du fichier déplacé.
-            $course->setLogoName($newlogoFilename);
 
             $courseRepository->add($course, true);
-
             return $this->redirectToRoute('op_appli_course_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -95,6 +96,18 @@ class CourseController extends AbstractController
     #[Route('/{id}', name: 'op_appli_course_delete', methods: ['POST'])]
     public function delete(Request $request, Course $course, CourseRepository $CourseRepository): Response
     {
+        // Effacement du fichier bannièreFileName si il est présent en BDD
+        // récupération du nom de l'image
+        $logoName = $course->getLogoName();
+        // suppression du Fichier
+        if($logoName){
+            $pathlogo = $this->getParameter('course_directory').'/'.$logoName;
+            // On vérifie si l'image existe
+            if(file_exists($pathlogo)){
+                unlink($pathlogo);
+            }
+        }
+
         if ($this->isCsrfTokenValid('delete'.$course->getId(), $request->request->get('_token'))) {
             $CourseRepository->remove($course, true);
         }

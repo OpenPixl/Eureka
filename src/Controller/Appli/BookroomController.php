@@ -40,6 +40,25 @@ class BookroomController extends AbstractController
         ]);
     }
 
+    #[Route('/modalnew', name: 'op_appli_bookroom_modalnew', methods: ['GET', 'POST'])]
+    public function modalnew(Request $request, BookroomRepository $bookroomRepository): Response
+    {
+        $bookroom = new Bookroom();
+        $form = $this->createForm(BookroomType::class, $bookroom);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $bookroomRepository->add($bookroom, true);
+
+            return $this->redirectToRoute('op_appli_bookroom_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('appli/bookroom/modalnew.html.twig', [
+            'bookroom' => $bookroom,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'op_appli_bookroom_show', methods: ['GET'])]
     public function show(Bookroom $bookroom): Response
     {

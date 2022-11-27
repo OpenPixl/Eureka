@@ -14,9 +14,6 @@ class RoomType extends AbstractType
         $builder
             ->add('name')
             ->add('maxPlace')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('bookrooms')
         ;
     }
 

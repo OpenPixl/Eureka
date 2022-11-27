@@ -19,12 +19,12 @@ body{
     }
     #blockLogin{
       button{
-        background: #92B923;
+        background: $green;
         border: 2px solid #FFFFFF;
         border-radius: 8px;
       }
       label{
-        color: #92B923;
+        color: $green;
         font-style: normal;
         font-weight: 400;
         font-size: 13px;
@@ -34,31 +34,46 @@ body{
         text-align: center;
       }
       ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: #92B923;
+        color: $green;
         opacity: 1; /* Firefox */
         text-align: center;
         font-family: 'Comfortaa-Light', sans-serif;
       }
     }
     #blockAdmin{
+      color:#ffffff;
+      font-family: 'Comfortaa-Light', sans-serif;
+      a{
+        color:$green;
+      }
       .btn-primary{
         font-family: 'Comfortaa-Light', sans-serif;
         font-size: 1rem;
         line-height: 2rem;
-        height: 48px;
         background: #2E6699;
         border: 2px solid #FFFFFF;
         border-radius: 8px;
+        color: #FFFFFF;
 
       }
       .btn-success{
         font-family: 'Comfortaa-Light', sans-serif;
-        background: #92B923;
+        background: $green;
         border: 2px solid #FFFFFF;
         border-radius: 8px;
+        color: #FFFFFF;
+      }
+      .btn-warning{
+        font-family: 'Comfortaa-Light', sans-serif;
+        font-size: 1rem;
+        line-height: 2rem;
+        background: #E5700E;
+        border: 2px solid #FFFFFF;
+        border-radius: 8px;
+        color: #FFFFFF;
       }
       label{
-        color: #92B923;
+        color: $green;
         font-family: 'Comfortaa-Light', sans-serif;
         font-style: normal;
         font-weight: 400;
@@ -69,7 +84,7 @@ body{
         text-align: center;
       }
       ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: #92B923;
+        color: $green;
         opacity: 1; /* Firefox */
         text-align: left;
         font-family: 'Comfortaa-Light', sans-serif;
@@ -98,6 +113,18 @@ body{
     color:#ffffff;
     p{
       font-family: 'Comfortaa-Light', sans-serif;
+    }
+    #blockCommand{
+      a{
+        color:$green !important;
+      }
+    }
+  }
+  .modal{
+    .btn{
+      background: #92B923;
+      border: 2px solid #7A7575;
+      border-radius: 8px;
     }
   }
 }

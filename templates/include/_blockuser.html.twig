@@ -1,0 +1,24 @@
+<section id="blockUser">
+    <div class="row mt-1 mb-1 align-items-center">
+        <div class="col-3">
+        {% if app.user.avatarName is not empty %}
+            <img src="{{ asset('images/member/' ~ app.user.avatarName)|imagine_filter('profil_card_user') }}" alt="{{ app.user.avatarName }}" class="img-fluid rounded-circle">
+        {% else %}
+            <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+        {% endif %}
+        </div>
+        <div class="col-9">
+            {% if app.request.pathInfo starts with "/super/" %}
+                <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
+            {% else %}
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <h1 class="text-end" style="color: #FFFFFF;">Administration</h1>
+                {% elseif is_granted('ROLE_ADMIN') %}
+                    <h1 class="text-end" style="color: #FFFFFF;">Administration</h1>
+                {% elseif is_granted('ROLE_USER') %}
+                    <h1 class="text-end" style="color: #FFFFFF;">Espace Etudiants</h1>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</section>

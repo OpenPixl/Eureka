@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\Member;
 use App\Form\Admin\MemberType;
 use App\Repository\Admin\MemberRepository;
+use App\Repository\Admin\MessageRepository;
 use App\Repository\Appli\CourseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -16,10 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/admin/member')]
+#[Route('')]
 class MemberController extends AbstractController
 {
-    #[Route('/', name: 'op_admin_member_index', methods: ['GET'])]
+    #[Route('/super/member/', name: 'op_admin_member_index', methods: ['GET'])]
     public function index(MemberRepository $memberRepository): Response
     {
         return $this->render('admin/member/index.html.twig', [
@@ -27,15 +28,23 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/', name: 'op_admin_member_liststudient', methods: ['GET'])]
-    public function listStudient(MemberRepository $memberRepository): Response
+    #[Route('/super/member/listteacher', name: 'op_admin_member_listteacher', methods: ['GET'])]
+    public function listTeacher(MemberRepository $memberRepository): Response
     {
         return $this->render('admin/member/index.html.twig', [
-            'members' => $memberRepository->findBy(['roles'=> '']),
+            'members' => $memberRepository->findBy(['typemember'=> 'Enseignant.e']),
         ]);
     }
 
-    #[Route('/{idTeacher}', name: 'op_admin_member_listcourses', methods: ['POST'])]
+    #[Route('/super/member/liststudent', name: 'op_admin_member_liststudent', methods: ['GET'])]
+    public function liststudent(MemberRepository $memberRepository): Response
+    {
+        return $this->render('admin/member/index.html.twig', [
+            'members' => $memberRepository->findBy(['typemember'=> 'Etudiant.e']),
+        ]);
+    }
+
+    #[Route('/super/member/{idTeacher}', name: 'op_admin_member_listcourses', methods: ['POST'])]
     public function ListCourses($idTeacher, CourseRepository $courseRepository): Response
     {
         return $this->render('admin/member/listcourse.html.twig', [
@@ -43,11 +52,12 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'op_admin_member_new', methods: ['GET', 'POST'])]
+    #[Route('/super/member/new', name: 'op_admin_member_new', methods: ['GET', 'POST'])]
     public function new(Request $request, UserPasswordHasherInterface $userPasswordHasher, MemberRepository $memberRepository ): Response
     {
         $member = new Member();
         $member->setMobile('00.00.00.00.00');
+        $member->setPassword('eureka');
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
@@ -56,12 +66,12 @@ class MemberController extends AbstractController
             $member->setPassword(
                 $userPasswordHasher->hashPassword(
                     $member,
-                    $form->get('Password')->getData()
+                    $form->get('password')->getData()
                 )
             );
             $memberRepository->add($member, true);
 
-            return $this->redirectToRoute('op_admin_member_liststudient', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('op_admin_member_liststudent', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/member/new.html.twig', [
@@ -70,27 +80,26 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/super/teacher', name: 'op_admin_member_newteacher', methods: ['GET', 'POST'])]
+    #[Route('/super/member/teacher', name: 'op_admin_member_newteacher', methods: ['GET', 'POST'])]
     public function teacher(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger): Response
     {
         $member = new Member();
         $member->setRoles(array('ROLE_ADMIN'));
+        $member->setTypemember('Enseignant.e');
+        $password = 'eureka';
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // hasher le mot de passe
-            $member->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $member,
-                    $form->get('Password')->getData()
-                )
+            $hashpassword = $userPasswordHasher->hashPassword(
+                $member,
+                $password
             );
-            $memberRepository->add($member, true);
+            $member->setPassword($hashpassword);
 
             /** @var UploadedFile $avatarFile */
             $avatarFileInput = $form->get('avatarFile')->getData();
-
 
             // Ajout de la nouvelle bannière
             $originalavatarFilename = pathinfo($avatarFileInput->getClientOriginalName(), PATHINFO_FILENAME);
@@ -108,8 +117,6 @@ class MemberController extends AbstractController
                 // ... handle exception if something happens during file upload
             }
 
-            // updates the 'brochureFilename' property to store the PDF file name
-            // instead of its contents
             $member->setavatarName($newavatarFilename);
 
             $memberRepository->add($member, true);
@@ -124,23 +131,24 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/super/studient', name: 'op_admin_member_newstudient', methods: ['GET', 'POST'])]
-    public function studient(Request $request, MemberRepository $studientRepository, UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger): Response
+    #[Route('/super/member/student', name: 'op_admin_member_newstudent', methods: ['GET', 'POST'])]
+    public function student(Request $request, MemberRepository $studentRepository, UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger): Response
     {
-        $studient = new Member();
-        $studient->setRoles(array('ROLE_USER'));
-        $form = $this->createForm(MemberType::class, $studient);
+        $student = new Member();
+        $student->setRoles(array('ROLE_USER'));
+        $student->setTypemember('Etudiant.e');
+        $password = 'eureka';
+        $form = $this->createForm(MemberType::class, $student);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // hasher le mot de passe
-            $studient->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $studient,
-                    $form->get('Password')->getData()
-                )
+            $hashstudentpassword = $userPasswordHasher->hashPassword(
+                $student,
+                $password
             );
-            $studientRepository->add($studient, true);
+            $student->setPassword($hashstudentpassword);
+            $studentRepository->add($student, true);
 
             /** @var UploadedFile $avatarFile */
             $avatarFileInput = $form->get('avatarFile')->getData();
@@ -163,22 +171,22 @@ class MemberController extends AbstractController
 
             // updates the 'brochureFilename' property to store the PDF file name
             // instead of its contents
-            $studient->setavatarName($newavatarFilename);
+            $student->setavatarName($newavatarFilename);
 
-            $studientRepository->add($studient, true);
+            $studentRepository->add($student, true);
 
 
             $this->addFlash('success', "L'apprenant a été correctement ajouté.<br>Il doit vérifier et valider son adresse mail.");
             return $this->redirectToRoute('op_admin_dashboard_super', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('admin/member/studient.html.twig', [
-            'studient' => $studient,
+        return $this->renderForm('admin/member/student.html.twig', [
+            'student' => $student,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'op_admin_member_show', methods: ['GET'])]
+    #[Route('/super/member//{id}', name: 'op_admin_member_show', methods: ['GET'])]
     public function show(Member $member): Response
     {
         return $this->render('admin/member/show.html.twig', [
@@ -186,18 +194,33 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'op_admin_member_edit', methods: ['GET', 'POST'])]
+    #[Route('/super/member//{id}', name: 'op_admin_member_showteacher', methods: ['GET'])]
+    public function showTeacher(Member $member): Response
+    {
+        return $this->render('admin/member/show.html.twig', [
+            'member' => $member,
+        ]);
+    }
+
+    #[Route('/super/member//{id}', name: 'op_admin_member_showstudent', methods: ['GET'])]
+    public function showstudent(Member $member): Response
+    {
+        return $this->render('admin/member/show.html.twig', [
+            'member' => $member,
+        ]);
+    }
+
+    #[Route('/super/member//{id}/edit', name: 'op_admin_member_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Member $member, MemberRepository $memberRepository, SluggerInterface $slugger): Response
     {
-        //dd($member);
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
-        //dd($form);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $avatarFileInput = $form->get('AvatarFile')->getData();
-
+            // Code d'ajout d'une image dans l'entité
+            // -----------------------------
+            // 1. On récupére le fichier depuis le formulaire
+            $avatarFileInput = $form->get('avatarFile')->getData();
             if ($avatarFileInput) {
                 // Effacement du fichier bannièreFileName si il est présent en BDD
                 // récupération du nom de l'image
@@ -210,6 +233,7 @@ class MemberController extends AbstractController
                         unlink($pathavatar);
                     }
                 }
+
                 // Ajout de la nouvelle bannière
                 $originalavatarFilename = pathinfo($avatarFileInput->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
@@ -242,10 +266,26 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'op_admin_member_delete', methods: ['POST'])]
-    public function delete(Request $request, Member $member, MemberRepository $memberRepository): Response
+    #[Route('/super/member//{id}', name: 'op_admin_member_delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        Member $member,
+        MemberRepository $memberRepository,
+        MessageRepository $messageRepository
+    ): Response
     {
         if ($this->isCsrfTokenValid('delete'.$member->getId(), $request->request->get('_token'))) {
+            // Retirer les messages
+            $messages = $memberRepository->findBy(['message' => $member]);
+            foreach ($messages as $message){
+                $member->removeReceivers($message);
+            }
+            // Retirer les cours
+            $courses = $member->getCourse();
+            foreach ($courses as $cours){
+                $member->removeCour($cours);
+            }
+
             $memberRepository->remove($member, true);
         }
 

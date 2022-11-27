@@ -85,13 +85,16 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $AvatarFile = null;
+    private ?string $avatarFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $AvatarName = null;
+    private ?string $avatarName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $AvatarSize = null;
+    private ?string $avatarSize = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $typemember = null;
 
     public function __construct()
     {
@@ -436,36 +439,48 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getAvatarFile(): ?string
     {
-        return $this->AvatarFile;
+        return $this->avatarFile;
     }
 
-    public function setAvatarFile(string $AvatarFile): self
+    public function setAvatarFile(string $avatarFile): self
     {
-        $this->AvatarFile = $AvatarFile;
+        $this->avatarFile = $avatarFile;
 
         return $this;
     }
 
     public function getAvatarName(): ?string
     {
-        return $this->AvatarName;
+        return $this->avatarName;
     }
 
-    public function setAvatarName(?string $AvatarName): self
+    public function setAvatarName(?string $avatarName): self
     {
-        $this->AvatarName = $AvatarName;
+        $this->avatarName = $avatarName;
 
         return $this;
     }
 
     public function getAvatarSize(): ?string
     {
-        return $this->AvatarSize;
+        return $this->avatarSize;
     }
 
-    public function setAvatarSize(?string $AvatarSize): self
+    public function setAvatarSize(?string $avatarSize): self
     {
-        $this->AvatarSize = $AvatarSize;
+        $this->avatarSize = $avatarSize;
+
+        return $this;
+    }
+
+    public function getTypemember(): ?string
+    {
+        return $this->typemember;
+    }
+
+    public function setTypemember(string $typemember): self
+    {
+        $this->typemember = $typemember;
 
         return $this;
     }

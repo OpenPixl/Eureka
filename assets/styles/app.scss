@@ -1,6 +1,8 @@
+$green : #92B923;
+
 //*** ------------- Import Variables of my theme ---------------- ***//
 @import 'assets/styles/scss/app';
-
+//*** ------------- Import Variables of bootstrap ---------------- ***//
 @import "~bootstrap/scss/bootstrap";
 //*** ------------- Import fonts ---------------- ***//
 @import "scss/mixins/fontface";

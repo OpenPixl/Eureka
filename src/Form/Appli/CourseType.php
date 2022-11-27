@@ -27,6 +27,8 @@ class CourseType extends AbstractType
                 'class' => Member::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('m')
+                        ->andWhere('m.typemember = :typemember')
+                        ->setParameter('typemember', 'Enseignant.e')
                         ->orderBy('m.firstName', 'ASC');
                 },
                 'choice_label' => 'firstName',
@@ -34,7 +36,7 @@ class CourseType extends AbstractType
                     return ['data-data' => $member->getFirstName()." ". $member->getLastName()];
                 }
             ])
-            ->add('logoFile', FileType::class, [
+            ->add('logo', FileType::class, [
                 'label' => 'logo :',
                 'mapped' => false,
                 'required' => false,
@@ -43,7 +45,8 @@ class CourseType extends AbstractType
                         'maxSize' => '10000k',
                         'mimeTypes' => [
                             'image/png',
-                            'image/jpg',
+                            'image/jpeg',
+                            'iamge/jpg'
                         ],
                         'mimeTypesMessage' => 'Attention, veuillez charger un fichier au format jpg ou png',
                     ])

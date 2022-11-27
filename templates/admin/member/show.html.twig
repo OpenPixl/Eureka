@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
 {% block title %}Member{% endblock %}
 
@@ -13,7 +13,7 @@
             </div>
         </div>
     </section>
-    {% if app.request.attributes.get('_route') == 'op_appli_course_showteacher' %}
+    {% if app.request.attributes.get('_route') == 'op_admin_member_showteacher' %}
     <section>
         <div class="row mt-1 mb-1">
             <div class="col-12">
@@ -29,13 +29,30 @@
 
             </p>
         </div>
-
     </section>
-    {% elseif app.request.attributes.get('_route') == 'op_appli_course_showstudient' %}
+    {% elseif app.request.attributes.get('_route') == 'op_admin_member_showstudent' %}
     <section>
         <div class="row mt-1 mb-1">
             <div class="col-12">
                 <h1>Etudiant</h1>
+            </div>
+        </div>
+        <div class="col-12">
+            <p>
+                {{ member.firstName }} {{ member.lastname }}
+                {{ member.home }} / {{ member.email }}
+            </p>
+            <p>
+
+            </p>
+        </div>
+
+    </section>
+    {% else %}
+    <section>
+        <div class="row mt-1 mb-1">
+            <div class="col-12">
+                <h1>Enseignants</h1>
             </div>
         </div>
         <div class="col-12">

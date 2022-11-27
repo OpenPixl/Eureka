@@ -3,7 +3,9 @@
 namespace App\Form\Admin;
 
 use App\Entity\Admin\Member;
+use phpDocumentor\Reflection\Type;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -52,8 +54,7 @@ class MemberType extends AbstractType
                 'label' => 'Domicile',
                 'required' => false
             ])
-            ->add('AvatarFile', FileType::class, [
-                'label' => 'Avatar au format : png ou jpg',
+            ->add('avatarFile', FileType::class, [
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -62,11 +63,27 @@ class MemberType extends AbstractType
                         'mimeTypes' => [
                             'image/png',
                             'image/jpg',
+                            'image/jpeg'
                         ],
                         'mimeTypesMessage' => 'Attention, veuillez charger un fichier au format jpg ou png',
                     ])
                 ],
             ])
+            //->add('typemember', ChoiceType::class, [
+            //    'label' => 'Type',
+            //    'choices'  => [
+            //        'A définir' => "a-definir",
+            //        'Administrateur' => 'Administrateur',
+            //        'Enseignant.e' => 'Enseignant.e',
+            //        'Etudiant.e' => 'Etudiant.e'
+            //    ],
+            //    'choice_attr' => [
+            //        'A définir' => ['data-data' => 'A définir'],
+            //        'Administrateur' => ['data-data' => 'Administrateur'],
+            //        'Enseignant.e' => ['data-data' => 'Enseignant.e'],
+            //        'Etudiant.e' => ['data-data' => 'Etudiant.e']
+            //    ],
+            //])
         ;
     }
     public function configureOptions(OptionsResolver $resolver): void
