@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}room{% endblock %}
+
+{% block main %}
+    <h1>room</h1>
+    <section id="blockroom">
+            <div class="col-9">
+                <h1 class="text-end" style="color: #FFFFFF;">courses</h1>
+            </div>
+        </div>
+    </section>
+    <section>
+
+        <div class="col-12">
+            <p>
+                Identifiant :{{ room.id }} courses :{{ room.name }}
+            </p>
+            <p>
+                Place maximal : {{ room.maxPlace }}
+            </p>
+            <p>
+                Crée le :{{ room.createdAt ? room.createdAt|date('Y-m-d') : '' }}
+            </p>
+            <p>
+                Mise à jour le :{{ room.updatedAt ? room.updatedAt|date('Y-m-d') : '' }}
+            </p>
+        </div>
+
+    <a href="{{ path('op_appli_room_index') }}">back to list</a>
+
+    <a href="{{ path('op_appli_room_edit', {'id': room.id}) }}">edit</a>
+
+    {{ include('appli/room/_delete_form.html.twig') }}
+{% endblock %}

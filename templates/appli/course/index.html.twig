@@ -1,0 +1,50 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}course index{% endblock %}
+
+{% block main %}
+    <section id="blockUser">
+        <div class="row mt-1 mb-1 align-items-center">
+            <div class="col-3">
+                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+            </div>
+            <div class="col-9">
+                <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
+            </div>
+        </div>
+    </section>
+    <section id="blockAdmin">
+        <div class="row mt-1 mb-1">
+            <div class="col-12">
+                <h2 class="text-end">Liste des matières</h2>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for course in course %}
+                        <tr>
+                            <td>{{ course.id }}</td>
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.level }}</td>
+                            <td>
+                                <a href="{{ path('op_appli_course_show', {'id': course.id}) }}"><i class="fa-duotone fa-eye"></i></a>
+                                <a href="{{ path('op_appli_course_edit', {'id': course.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Pas d'enregistrement</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,131 @@
+body{
+  margin: 0;
+  background-image: url("../images/background/Background.png");
+  background-size: cover;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  font-family: 'Comfortaa-Light', sans-serif;
+  header{}
+  main{
+    h1{
+      color: #FFFFFF;
+      font-family: 'Comfortaa-Regular', sans-serif;
+    }
+    h2, h3{
+      color: #FFFFFF;
+      font-family: 'Comfortaa-Light', sans-serif;
+      font-size: 1.2rem;
+    }
+    #blockLogin{
+      button{
+        background: $green;
+        border: 2px solid #FFFFFF;
+        border-radius: 8px;
+      }
+      label{
+        color: $green;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 14px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+      }
+      ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: $green;
+        opacity: 1; /* Firefox */
+        text-align: center;
+        font-family: 'Comfortaa-Light', sans-serif;
+      }
+    }
+    #blockAdmin{
+      color:#ffffff;
+      font-family: 'Comfortaa-Light', sans-serif;
+      a{
+        color:$green;
+      }
+      .btn-primary{
+        font-family: 'Comfortaa-Light', sans-serif;
+        font-size: 1rem;
+        line-height: 2rem;
+        background: #2E6699;
+        border: 2px solid #FFFFFF;
+        border-radius: 8px;
+        color: #FFFFFF;
+
+      }
+      .btn-success{
+        font-family: 'Comfortaa-Light', sans-serif;
+        background: $green;
+        border: 2px solid #FFFFFF;
+        border-radius: 8px;
+        color: #FFFFFF;
+      }
+      .btn-warning{
+        font-family: 'Comfortaa-Light', sans-serif;
+        font-size: 1rem;
+        line-height: 2rem;
+        background: #E5700E;
+        border: 2px solid #FFFFFF;
+        border-radius: 8px;
+        color: #FFFFFF;
+      }
+      label{
+        color: $green;
+        font-family: 'Comfortaa-Light', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 14px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+      }
+      ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: $green;
+        opacity: 1; /* Firefox */
+        text-align: left;
+        font-family: 'Comfortaa-Light', sans-serif;
+      }
+      dd, dt, dl {
+        color: #fff;
+      }
+      table{
+        thead{
+          th,td{
+            color:#FFFFFF;
+          }
+        }
+        tbody{
+          th,td{
+            color:#FFFFFF;
+          }
+        }
+      }
+    }
+    #blockUser{
+
+    }
+  }
+  footer{
+    color:#ffffff;
+    p{
+      font-family: 'Comfortaa-Light', sans-serif;
+    }
+    #blockCommand{
+      a{
+        color:$green !important;
+      }
+    }
+  }
+  .modal{
+    .btn{
+      background: #92B923;
+      border: 2px solid #7A7575;
+      border-radius: 8px;
+    }
+  }
+}
+

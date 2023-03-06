@@ -1,0 +1,17 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Hello DashboardController!{% endblock %}
+
+{% block main %}
+    {{ include('include/_blockuser.html.twig') }}
+    <section id="blockAdmin">
+        <div class="row mt-1 mb-1 justify-content-center">
+            <div class="col-10 pt-1 pb-1">
+                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_teacher') }}">Voir le calendrier</a>
+            </div>
+            <div class="col-10 pt-1 pb-1">
+                <a class="btn btn-primary w-100" href="{{ path('op_admin_member_student') }}">Saisie du planning</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

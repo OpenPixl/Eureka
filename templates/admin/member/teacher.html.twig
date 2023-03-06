@@ -1,0 +1,34 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Nouvel.le enseignant.e | Euréka-mdm{% endblock %}
+
+{% block main %}
+{% if is_granted('ROLE_SUPER_ADMIN') %}
+<section id="blockUser">
+    <div class="row mt-1 mb-1 align-items-center">
+        <div class="col-3">
+            <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+        </div>
+        <div class="col-9">
+            <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
+        </div>
+    </div>
+</section>
+<section id="blockAdmin">
+    <div class="row mt-1 mb-1">
+        <div class="col-12">
+            <h2 class="text-end">Ajout d'un enseignant.e</h2>
+        </div>
+    </div>
+    <div class="row mt-1 mb-1 justify-content-center">
+        <div class="col-12">
+            {{ include('admin/member/_form.html.twig') }}
+
+            <a href="{{ path('op_admin_member_listteacher') }}">Liste des enseignants</a>
+        </div>
+    </div>
+
+</section>
+{% endif %}
+
+{% endblock %}

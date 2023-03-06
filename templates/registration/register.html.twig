@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block main %}
+    <div class="row" id="blockLogin">
+
+        <div class="col-12 mt-3 mt-2">
+            <div class="d-flex justify-content-center">
+                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid">
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-center mt-2 mt-2">
+            <div class="d-flex justify-content-center">
+                <img src="{{ asset('images/svg/TitleEuréka.svg') }}" class="img-fluid">
+            </div>
+        </div>
+        <div class="col-12 mt-3 mt-4">
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-center">Inscription</h1>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    {{ form_start(registrationForm) }}
+                    {# STRING : Ligne du mail du membre #}
+                    <div class="row mb-1 mt-1 g-1">
+                        <div class="col-12">
+                            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Votre email'}}) }}
+                        </div>
+                    </div>
+                    {# STRING : Ligne du mobile du membre#}
+                    <div class="row mb-1 mt-1 g-1">
+                        <div class="col-12">
+                            {{ form_widget(registrationForm.gsm, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Mobile'}}) }}
+                        </div>
+                    </div>
+                    {# STRING : Ligne du password du membre #}
+                    <div class="row mb-1 mt-1 g-1">
+                        <div class="col-12">
+                            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Mot de passe'}}) }}
+                        </div>
+                    </div>
+                    {# CHECKBOX : Ligne accord du membre #}
+                    <div class="col-12 align-items-center">
+                        <fieldset>
+                            <div class="form-check">
+                                {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                                {{ form_label(registrationForm.agreeTerms, "Acceptation des termes d'utilisation", {'label_attr': {'class':'form-check-label'}}) }}
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <button type="submit" class="btn w-100">Envoyer</button>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Member index{% endblock %}
+
+{% block main %}
+    <section id="blockUser">
+        <div class="row mt-1 mb-1 align-items-center">
+            <div class="col-3">
+                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+            </div>
+            <div class="col-9">
+                <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
+            </div>
+        </div>
+    </section>
+    <section id="blockAdmin">
+        <div class="row mt-1 mb-1">
+            <div class="col-12">
+            {% if app.request.attributes.get('_route') == 'op_admin_member_listteacher' %}
+            {% for member in members|filter(member => member.typemember == 'Enseignant') %}
+            <h2 class="text-end">Liste des enseignants.es</h2>
+            {% endfor %}
+            {% elseif app.request.attributes.get('_route') == 'op_admin_member_liststudient'%}
+            {% for member in members|filter(member => member.typemember == 'Etudiant') %}
+                <h2 class="text-end">Liste des étudiants.es</h2>
+            {% endfor %}
+            {% else %}
+                <h2 class="text-end">Liste des membres</h2>
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if app.request.attributes.get('_route') == 'op_admin_member_listteacher' %}
+                {% for member in members|filter(member => member.typemember == 'Enseignant') %}
+                    <tr>
+                        <td>{{ member.firstName }} {{ member.lastName }}</td>
+                        <td>{{ member.email }}</td>
+                        <td>
+                            {% if member.typemember == 'Enseignant.e' %}
+                            <a href="#"><i class="fa-duotone fa-eye"></i></a>
+                            {% elseif member.typemember == 'Etudiant.e' %}
+                            <a href="#"><i class="fa-duotone fa-eye"></i></a>
+                            {% endif %}
+                            <a href="#"><i class="fa-duotone fa-pen-to-square"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="15">Pas d'enregistrement</td>
+                    </tr>
+                {% endfor %}
+                {% elseif app.request.attributes.get('_route') == 'op_admin_member_liststudient'%}
+                {% for member in members|filter(member => member.typemember == 'Etudiant') %}
+                    <tr>
+                        <td>{{ member.firstName }} {{ member.lastName }}</td>
+                        <td>{{ member.email }}</td>
+                        <td>
+                            {% if member.typemember == 'Enseignant.e' %}
+                                <a href="#"><i class="fa-duotone fa-eye"></i></a>
+                            {% elseif member.typemember == 'Etudiant.e' %}
+                                <a href="#"><i class="fa-duotone fa-eye"></i></a>
+                            {% endif %}
+                            <a href="#"><i class="fa-duotone fa-pen-to-square"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="15">Pas d'enregistrement</td>
+                    </tr>
+                {% endfor %}
+                {% else %}
+                {% for member in members %}
+                        <tr>
+                            <td>{{ member.firstName }} {{ member.lastName }}</td>
+                            <td>{{ member.email }}</td>
+                            <td>
+                                {% if member.typemember == 'Enseignant.e' %}
+                                    <a href="#"><i class="fa-duotone fa-eye"></i></a>
+                                {% elseif member.typemember == 'Etudiant.e' %}
+                                    <a href="#"><i class="fa-duotone fa-eye"></i></a>
+                                {% endif %}
+                                <a href="#"><i class="fa-duotone fa-pen-to-square"></i></a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="15">Pas d'enregistrement</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+            {% for member in members %}
+            {% if member.typemember == 'Enseignant.e' %}
+            <a class="btn btn-primary w-100" href="{{ path('op_admin_member_teacher') }}">Ajouter un nouvel enseignant</a>
+            {% elseif member.typemember == 'Etudiant.e' %}
+            <a class="btn btn-primary w-100" href="#">Ajouter un nouvel étudiant</a>
+            {% endif %}
+            {% endfor %}
+        </div>
+        </div>
+    </section>
+{% endblock %}

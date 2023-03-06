@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}coursese{% endblock %}
+
+{% block main %}
+    <section id="blockUser">
+        <div class="row mt-1 mb-1 align-items-center">
+            <div class="col-3">
+                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+            </div>
+            <div class="col-9">
+                <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
+            </div>
+        </div>
+    </section>
+    <section id="blockAdmin">
+        <section>
+            <div class="row mt-1 mb-1">
+                <div class="col-12">
+                    <h2 class="text-end">Matière : {{ course.name }}</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <p>
+                    Ref : <br>
+                    {{ course.id }}
+                </p>
+                <p>
+                    niveaux :<br>
+                    {{ course.level }}
+                </p>
+                <p>
+                    Enseignants :<br>
+                    {{ course.teacher }}
+                </p>
+            </div>
+
+        </section>
+        <div class="col-10">
+            <a href="{{ path('op_appli_course_index') }}"><i class="bi bi-skip-backward"></i></a>
+            <a href="{{ path('op_appli_course_edit', {'id': course.id}) }}">edit</a>
+        </div>
+    </section>
+
+    {{ include('appli/course/_delete_form.html.twig') }}
+{% endblock %}

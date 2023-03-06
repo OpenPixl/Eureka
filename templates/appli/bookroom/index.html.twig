@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bookroom index{% endblock %}
+
+{% block main %}
+    <h1>Bookroom index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>DateBookAt</th>
+                <th>HourBookOpenAt</th>
+                <th>HourBookClosedAt</th>
+                <th>IsActive</th>
+                <th>Forme</th>
+                <th>LinkDistanciel</th>
+                <th>Place</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bookroom in bookrooms %}
+            <tr>
+                <td>{{ bookroom.id }}</td>
+                <td>{{ bookroom.dateBookAt ? bookroom.dateBookAt|date('Y-m-d') : '' }}</td>
+                <td>{{ bookroom.hourBookOpenAt ? bookroom.hourBookOpenAt|date('H:i:s') : '' }}</td>
+                <td>{{ bookroom.hourBookClosedAt ? bookroom.hourBookClosedAt|date('H:i:s') : '' }}</td>
+                <td>{{ bookroom.isActive ? 'Yes' : 'No' }}</td>
+                <td>{{ bookroom.forme }}</td>
+                <td>{{ bookroom.linkDistanciel }}</td>
+                <td>{{ bookroom.place }}</td>
+                <td>{{ bookroom.createdAt ? bookroom.createdAt|date('Y-m-d') : '' }}</td>
+                <td>{{ bookroom.updatedAt ? bookroom.updatedAt|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('op_appli_bookroom_show', {'id': bookroom.id}) }}">show</a>
+                    <a href="{{ path('op_appli_bookroom_edit', {'id': bookroom.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('op_appli_bookroom_new') }}">Create new</a>
+{% endblock %}
