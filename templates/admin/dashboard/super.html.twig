@@ -1,6 +1,6 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}Hello DashboardController!{% endblock %}
+{% block title %}Euréka - Espace Webmaster{% endblock %}
 
 {% block main %}
     {% if is_granted('ROLE_SUPER_ADMIN') %}
@@ -27,23 +27,23 @@
         </div>
         <div class="row g-2 justify-content-center">
             <div class="col-10 pt-1 pb-1">
-                <a class="btn btn-warning w-100" href="#">Ajout d'une Matière</a>
+                <a class="btn btn-warning w-100" href="{{ path('op_appli_course_new') }}">Ajout d'une Matière</a>
             </div>
             <div class="col-2 pt-1 pb-1">
-                <a class="btn btn-warning w-100" href="#"><i class="fa-light fa-square-list fa-xl"></i></a>
+                <a class="btn btn-warning w-100" href="{{ path('op_appli_course_index') }}"><i class="fa-light fa-square-list fa-xl"></i></a>
             </div>
         </div>
         <div class="row g-2 justify-content-center">
             <div class="col-10 pt-1 pb-1">
-                <a class="btn btn-warning w-100" href="#">Ajout d'une salle</a>
+                <a class="btn btn-warning w-100" href="{{ path('op_appli_room_new') }}">Ajout d'une salle</a>
             </div>
             <div class="col-2 pt-1 pb-1">
-                <a class="btn btn-warning w-100" href="#"><i class="fa-light fa-square-list fa-xl"></i></a>
+                <a class="btn btn-warning w-100" href="{{ path('op_appli_room_index') }}"><i class="fa-light fa-square-list fa-xl"></i></a>
             </div>
         </div>
         <div class="row g-2 justify-content-center mt-3">
             <div class="col-12 pt-1 pb-1">
-                <a class="btn btn-success w-100" href="#">Accéder à son Administration</a>
+                <a class="btn btn-success w-100" href="{{ path('op_admin_dashboard_teacher') }}">Accéder à son Administration</a>
             </div>
         </div>
     </section>

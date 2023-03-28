@@ -2,6 +2,7 @@
 
 namespace App\Entity\Admin;
 
+use App\Entity\Appli\Bookroom;
 use App\Entity\Appli\Course;
 use App\Entity\Appli\Registration;
 use App\Repository\Admin\MemberRepository;
@@ -86,10 +87,17 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Registration::class, mappedBy: 'registrations')]
     private Collection $registrations;
 
+    #[ORM\OneToMany(mappedBy: 'teacher', targetEntity: Bookroom::class)]
+    private Collection $bookrooms;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $ddn = null;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
         $this->registrations = new ArrayCollection();
+        $this->bookrooms = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -398,6 +406,53 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->registrations->removeElement($registration)) {
             $registration->removeRegistration($this);
         }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
+
+    /**
+     * @return Collection<int, Bookroom>
+     */
+    public function getBookrooms(): Collection
+    {
+        return $this->bookrooms;
+    }
+
+    public function addBookroom(Bookroom $bookroom): self
+    {
+        if (!$this->bookrooms->contains($bookroom)) {
+            $this->bookrooms->add($bookroom);
+            $bookroom->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookroom(Bookroom $bookroom): self
+    {
+        if ($this->bookrooms->removeElement($bookroom)) {
+            // set the owning side to null (unless already changed)
+            if ($bookroom->getTeacher() === $this) {
+                $bookroom->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDdn(): ?\DateTimeInterface
+    {
+        return $this->ddn;
+    }
+
+    public function setDdn(?\DateTimeInterface $ddn): self
+    {
+        $this->ddn = $ddn;
 
         return $this;
     }

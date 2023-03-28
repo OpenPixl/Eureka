@@ -1,0 +1,39 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="col-10">Séances</th>
+            <th class="col-2">...</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for bookroom in bookrooms %}
+        <tr class="align-middle">
+            <td>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#editBookroom" data-bs-whatever="{{ bookroom.course.id }}">{{ bookroom.dateBookAt ? bookroom.dateBookAt|format_datetime('full', 'none', locale='fr') : '' }}</a> |
+                {{ bookroom.hourBookOpenAt ? bookroom.hourBookOpenAt|date('H:i') : '' }} -
+                {{ bookroom.hourBookClosedAt ? bookroom.hourBookClosedAt|date('H:i') : '' }} |
+                {% if bookroom.forme == "Presentiel" %}
+                    <i class="fa-duotone fa-chalkboard-user"></i>
+                {% else %}
+                    <i class="fa-duotone fa-podcast"></i>
+                {% endif %} |
+                {{ bookroom.place }}
+            </td>
+
+            <td>
+                {% if bookroom.isActive == 0 %}
+                    <a class="js-star" href=""><i class="fa-duotone fa-circle-minus"></i></a>
+                {% else %}
+                    <a class="js-star" href=""><i class="fa-duotone fa-circle-check"></i></a>
+                {% endif %}
+                <a href="{{ path('op_appli_bookroom_show', {'id': bookroom.id}) }}"><i class="fa-duotone fa-eye"></i></a>
+                <a href="{{ path('op_appli_bookroom_edit', {'id': bookroom.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">Pas de séances enregistrées</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

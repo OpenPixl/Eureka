@@ -6,63 +6,147 @@
     {{ parent() }}
     <script>
         window.onload = function(){
-            // mise en place du datapicker flatpickr sur les champs de date
-            flatpickr(".flatpickr", {
-                "locale": "fr",
-                enableTime: false,
-                altFormat: "j F Y",
-                dateFormat: "d/m/Y",
-            });
 
-            // mise en place du datapicker flatpickr sur les champs de date
-            flatpickr(".flatpickrtime", {
-                "locale": "fr",
-                enableTime: true,
-                noCalendar: true,
-                dateFormat: "H:i",
-                time_24hr: true
-            });
+
+            // Ajout de Cours sur sa fiche Client
+            // -------------------------------------
+            // I. Gestion de la modale
+            const modalAddBookroom = document.getElementById('addBookroom')
+            modalAddBookroom.addEventListener('show.bs.modal', function (event){
+                const button = event.relatedTarget
+                const recipient = button.getAttribute('data-bs-whatever')
+                const modalBodyInput = modalAddBookroom.querySelector('.idcourse')
+                modalBodyInput.value = recipient
+                axios
+                    .get('/appli/bookroom/newonteacher/' + recipient)
+                    .then(function (response) {
+                        document.getElementById('ModalBodyNewBookroom').innerHTML = response.data.form;
+                        const fp = flatpickr(".flatpickr", {                                                // flatpickr
+                            "locale": "fr",                                                                 // adaptation en français
+                            enableTime: false,                                                               // désactiver les heures et minutes
+                            allowInput: true,
+                            altFormat: "j F Y",
+                            dateFormat: "d/m/Y",
+                        });
+                    })
+            })
+
+            document.getElementById('btnAddBookroom').addEventListener('click', function (event){
+                event.preventDefault()
+                let formAddBookRoom = document.getElementById('formAddBookRoomOnTeacher')
+                let urlAddBookRoom = formAddBookRoom.action
+                axios
+                    .post(urlAddBookRoom, formAddBookRoom)
+                    .then(function(response){
+                        document.getElementById('liste').innerHTML = response.data.liste;
+                        document.getElementById('addBookroom').addEventListener('hide.bs.modal')
+                    })
+            })
+
+            // Ajout de Cours sur sa fiche Client
+            // -------------------------------------
+            // I. Gestion de la modale
+            const modalEditBookroom = document.getElementById('editBookroom')
+            modalEditBookroom.addEventListener('show.bs.modal', function (event){
+                const button = event.relatedTarget
+                const recipient = button.getAttribute('data-bs-whatever')
+                const modalBodyInput = modalEditBookroom.querySelector('.idcourse')
+                modalBodyInput.value = recipient
+                console.log(recipient)
+                axios
+                    .get('/appli/bookroom/editonteacher/' + recipient)
+                    .then(function (response) {
+                        document.getElementById('ModalBodyEditBookroom').innerHTML = response.data.form;
+                        const fp = flatpickr(".flatpickr", {                                                // flatpickr
+                            "locale": "fr",                                                                 // adaptation en français
+                            enableTime: false,                                                               // désactiver les heures et minutes
+                            allowInput: true,
+                            altFormat: "j F Y",
+                            dateFormat: "d/m/Y",
+                        });
+                    })
+            })
+
+            document.getElementById('btnEditBookroom').addEventListener('click', function (event){
+                event.preventDefault()
+                let formEditBookRoom = document.getElementById('formEditBookRoomOnTeacher')
+                let urlEditBookRoom = formEditBookRoom.action
+                axios
+                    .post(urlEditBookRoom, formEditBookRoom)
+                    .then(function(response){
+                        document.getElementById('liste').innerHTML = response.data.liste;
+                        document.getElementById('EditBookroom').addEventListener('hide.bs.modal')
+                    })
+            })
+
         }
     </script>
 {% endblock %}
 
 {% block main %}
     {{ include('include/_blockuser.html.twig') }}
-    <section id="blockAdmin">
+    <div id="blockAdmin">
         <div class="row mt-1 mb-1 justify-content-center">
             <h2 class="text-end">Mon espace Enseignant.e</h2>
         </div>
         {% for course in courses %}
         <div class="row mt-1 mb-1 justify-content-center">
+            <div class="col-12">
+                <h2 class="text-center">Mon planning</h2>
+            </div>
             <div>
-                <p>{{ course.name }}</p>
+                <p>{% if course.logoName is not null %}<img src="" alt="{{ course.name }}">{% else %}{% endif %}{{ course.name|upper }}</p>
+            </div>
+            <div id="liste">
+                {{ render(controller('App\\Controller\\Appli\\BookroomController::listbyCourse', {'idcourse':course.id})) }}
             </div>
             <div class="col-12">
-                <a href="#">Mon planning</a>
-            </div>
-            <div class="col-12">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookroom">Saisie du planning</button>
+                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addBookroom" data-bs-whatever="{{ course.id }}">Nouvelle séance</button>
             </div>
         </div>
         {% endfor %}
-    </section>
+    </div>
 {% endblock %}
 
-{% block modal %}
+{% block modals %}
     <!-- Ajout de séances -->
     <div class="modal fade" id="addBookroom" tabindex="-1" aria-labelledby="addBookroom" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter une séance au planning</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ render(controller('App\\Controller\\Appli\\BookroomController::modalnew')) }}
+                    <input class="idcourse" type="hidden" value="">
+                    <div id="ModalBodyNewBookroom">
+
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button id="btnAddBookroom" type="button" class="btn btn-sm btn-primary">Ajouter le cours</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edition de séances -->
+    <div class="modal fade" id="editBookroom" tabindex="-1" aria-labelledby="editBookroom" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modifier une séance</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input class="idcourse" type="hidden" value="">
+                    <div id="ModalBodyEditBookroom">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnEditBookroom" type="button" class="btn btn-sm btn-primary">Ajouter le cours</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>

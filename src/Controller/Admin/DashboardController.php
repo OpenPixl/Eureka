@@ -9,19 +9,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
 {
-    #[Route('/admin/dashboard', name: 'op_admin_dashboard_home')]
+    #[Route('/dashboard', name: 'op_admin_dashboard_home')]
     public function index(): Response
     {
         $hasAccess = $this->isGranted('ROLE_SUPER_ADMIN');
         $user = $this->getUser();
 
-        dd($hasAccess);
+        //dd($hasAccess);
 
         if($hasAccess == true){
             return $this->redirectToRoute('op_admin_dashboard_teacher');
         }
         else{
-            return $this->redirectToRoute('op_admin_dashboard_student');
+            return $this->redirectToRoute('op_admin_dashboard_studient');
         }
     }
 
@@ -41,9 +41,13 @@ class DashboardController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/student', name: 'op_admin_dashboard_student')]
-    public function student(): Response
+    #[Route('/student/dashboard', name: 'op_admin_dashboard_studient')]
+    public function studient(CourseRepository $courseRepository): Response
     {
-        return $this->render('admin/dashboard/student.html.twig');
+        $user = $this->getUser();
+        $courses = $courseRepository->findAll();
+        return $this->render('admin/dashboard/studient.html.twig',[
+            'courses' => $courses,
+        ]);
     }
 }

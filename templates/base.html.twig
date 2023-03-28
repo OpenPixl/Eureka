@@ -40,7 +40,19 @@
             <div class="container-sm">
             {% block footer %}
                 <section>
-                    <p class="text-center">OpenPixl - KhaliKréa</p>
+                    <div class="row mb-1">
+                        {% if app.request.attributes.get('_route') == 'op_appli_course_showforstudient' %}
+                        <div class="col-12">
+                            <a href="{{ path('op_admin_dashboard_studient') }}" class="btn btn-sm btn-primary w-100">Retour</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="text-center">OpenPixl - KhaliKréa</p>
+                        </div>
+                    </div>
+
                 </section>
             {% endblock %}
             </div>

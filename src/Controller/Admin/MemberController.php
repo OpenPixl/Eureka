@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[Route('/admin/member')]
+
 class MemberController extends AbstractController
 {
-    #[Route('/super/member', name: 'op_admin_member_index', methods: ['GET'])]
+    #[Route('/admin/member', name: 'op_admin_member_index', methods: ['GET'])]
     public function index(MemberRepository $memberRepository): Response
     {
         return $this->render('admin/member/index.html.twig', [
@@ -22,14 +22,14 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/super/member/listteacher', name: 'op_admin_member_listteacher', methods: ['GET'])]
+    #[Route('/admin/member/listteacher', name: 'op_admin_member_listteacher', methods: ['GET'])]
     public function listteacher(MemberRepository $memberRepository): Response
     {
         return $this->render('admin/member/index.html.twig', [
             'members' => $memberRepository->findAll(),
         ]);
     }
-    #[Route('/super/member/liststudient', name: 'op_admin_member_liststudient', methods: ['GET'])]
+    #[Route('/admin/member/liststudient', name: 'op_admin_member_liststudient', methods: ['GET'])]
     public function liststudient(MemberRepository $memberRepository): Response
     {
         return $this->render('admin/member/index.html.twig', [
@@ -37,7 +37,7 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'op_admin_member_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/member/new', name: 'op_admin_member_new', methods: ['GET', 'POST'])]
     public function new(Request $request, MemberRepository $memberRepository): Response
     {
         $member = new Member();
@@ -56,7 +56,7 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/teacher', name: 'op_admin_member_teacher', methods: ['GET', 'POST'])]
+    #[Route('/admin/member/teacher', name: 'op_admin_member_teacher', methods: ['GET', 'POST'])]
     public function teacher(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $teacher = new Member();
@@ -83,7 +83,7 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/studient', name: 'op_admin_member_studient', methods: ['GET', 'POST'])]
+    #[Route('/studient/member/studient', name: 'op_admin_member_studient', methods: ['GET', 'POST'])]
     public function studient(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $studient = new Member();
@@ -110,7 +110,7 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_admin_member_show', methods: ['GET'])]
+    #[Route('/admin/member/{id}', name: 'app_admin_member_show', methods: ['GET'])]
     public function show(Member $member): Response
     {
         return $this->render('admin/member/show.html.twig', [
@@ -118,31 +118,38 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_admin_member_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/member/{id}/edit', name: 'op_admin_member_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Member $member, MemberRepository $memberRepository): Response
     {
+        $typemember = $member->getTypemember();
+
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $memberRepository->save($member, true);
+            if($typemember == "Enseignant"){
+                return $this->redirectToRoute('op_admin_member_listteacher', [], Response::HTTP_SEE_OTHER);
+            }elseif($typemember == "Etudiant"){
+                return $this->redirectToRoute('op_admin_member_liststudient', [], Response::HTTP_SEE_OTHER);
+            }else{
+                return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
+            }
 
-            return $this->redirectToRoute('app_admin_member_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('admin/member/edit.html.twig', [
             'member' => $member,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_admin_member_delete', methods: ['POST'])]
+    #[Route('/admin/member/{id}', name: 'op_admin_member_delete', methods: ['POST'])]
     public function delete(Request $request, Member $member, MemberRepository $memberRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$member->getId(), $request->request->get('_token'))) {
             $memberRepository->remove($member, true);
         }
 
-        return $this->redirectToRoute('app_admin_member_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
     }
 }

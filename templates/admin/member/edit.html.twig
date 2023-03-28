@@ -6,6 +6,9 @@
     {{ parent() }}
     <script>
         window.onload = function(){
+
+            const fp = flatpickr("#member_ddn", {}); // flatpickr
+
             const SupprMedia = document.getElementById('SupprMedia')
             SupprMedia.addEventListener('change', function(){
                 if (this.checked) {
@@ -23,7 +26,7 @@
     <section id="blockAdmin">
         <div class="row mt-1 mb-1">
             <div class="col-12">
-                <h2 class="text-end">Edition d'{% if member.typemember == 'Enseignant.e' %}enseignant.e{% elseif member.typemember == 'Etudiant.e' %}étudiant.e{% endif %}</h2>
+                <h2 class="text-end">Edition d'{% if member.typemember == 'Enseignant' %}enseignant.e{% elseif member.typemember == 'Etudiant' %}étudiant.e{% endif %}</h2>
                 {{ include('admin/member/_form.html.twig') }}
 
                 <a class="btn btn-primary" href="{{ path('op_admin_member_listteacher') }}">Retour à la liste</a>

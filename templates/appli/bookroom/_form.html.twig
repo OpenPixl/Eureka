@@ -1,0 +1,39 @@
+{{ form_start(form) }}
+    <table>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td class="col-7">{{ form_label(form.dateBookAt) }}</td>
+            <td class="col-5">{{ form_widget(form.dateBookAt, {'attr':{'class':'form-control form-control-sm'}}) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.hourBookOpenAt) }}</td>
+            <td>{{ form_widget(form.hourBookOpenAt, {'attr':{'class':'form-control form-control-sm'}}) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.hourBookClosedAt) }}</td>
+            <td>{{ form_widget(form.hourBookClosedAt, {'attr':{'class':'form-control form-control-sm'}}) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.forme) }}</td>
+            <td>{{ form_widget(form.forme, {'attr':{'class':'form-control form-control-sm'}}) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.linkDistanciel) }}</td>
+            <td>{{ form_widget(form.linkDistanciel, {'attr':{'class':'form-control form-control-sm'}}) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.place) }}</td>
+            <td>{{ form_widget(form.place, {'attr':{'class':'form-control form-control-sm'}}) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.room) }}</td>
+            <td>{{ form_widget(form.room, {'attr':{'class':'form-select form-select-sm'}}) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.isActive) }}</td>
+            <td>{{ form_widget(form.isActive, {'attr':{'class':'form-check-input'}}) }}</td>
+        </tr>
+    </table>
+{{ form_end(form) }}

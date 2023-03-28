@@ -28,6 +28,9 @@ class Course
     private ?string $level = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logoFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $logoName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -41,6 +44,18 @@ class Course
 
     #[ORM\ManyToOne(inversedBy: 'courses')]
     private ?Member $teacher = null;
+
+    #[ORM\ManyToMany(targetEntity: Bookroom::class, mappedBy: 'room')]
+    private Collection $bookrooms;
+
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: Bookroom::class)]
+    private Collection $seance;
+
+    public function __construct()
+    {
+        $this->bookrooms = new ArrayCollection();
+        $this->seance = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -79,6 +94,18 @@ class Course
     public function setLevel(string $level): self
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    public function getLogoFile(): ?string
+    {
+        return $this->logoFile;
+    }
+
+    public function setLogoFile(string $logoFile): self
+    {
+        $this->logoFile = $logoFile;
 
         return $this;
     }
@@ -130,6 +157,63 @@ class Course
     public function setUpdatedAt(): self
     {
         $this->updatedAt = new \DateTime('now');
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Bookroom>
+     */
+    public function getBookrooms(): Collection
+    {
+        return $this->bookrooms;
+    }
+
+    public function addBookroom(Bookroom $bookroom): self
+    {
+        if (!$this->bookrooms->contains($bookroom)) {
+            $this->bookrooms->add($bookroom);
+            $bookroom->addRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookroom(Bookroom $bookroom): self
+    {
+        if ($this->bookrooms->removeElement($bookroom)) {
+            $bookroom->removeRoom($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Bookroom>
+     */
+    public function getSeance(): Collection
+    {
+        return $this->seance;
+    }
+
+    public function addSeance(Bookroom $seance): self
+    {
+        if (!$this->seance->contains($seance)) {
+            $this->seance->add($seance);
+            $seance->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Bookroom $seance): self
+    {
+        if ($this->seance->removeElement($seance)) {
+            // set the owning side to null (unless already changed)
+            if ($seance->getCourse() === $this) {
+                $seance->setCourse(null);
+            }
+        }
 
         return $this;
     }

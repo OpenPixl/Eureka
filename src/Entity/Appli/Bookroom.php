@@ -2,6 +2,7 @@
 
 namespace App\Entity\Appli;
 
+use App\Entity\Admin\Member;
 use App\Repository\Appli\BookroomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Entité pour la mise en place des créneaux disponibles
  */
 #[ORM\Entity(repositoryClass: BookroomRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Bookroom
 {
     #[ORM\Id]
@@ -40,11 +42,21 @@ class Bookroom
     #[ORM\Column(nullable: true)]
     private ?int $place = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    #[ORM\Column(type: 'datetime')]
+    private $updatedAt;
+
+    #[ORM\ManyToOne(inversedBy: 'bookrooms')]
+    private ?Room $room = null;
+
+    #[ORM\ManyToOne(inversedBy: 'bookrooms')]
+    private ?Member $teacher = null;
+
+    #[ORM\ManyToOne(inversedBy: 'seance')]
+    private ?Course $course = null;
+
 
     public function getId(): ?int
     {
@@ -140,9 +152,10 @@ class Bookroom
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    #[ORM\PrePersist]
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime('now');
 
         return $this;
     }
@@ -152,9 +165,47 @@ class Bookroom
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setUpdatedAt(): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new \DateTime('now');
+
+        return $this;
+    }
+
+    public function getRoom(): ?Room
+    {
+        return $this->room;
+    }
+
+    public function setRoom(?Room $room): self
+    {
+        $this->room = $room;
+
+        return $this;
+    }
+
+    public function getTeacher(): ?Member
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?Member $teacher): self
+    {
+        $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    public function getCourse(): ?Course
+    {
+        return $this->course;
+    }
+
+    public function setCourse(?Course $course): self
+    {
+        $this->course = $course;
 
         return $this;
     }

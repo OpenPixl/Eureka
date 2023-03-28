@@ -19,12 +19,16 @@ class PublicController extends AbstractController
     {
         $hasAccessSuper = $this->isGranted('ROLE_SUPER_ADMIN');
         $hasAccessAdmin = $this->isGranted('ROLE_ADMIN');
+        $hasAccessUser = $this->isGranted('ROLE_USER');
         if($hasAccessSuper == true){
             return $this->redirectToRoute('op_admin_dashboard_super');
         }
         else if($hasAccessAdmin == true){
-            return $this->redirectToRoute('op_admin_dashboard_home');
+            return $this->redirectToRoute('op_admin_dashboard_teacher');
         }
-        return $this->render('webapp/public/index.html.twig');
+        else if($hasAccessUser == true){
+            return $this->redirectToRoute('op_admin_dashboard_studient');
+        }
+        return $this->redirectToRoute('op_public_security_login');
     }
 }

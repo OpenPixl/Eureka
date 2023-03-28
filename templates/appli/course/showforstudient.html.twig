@@ -1,0 +1,160 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Eureka | Matières{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        window.onload = function(){
+            // -----------------------------------------------------------
+            // Fonction d'affichage pour entrée et sortie en JS
+            // -----------------------------------------------------------
+            function fadeIn(el, time) {                                 // el: element cible, time : durée souhaitée
+                el.style.opacity = 0;
+                var last = +new Date();
+                var tick = function() {
+                    el.style.opacity = +el.style.opacity + (new Date() - last) / time;
+                    last = +new Date();
+                    if (+el.style.opacity < 1) {
+                        (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+                    }
+                };
+
+                tick();
+            }
+            function fadeOut(el, time) {                                 // el: element cible, time : durée souhaitée
+                el.style.opacity = 1;
+                var last = +new Date();
+                var tick = function() {
+                    el.style.opacity = +el.style.opacity - (new Date() - last) / time;
+                    last = +new Date();
+                    if (+el.style.opacity < 1) {
+                        (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+                    }
+                };
+                tick();
+            }
+
+            // -----------------------------------------------------------
+            // Avancée dans les semaines
+            // -----------------------------------------------------------
+            function forwardSem(event){
+                event.preventDefault()
+                let firstDiv = this.parentNode.parentNode.parentNode
+                let nextDiv = firstDiv.nextElementSibling
+                firstDiv.style.display = "none"
+                nextDiv.removeAttribute('style')
+
+            }
+
+            // -----------------------------------------------------------
+            // Reculer dans les semaines
+            // -----------------------------------------------------------
+            function backwardSem(event){
+                event.preventDefault()
+                let firstDiv = this.parentNode.parentNode.parentNode
+                let nextDiv = firstDiv.previousElementSibling
+                firstDiv.style.display = "none"
+                nextDiv.removeAttribute('style')
+
+            }
+            // Ajout d'un évènement sur le click supprcustomer
+            document.querySelectorAll('a.forwardSem').forEach(function (link) {
+                link.addEventListener('click', forwardSem);
+            })
+            // Ajout d'un évènement sur le click supprcustomer
+            document.querySelectorAll('a.backwardSem').forEach(function (link) {
+                link.addEventListener('click', backwardSem);
+            })
+        }
+    </script>
+{% endblock %}
+
+{% block main %}
+    {% set seances = [] %}
+    {% for bookroom in bookrooms %}
+        {% set seances = seances|merge([{ date: bookroom.dateBookAt }]) %}
+    {% endfor %}
+    {{ include('include/_blockuser.html.twig') }}
+    <section id="blockAdmin" class="container-sm">
+            <div class="row mt-1 mb-1">
+                <div class="col-12">
+                    <h2 class="text-end">{{ course.name }}</h2>
+                </div>
+            </div>
+        {% for sem in sems %}
+            {% if loop.first %}
+            <div id="{{ loop.index }}" class="row mt-1 mb-1" >
+                <div class="col-12">
+                    <h5 class="text-end">
+                        <i class="fa-duotone fa-backward"></i>&nbsp;
+                        du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
+                        &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
+                    </h5>
+                    <div class="row">
+                        {% for seance in seances|filter(seance => seance.date >= sem.monday and seance.date <= sem.friday) %}
+                        <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
+                            <b>{{ seance.date|format_datetime('full', 'none', locale='fr') }}</b>
+                            {% for b in bookrooms|filter(b => b.dateBookAt == seance.date) %}
+                                <button class="btn btn-sm btn-outline-secondary">{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="col-12 p-2 mt-2">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% elseif loop.last %}
+            <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
+                <div class="col-12">
+                    <h5 class="text-end">
+                        <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
+                        du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
+                        &nbsp;<i class="fa-duotone fa-forward"></i>
+                    </h5>
+                    <div class="row">
+                        {% for seance in seances|filter(seance => seance.date >= sem.monday and seance.date <= sem.friday) %}
+                            <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
+                                <b>{{ seance.date|format_datetime('full', 'none', locale='fr') }}</b>
+                                {% for b in bookrooms|filter(b => b.dateBookAt == seance.date) %}
+                                    <button class="btn btn-sm btn-outline-secondary">{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="col-12 p-2 mt-2">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
+                <div class="col-12">
+                    <h5 class="text-end">
+                        <a href="#" class="backwardSem" ><i class="fa-duotone fa-backward"></i></a>&nbsp;
+                        du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
+                        &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
+                    </h5>
+                    <div class="row">
+                        {% for seance in seances|filter(seance => seance.date >= sem.monday and seance.date <= sem.friday) %}
+                            <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
+                                <b>{{ seance.date|format_datetime('full', 'none', locale='fr') }}</b>
+                                {% for b in bookrooms|filter(b => b.dateBookAt == seance.date) %}
+                                    <button class="btn btn-sm btn-outline-secondary">{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="col-12 p-2 mt-2">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+    {{ include('appli/course/_delete_form.html.twig') }}
+{% endblock %}

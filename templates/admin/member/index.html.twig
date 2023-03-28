@@ -17,13 +17,9 @@
         <div class="row mt-1 mb-1">
             <div class="col-12">
             {% if app.request.attributes.get('_route') == 'op_admin_member_listteacher' %}
-            {% for member in members|filter(member => member.typemember == 'Enseignant') %}
             <h2 class="text-end">Liste des enseignants.es</h2>
-            {% endfor %}
             {% elseif app.request.attributes.get('_route') == 'op_admin_member_liststudient'%}
-            {% for member in members|filter(member => member.typemember == 'Etudiant') %}
                 <h2 class="text-end">Liste des étudiants.es</h2>
-            {% endfor %}
             {% else %}
                 <h2 class="text-end">Liste des membres</h2>
             {% endif %}
@@ -47,7 +43,7 @@
                             {% elseif member.typemember == 'Etudiant.e' %}
                             <a href="#"><i class="fa-duotone fa-eye"></i></a>
                             {% endif %}
-                            <a href="#"><i class="fa-duotone fa-pen-to-square"></i></a>
+                            <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
                         </td>
                     </tr>
                 {% else %}
@@ -66,7 +62,7 @@
                             {% elseif member.typemember == 'Etudiant.e' %}
                                 <a href="#"><i class="fa-duotone fa-eye"></i></a>
                             {% endif %}
-                            <a href="#"><i class="fa-duotone fa-pen-to-square"></i></a>
+                            <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
                         </td>
                     </tr>
                 {% else %}
@@ -85,7 +81,7 @@
                                 {% elseif member.typemember == 'Etudiant.e' %}
                                     <a href="#"><i class="fa-duotone fa-eye"></i></a>
                                 {% endif %}
-                                <a href="#"><i class="fa-duotone fa-pen-to-square"></i></a>
+                                <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
                             </td>
                         </tr>
                     {% else %}

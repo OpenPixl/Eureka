@@ -105,8 +105,28 @@ body{
         }
       }
     }
-    #blockUser{
-
+    #blockStudient{
+      a{
+        color: #fff;
+        text-decoration: none;
+      }
+    }
+  }
+  table{
+    tr{
+      th{
+        color:$green;
+      }
+    }
+  }
+  #modals{
+    h1{
+      color: #2E2E2E;
+    }
+    .btn{
+      background: #92B923;
+      border: 2px solid #7A7575;
+      border-radius: 8px;
     }
   }
   footer{
@@ -114,17 +134,19 @@ body{
     p{
       font-family: 'Comfortaa-Light', sans-serif;
     }
+    .btn-primary{
+      font-family: 'Comfortaa-Light', sans-serif;
+      font-size: 1rem;
+      line-height: 2rem;
+      background: #2E6699;
+      border: 2px solid #FFFFFF;
+      border-radius: 8px;
+      color: #FFFFFF;
+    }
     #blockCommand{
       a{
         color:$green !important;
       }
-    }
-  }
-  .modal{
-    .btn{
-      background: #92B923;
-      border: 2px solid #7A7575;
-      border-radius: 8px;
     }
   }
 }

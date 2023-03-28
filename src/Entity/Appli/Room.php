@@ -32,6 +32,14 @@ class Room
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    #[ORM\OneToMany(mappedBy: 'room', targetEntity: Bookroom::class)]
+    private Collection $bookrooms;
+
+    public function __construct()
+    {
+        $this->bookrooms = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,5 +98,35 @@ class Room
 
     public function __toString(){
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Bookroom>
+     */
+    public function getBookrooms(): Collection
+    {
+        return $this->bookrooms;
+    }
+
+    public function addBookroom(Bookroom $bookroom): self
+    {
+        if (!$this->bookrooms->contains($bookroom)) {
+            $this->bookrooms->add($bookroom);
+            $bookroom->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookroom(Bookroom $bookroom): self
+    {
+        if ($this->bookrooms->removeElement($bookroom)) {
+            // set the owning side to null (unless already changed)
+            if ($bookroom->getRoom() === $this) {
+                $bookroom->setRoom(null);
+            }
+        }
+
+        return $this;
     }
 }
