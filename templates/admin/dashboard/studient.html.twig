@@ -1,0 +1,25 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Hello DashboardController!{% endblock %}
+
+{% block main %}
+    {{ include('include/_blockuser.html.twig') }}
+    <section id="blockAdmin">
+        <div class="row mt-1 mb-1 justify-content-center">
+            <h2 class="text-end">Mon espace</h2>
+        </div>
+        <div class="row mt-1 mb-1 justify-content-center">
+            <div class="col-12">
+                <h2 class="text-center">Je réserve mon cours</h2>
+            </div>
+            {% for course in courses %}
+            <div>
+                <p>{% if course.logoName is not null %}<img src="" alt="{{ course.name }}">{% else %}{% endif %}{{ course.name|upper }}</p>
+            </div>
+            {% endfor %}
+            <div class="col-12">
+                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addBookroom" data-bs-whatever="{{ course.id }}">Nouvelle séance</button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
