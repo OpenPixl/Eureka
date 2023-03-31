@@ -150,10 +150,6 @@ class BookroomController extends AbstractController
             ]);
         }
 
-        if($form->isSubmitted()){
-            dd($form->get('dateBookAt')->getData());
-        }
-
         $view = $this->renderForm('appli/bookroom/_form.html.twig', [
             'bookroom' => $bookroom,
             'form' => $form

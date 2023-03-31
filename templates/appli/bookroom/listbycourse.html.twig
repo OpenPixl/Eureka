@@ -17,7 +17,7 @@
                 {% else %}
                     <i class="fa-duotone fa-podcast"></i>
                 {% endif %} |
-                {{ bookroom.place }}
+                {{ bookroom.place - bookroom.registrations|length}}
             </td>
 
             <td>

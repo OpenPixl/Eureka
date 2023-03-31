@@ -6,6 +6,7 @@ use App\Entity\Appli\Course;
 use App\Form\Appli\CourseType;
 use App\Repository\Appli\BookroomRepository;
 use App\Repository\Appli\CourseRepository;
+use App\Repository\Appli\RegistrationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,8 +53,14 @@ class CourseController extends AbstractController
     }
 
     #[Route('/showforstudient/{id}', name: 'op_appli_course_showforstudient', methods: ['GET'])]
-    public function showForStudient(Course $course, BookroomRepository $bookroomRepository): Response
+    public function showForStudient(
+        Course $course,
+        BookroomRepository $bookroomRepository,
+        RegistrationRepository $registrationRepository
+        ): Response
     {
+        $user = $this->getUser();
+
         $now = new \DateTime('now') ;
         $now = strtotime($now->format('Y/m/d'));
         $rows = array();
@@ -74,12 +81,29 @@ class CourseController extends AbstractController
             }
             array_push($rows, $row);
         }
-        //dd($rows);
+        // -------------- Bloc complémentaire à la fonction
+        // Liste des séances rattachées à la matières
         $bookrooms = $bookroomRepository->findBy(['course'=> $course]);
+        $seances = $bookroomRepository->seance($course->getId());
+        //dd($seances);
+        $registrations = array();
+        foreach ($bookrooms as $bookroom){
+            // Liste des réservations
+            $registration = $registrationRepository->searchRegistrationByUserAndBookrooms($bookroom->getId(), $user->getId());
+            if($registration){
+                array_push($registrations, $registration);
+            }
+
+        }
+        //dd($registrations);
+
+
         return $this->render('appli/course/showforstudient.html.twig', [
             'sems' => $rows,
             'course' => $course,
-            'bookrooms' => $bookrooms
+            'bookrooms' => $bookrooms,
+            'seances' => $seances,
+            'registrations' => $registrations
         ]);
     }
 

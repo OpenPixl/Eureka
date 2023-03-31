@@ -5,6 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\Member;
 use App\Form\Admin\MemberType;
 use App\Repository\Admin\MemberRepository;
+use App\Repository\Appli\BookroomRepository;
+use App\Repository\Appli\CourseRepository;
+use App\Repository\Appli\RegistrationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -137,9 +140,20 @@ class MemberController extends AbstractController
             }
 
         }
-        return $this->renderForm('admin/member/edit.html.twig', [
+        return $this->render('admin/member/edit.html.twig', [
             'member' => $member,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/admin/member/showcoursestudient', name: 'op_admin_member_showcoursestudient', methods: ['GET'])]
+    public function ShowcourseStudient(RegistrationRepository $registrationRepository)
+    {
+        $user = $this->getUser();
+        $Bookrooms = $registrationRepository->findBy(['studient' => $user]);
+
+        return $this->renderForm('admin/member/edit.html.twig', [
+            'Bookrooms' => $Bookrooms,
         ]);
     }
 

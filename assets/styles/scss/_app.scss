@@ -17,6 +17,9 @@ body{
       font-family: 'Comfortaa-Light', sans-serif;
       font-size: 1.2rem;
     }
+    .btn:disabled{
+      opacity:1;
+    }
     #blockLogin{
       button{
         background: $green;
@@ -59,8 +62,8 @@ body{
       .btn-success{
         font-family: 'Comfortaa-Light', sans-serif;
         background: $green;
-        border: 2px solid #FFFFFF;
-        border-radius: 8px;
+        border: 1px solid #FFFFFF;
+        border-radius: 4px;
         color: #FFFFFF;
       }
       .btn-warning{
@@ -124,9 +127,18 @@ body{
       color: #2E2E2E;
     }
     .btn{
+      font-size: 0.9rem;
+    }
+    .btn-primary{
       background: #92B923;
-      border: 2px solid #7A7575;
-      border-radius: 8px;
+      border: 1px solid #7A7575;
+      border-radius: 4px;
+    }
+    .btn-primary:hover{
+      background: #ffffff;
+      border: 1px solid #92B923;
+      border-radius: 4px;
+      color: #92B923;
     }
   }
   footer{

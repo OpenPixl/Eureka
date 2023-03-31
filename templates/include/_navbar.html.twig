@@ -16,7 +16,7 @@
                 {% endif %}
                 {% if is_granted('ROLE_USER') %}
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Mes cours</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('op_admin_member_showcoursestudient') }}">Mes cours</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Mon historique</a>

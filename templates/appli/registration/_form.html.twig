@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+<p>Nombre de place restantes : {{ bookroom.place - bookroom.registrations|length }} </p>
+<p>Vous êtes sur le point de réserver</p>
+<table class="table table-sm table-borderless">
+    <tr class="align-middle">
+        <td class="col-3"></td>
+        <td class="col-3"></td>
+        <td class="col-6"></td>
+    </tr>
+    <tr class="align-middle">
+        <td>{{ form_label(form.seance) }}</td>
+        <td>{{ form_widget(form.seance) }}</td>
+        <td></td>
+    </tr>
+</table>
+    {{ form_widget(form) }}
+{{ form_end(form) }}

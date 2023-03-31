@@ -84,20 +84,20 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'teacher', targetEntity: Course::class)]
     private Collection $courses;
 
-    #[ORM\ManyToMany(targetEntity: Registration::class, mappedBy: 'registrations')]
-    private Collection $registrations;
-
     #[ORM\OneToMany(mappedBy: 'teacher', targetEntity: Bookroom::class)]
     private Collection $bookrooms;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $ddn = null;
 
+    #[ORM\OneToMany(mappedBy: 'studient', targetEntity: Registration::class)]
+    private Collection $registrations;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
-        $this->registrations = new ArrayCollection();
         $this->bookrooms = new ArrayCollection();
+        $this->registrations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -383,37 +383,6 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Registration>
-     */
-    public function getRegistrations(): Collection
-    {
-        return $this->registrations;
-    }
-
-    public function addRegistration(Registration $registration): self
-    {
-        if (!$this->registrations->contains($registration)) {
-            $this->registrations->add($registration);
-            $registration->addRegistration($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRegistration(Registration $registration): self
-    {
-        if ($this->registrations->removeElement($registration)) {
-            $registration->removeRegistration($this);
-        }
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->firstName.' '.$this->lastName;
-    }
 
     /**
      * @return Collection<int, Bookroom>
@@ -453,6 +422,41 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDdn(?\DateTimeInterface $ddn): self
     {
         $this->ddn = $ddn;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
+
+    /**
+     * @return Collection<int, Registration>
+     */
+    public function getRegistrations(): Collection
+    {
+        return $this->registrations;
+    }
+
+    public function addRegistration(Registration $registration): self
+    {
+        if (!$this->registrations->contains($registration)) {
+            $this->registrations->add($registration);
+            $registration->setStudient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegistration(Registration $registration): self
+    {
+        if ($this->registrations->removeElement($registration)) {
+            // set the owning side to null (unless already changed)
+            if ($registration->getStudient() === $this) {
+                $registration->setStudient(null);
+            }
+        }
 
         return $this;
     }

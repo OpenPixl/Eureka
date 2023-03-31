@@ -39,6 +39,18 @@ class BookroomRepository extends ServiceEntityRepository
         }
     }
 
+    public function seance($course){
+        return $this->createQueryBuilder('b')
+            ->select('
+                DISTINCT b.dateBookAt        
+            ')
+            ->andWhere('b.course = :course')
+            ->setParameter('course', $course)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Bookroom[] Returns an array of Bookroom objects
 //     */

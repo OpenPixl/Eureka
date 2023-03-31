@@ -6,34 +6,6 @@
     {{ parent() }}
     <script>
         window.onload = function(){
-            // -----------------------------------------------------------
-            // Fonction d'affichage pour entrée et sortie en JS
-            // -----------------------------------------------------------
-            function fadeIn(el, time) {                                 // el: element cible, time : durée souhaitée
-                el.style.opacity = 0;
-                var last = +new Date();
-                var tick = function() {
-                    el.style.opacity = +el.style.opacity + (new Date() - last) / time;
-                    last = +new Date();
-                    if (+el.style.opacity < 1) {
-                        (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
-                    }
-                };
-
-                tick();
-            }
-            function fadeOut(el, time) {                                 // el: element cible, time : durée souhaitée
-                el.style.opacity = 1;
-                var last = +new Date();
-                var tick = function() {
-                    el.style.opacity = +el.style.opacity - (new Date() - last) / time;
-                    last = +new Date();
-                    if (+el.style.opacity < 1) {
-                        (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
-                    }
-                };
-                tick();
-            }
 
             // -----------------------------------------------------------
             // Avancée dans les semaines
@@ -44,7 +16,6 @@
                 let nextDiv = firstDiv.nextElementSibling
                 firstDiv.style.display = "none"
                 nextDiv.removeAttribute('style')
-
             }
 
             // -----------------------------------------------------------
@@ -56,7 +27,6 @@
                 let nextDiv = firstDiv.previousElementSibling
                 firstDiv.style.display = "none"
                 nextDiv.removeAttribute('style')
-
             }
             // Ajout d'un évènement sur le click supprcustomer
             document.querySelectorAll('a.forwardSem').forEach(function (link) {
@@ -66,15 +36,37 @@
             document.querySelectorAll('a.backwardSem').forEach(function (link) {
                 link.addEventListener('click', backwardSem);
             })
+
+            // Ajout de Cours sur sa fiche Client
+            // -------------------------------------
+            // I. Gestion de la modale
+            const modalAddRegistration = document.getElementById('AddRegistration')
+            modalAddRegistration.addEventListener('show.bs.modal', function (event){
+                const button = event.relatedTarget
+                const recipient = button.getAttribute('data-bs-whatever')
+                const modalBodyInput = modalAddRegistration.querySelector('.idBookroom')
+                modalBodyInput.value = recipient
+                axios
+                    .get('/appli/registration/newonstudient/' + recipient)
+                    .then(function (response) {
+                        document.getElementById('ModalBodyNewRegistration').innerHTML = response.data.form;
+                    })
+            })
+            // II. Soumission du formulaire
+            document.getElementById('btnAddRegistration').addEventListener('click', function (event){
+                event.preventDefault()
+                let formAddRegistration = document.getElementById('formAddRegistrationOnStudient')
+                let urlAddRegistration = formAddRegistration.action
+                axios
+                    .post(urlAddRegistration, formAddRegistration)
+                    .then(function(response){
+                    })
+            })
         }
     </script>
 {% endblock %}
 
 {% block main %}
-    {% set seances = [] %}
-    {% for bookroom in bookrooms %}
-        {% set seances = seances|merge([{ date: bookroom.dateBookAt }]) %}
-    {% endfor %}
     {{ include('include/_blockuser.html.twig') }}
     <section id="blockAdmin" class="container-sm">
             <div class="row mt-1 mb-1">
@@ -91,19 +83,7 @@
                         du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
                         &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
                     </h5>
-                    <div class="row">
-                        {% for seance in seances|filter(seance => seance.date >= sem.monday and seance.date <= sem.friday) %}
-                        <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
-                            <b>{{ seance.date|format_datetime('full', 'none', locale='fr') }}</b>
-                            {% for b in bookrooms|filter(b => b.dateBookAt == seance.date) %}
-                                <button class="btn btn-sm btn-outline-secondary">{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        <div class="col-12 p-2 mt-2">
-                        </div>
-                        {% endfor %}
-                    </div>
+                    {{ include('appli/course/include/_blockCourses.html.twig') }}
                 </div>
             </div>
             {% elseif loop.last %}
@@ -114,42 +94,18 @@
                         du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
                         &nbsp;<i class="fa-duotone fa-forward"></i>
                     </h5>
-                    <div class="row">
-                        {% for seance in seances|filter(seance => seance.date >= sem.monday and seance.date <= sem.friday) %}
-                            <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
-                                <b>{{ seance.date|format_datetime('full', 'none', locale='fr') }}</b>
-                                {% for b in bookrooms|filter(b => b.dateBookAt == seance.date) %}
-                                    <button class="btn btn-sm btn-outline-secondary">{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="col-12 p-2 mt-2">
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {{ include('appli/course/include/_blockCourses.html.twig') }}
                 </div>
             </div>
             {% else %}
             <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
                 <div class="col-12">
                     <h5 class="text-end">
-                        <a href="#" class="backwardSem" ><i class="fa-duotone fa-backward"></i></a>&nbsp;
+                        <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
                         du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
                         &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
                     </h5>
-                    <div class="row">
-                        {% for seance in seances|filter(seance => seance.date >= sem.monday and seance.date <= sem.friday) %}
-                            <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
-                                <b>{{ seance.date|format_datetime('full', 'none', locale='fr') }}</b>
-                                {% for b in bookrooms|filter(b => b.dateBookAt == seance.date) %}
-                                    <button class="btn btn-sm btn-outline-secondary">{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="col-12 p-2 mt-2">
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {{ include('appli/course/include/_blockCourses.html.twig') }}
                 </div>
             </div>
             {% endif %}
@@ -157,4 +113,28 @@
     </section>
 
     {{ include('appli/course/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block modals %}
+    <!-- Réservetion d'une séance au profil -->
+    <div class="modal fade" id="AddRegistration" tabindex="-1" aria-labelledby="AddRegistration" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Réservation de la séance</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input class="idBookroom" type="hidden" value="">
+                    <div id="ModalBodyNewRegistration">
+                        Réservation
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnAddRegistration" type="button" class="btn btn-sm btn-primary">Bloquer la réservation</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

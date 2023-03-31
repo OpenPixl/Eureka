@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registration{% endblock %}
+
+{% block body %}
+    <h1>Registration</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ registration.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ registration.createdAt ? registration.createdAt|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ registration.updatedAt ? registration.updatedAt|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_appli_registration_index') }}">back to list</a>
+
+    <a href="{{ path('app_appli_registration_edit', {'id': registration.id}) }}">edit</a>
+
+    {{ include('appli/registration/_delete_form.html.twig') }}
+{% endblock %}

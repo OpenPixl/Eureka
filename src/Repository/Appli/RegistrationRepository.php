@@ -39,6 +39,29 @@ class RegistrationRepository extends ServiceEntityRepository
         }
     }
 
+    public function searchRegistrationByUserAndBookrooms($bookroom, $user)
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.seance', 'b')
+            ->leftJoin('r.studient', 'm')
+            ->Select('
+                r.id,
+                b.id as idbook,
+                b.dateBookAt as dateBookAt,
+                b.hourBookOpenAt as hourBookOpenAt,
+                b.hourBookClosedAt as hourBookClosedAt,
+                m.id as idMember
+            ')
+            ->andWhere('b.id = :bookroom')
+            ->setParameter('bookroom', $bookroom)
+            ->andWhere('m.id = :user')
+            ->setParameter('user', $user)
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return registration[] Returns an array of registration objects
 //     */

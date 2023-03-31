@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Entité pour les inscriptions des étudiants sur un cours
  */
 #[ORM\Entity(repositoryClass: RegistrationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Registration
 {
     #[ORM\Id]
@@ -26,39 +27,64 @@ class Registration
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\ManyToMany(targetEntity: Member::class, inversedBy: 'registrations')]
-    private Collection $registrations;
+    #[ORM\ManyToOne(inversedBy: 'registrations')]
+    private ?Member $studient = null;
 
-    public function __construct()
-    {
-        $this->registrations = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'registrations')]
+    private ?Bookroom $seance = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Member>
-     */
-    public function getRegistrations(): Collection
+    public function getStudient(): ?Member
     {
-        return $this->registrations;
+        return $this->studient;
     }
 
-    public function addRegistration(Member $registration): self
+    public function setStudient(?Member $studient): self
     {
-        if (!$this->registrations->contains($registration)) {
-            $this->registrations->add($registration);
-        }
+        $this->studient = $studient;
 
         return $this;
     }
 
-    public function removeRegistration(Member $registration): self
+    public function getSeance(): ?Bookroom
     {
-        $this->registrations->removeElement($registration);
+        return $this->seance;
+    }
+
+    public function setSeance(?Bookroom $seance): self
+    {
+        $this->seance = $seance;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAt(): self
+    {
+        $this->createdAt = new \DateTime('now');
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setUpdatedAt(): self
+    {
+        $this->updatedAt = new \DateTime('now');
 
         return $this;
     }

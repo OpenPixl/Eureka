@@ -57,6 +57,13 @@ class Bookroom
     #[ORM\ManyToOne(inversedBy: 'seance')]
     private ?Course $course = null;
 
+    #[ORM\OneToMany(mappedBy: 'seance', targetEntity: Registration::class)]
+    private Collection $registrations;
+
+    public function __construct()
+    {
+        $this->registrations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -208,5 +215,40 @@ class Bookroom
         $this->course = $course;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Registration>
+     */
+    public function getRegistrations(): Collection
+    {
+        return $this->registrations;
+    }
+
+    public function addRegistration(Registration $registration): self
+    {
+        if (!$this->registrations->contains($registration)) {
+            $this->registrations->add($registration);
+            $registration->setSeance($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegistration(Registration $registration): self
+    {
+        if ($this->registrations->removeElement($registration)) {
+            // set the owning side to null (unless already changed)
+            if ($registration->getSeance() === $this) {
+                $registration->setSeance(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->dateBookAt->format('l d M Y');
     }
 }
