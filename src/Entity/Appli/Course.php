@@ -51,10 +51,17 @@ class Course
     #[ORM\OneToMany(mappedBy: 'course', targetEntity: Bookroom::class)]
     private Collection $seance;
 
+    #[ORM\Column(length: 255)]
+    private ?string $z = null;
+
+    #[ORM\ManyToMany(targetEntity: Member::class, inversedBy: 'studientcourse')]
+    private Collection $studients;
+
     public function __construct()
     {
         $this->bookrooms = new ArrayCollection();
         $this->seance = new ArrayCollection();
+        $this->studients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -214,6 +221,42 @@ class Course
                 $seance->setCourse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getZ(): ?string
+    {
+        return $this->z;
+    }
+
+    public function setZ(string $z): self
+    {
+        $this->z = $z;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Member>
+     */
+    public function getStudients(): Collection
+    {
+        return $this->studients;
+    }
+
+    public function addStudient(Member $studient): self
+    {
+        if (!$this->studients->contains($studient)) {
+            $this->studients->add($studient);
+        }
+
+        return $this;
+    }
+
+    public function removeStudient(Member $studient): self
+    {
+        $this->studients->removeElement($studient);
 
         return $this;
     }

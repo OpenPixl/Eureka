@@ -146,13 +146,17 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/member/showcoursestudient', name: 'op_admin_member_showcoursestudient', methods: ['GET'])]
-    public function ShowcourseStudient(RegistrationRepository $registrationRepository)
+    #[Route('/studient/showcoursestudient', name: 'op_admin_member_showcoursestudient', methods: ['GET'])]
+    public function ShowcourseStudient(RegistrationRepository $registrationRepository, BookroomRepository $bookroomRepository)
     {
         $user = $this->getUser();
+        //$courses = $courses
         $Bookrooms = $registrationRepository->findBy(['studient' => $user]);
+        //dd($Bookrooms);
 
-        return $this->renderForm('admin/member/edit.html.twig', [
+        //$dateSeances = $bookroomRepository->seance($course->getId());
+
+        return $this->renderForm('admin/member/studientCourse.html.twig', [
             'Bookrooms' => $Bookrooms,
         ]);
     }

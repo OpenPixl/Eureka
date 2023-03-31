@@ -93,11 +93,15 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'studient', targetEntity: Registration::class)]
     private Collection $registrations;
 
+    #[ORM\ManyToMany(targetEntity: Course::class, mappedBy: 'studients')]
+    private Collection $studientcourse;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
         $this->bookrooms = new ArrayCollection();
         $this->registrations = new ArrayCollection();
+        $this->studientcourse = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -456,6 +460,33 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
             if ($registration->getStudient() === $this) {
                 $registration->setStudient(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Course>
+     */
+    public function getStudientcourse(): Collection
+    {
+        return $this->studientcourse;
+    }
+
+    public function addStudientcourse(Course $studientcourse): self
+    {
+        if (!$this->studientcourse->contains($studientcourse)) {
+            $this->studientcourse->add($studientcourse);
+            $studientcourse->addStudient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStudientcourse(Course $studientcourse): self
+    {
+        if ($this->studientcourse->removeElement($studientcourse)) {
+            $studientcourse->removeStudient($this);
         }
 
         return $this;

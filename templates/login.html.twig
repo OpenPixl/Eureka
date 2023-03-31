@@ -15,7 +15,8 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body
+    <body>
+        <header></header>
         <main class="d-lg-none">
             <div class="container-sm">
                 {% block main %}
@@ -33,8 +34,12 @@
         <footer class="d-lg-none">
             <div class="container-sm">
             {% block footer %}
-                <section>
-                    <p class="text-center">OpenPixl - KhaliKréa</p>
+                <section id="blockCommand">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="text-center">OpenPixl - KhaliKréa</p>
+                        </div>
+                    </div>
                 </section>
             {% endblock %}
             </div>

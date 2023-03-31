@@ -135,4 +135,12 @@ class CourseController extends AbstractController
 
         return $this->redirectToRoute('op_appli_course_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/addstudientcourse/{idmember}', name: 'op_appli_course_addstudientcourse', methods: ['POST', 'GET'])]
+    public function addStudientCourse(Request $request, EntityManagerInterface $entityManager)
+    {
+        return $this->render('appli/course/addStudientCourse.html.twig', [
+
+        ]);
+    }
 }
