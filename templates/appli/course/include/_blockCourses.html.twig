@@ -1,21 +1,20 @@
-
-
-    <div class="row">
-        {% for seance in seances|filter(seance => seance.dateBookAt >= sem.monday and seance.dateBookAt <= sem.friday) %}
-            <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
-                <b>{{ seance.dateBookAt|format_datetime('full', 'none', locale='fr') }}</b>
-                {% for b in bookrooms|filter(b => b.dateBookAt == seance.dateBookAt) %}
-                    {% if b.registrations|length > 0 %}
-                        {% for r in registrations %}
-                        <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#AddRegistration" data-bs-whatever="{{ b.id }}" disabled>{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
-                        {% endfor %}
-                    {% else %}
-                        <button class="btn btn-sm {% if b.registrations|length >= b.place %}btn-outline-secondary{% else %}btn-secondary{% endif %}" data-bs-toggle="modal" data-bs-target="#AddRegistration" data-bs-whatever="{{ b.id }}" {% if b.registrations|length >= b.place %}disabled{% endif %}>{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="col-12 p-2 mt-2">
-            </div>
-        {% endfor %}
-    </div>
+<div class="row">
+    {% for seance in seances|filter(seance => seance.dateBookAt >= sem.monday and seance.dateBookAt <= sem.friday) %}
+        <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
+            <b>{{ seance.dateBookAt|format_datetime('full', 'none', locale='fr') }}</b>
+            {% for b in bookrooms|filter(b => b.dateBookAt == seance.dateBookAt) %}
+                {% if b.registrations|length > 0 %}
+                    {% for r in registrations %}
+                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#AddRegistration" data-bs-whatever="{{ b.id }}" disabled>{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
+                    {% endfor %}
+                {% else %}
+                    <button class="btn btn-sm {% if b.registrations|length >= b.place %}btn-outline-secondary{% else %}btn-secondary{% endif %}" data-bs-toggle="modal" data-bs-target="#AddRegistration" data-bs-whatever="{{ b.id }}" {% if b.registrations|length >= b.place %}disabled{% endif %}>{{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}</button>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
+            <b>Pas de séance sur cette semaine</b>
+        </div>
+    {% endfor %}
+</div>

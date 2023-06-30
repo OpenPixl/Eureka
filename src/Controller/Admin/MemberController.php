@@ -59,7 +59,7 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/member/teacher', name: 'op_admin_member_teacher', methods: ['GET', 'POST'])]
+    #[Route('/admin/member/teacher', name: 'op_admin_member_newteacher', methods: ['GET', 'POST'])]
     public function teacher(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $teacher = new Member();
@@ -86,7 +86,7 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/studient/member/studient', name: 'op_admin_member_studient', methods: ['GET', 'POST'])]
+    #[Route('/admin/member/studient', name: 'op_admin_member_newstudient', methods: ['GET', 'POST'])]
     public function studient(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $studient = new Member();
@@ -123,6 +123,38 @@ class MemberController extends AbstractController
 
     #[Route('/admin/member/{id}/edit', name: 'op_admin_member_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Member $member, MemberRepository $memberRepository): Response
+    {
+        $typemember = $member->getTypemember();
+
+        $form = $this->createForm(MemberType::class, $member);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $memberRepository->save($member, true);
+            if($typemember == "Enseignant"){
+                return $this->redirectToRoute('op_admin_member_listteacher', [], Response::HTTP_SEE_OTHER);
+            }elseif($typemember == "Etudiant"){
+                return $this->redirectToRoute('op_admin_member_liststudient', [], Response::HTTP_SEE_OTHER);
+            }else{
+                return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+        }
+        return $this->render('admin/member/edit.html.twig', [
+            'member' => $member,
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Member $member
+     * @param MemberRepository $memberRepository
+     * @return Response
+     * Edition de la fiche de membre pour les enseignants et les étudiants
+     */
+    #[Route('/member/{id}/edit', name: 'op_webapp_member_edit', methods: ['GET', 'POST'])]
+    public function editMember(Request $request, Member $member, MemberRepository $memberRepository): Response
     {
         $typemember = $member->getTypemember();
 

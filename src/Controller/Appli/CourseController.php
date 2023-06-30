@@ -79,6 +79,7 @@ class CourseController extends AbstractController
                 $friday = date_add(new \DateTime($lastMonday), new \DateInterval('P'.(($i*7)+5).'D'));
                 $row = array('monday' => $monday, 'friday' => $friday);
             }
+            //dd($interval, $monday, $friday, $row);
             array_push($rows, $row);
         }
         // -------------- Bloc complémentaire à la fonction

@@ -9,7 +9,7 @@
     {% for bookroom in bookrooms %}
         <tr class="align-middle">
             <td>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#editBookroom" data-bs-whatever="{{ bookroom.course.id }}">{{ bookroom.dateBookAt ? bookroom.dateBookAt|format_datetime('full', 'none', locale='fr') : '' }}</a> |
+                <a href="#" data-bs-toggle="modal" data-bs-target="#editBookroom" data-bs-whatever="{{ bookroom.id }}">{{ bookroom.dateBookAt ? bookroom.dateBookAt|format_datetime('full', 'none', locale='fr') : '' }}</a> |
                 {{ bookroom.hourBookOpenAt ? bookroom.hourBookOpenAt|date('H:i') : '' }} -
                 {{ bookroom.hourBookClosedAt ? bookroom.hourBookClosedAt|date('H:i') : '' }} |
                 {% if bookroom.forme == "Presentiel" %}
@@ -27,7 +27,7 @@
                     <a class="js-star" href=""><i class="fa-duotone fa-circle-check"></i></a>
                 {% endif %}
                 <a href="{{ path('op_appli_bookroom_show', {'id': bookroom.id}) }}"><i class="fa-duotone fa-eye"></i></a>
-                <a href="{{ path('op_appli_bookroom_edit', {'id': bookroom.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
+                <a href="{{ path('op_appli_bookroom_editonteacher', {'id': bookroom.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
             </td>
         </tr>
     {% else %}

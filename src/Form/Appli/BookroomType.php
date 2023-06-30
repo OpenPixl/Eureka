@@ -37,7 +37,7 @@ class BookroomType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('isActive', CheckboxType::class, [
-                'label' => 'Publié pour les étudiants?',
+                'label' => 'Publié pour les étudiants ?',
                 'required' => false
             ])
             ->add('forme', ChoiceType::class, [

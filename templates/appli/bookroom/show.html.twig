@@ -38,8 +38,43 @@
                 {{ bookroom.updatedAt ? bookroom.updatedAt|date('Y-m-d') : '' }}
             </p>
         </div>
-
     </section>
+
+        <section>
+            <div class="row mt-1 mb-1">
+                <div class="col-12">
+                    <h1>Enseignants</h1>
+                </div>
+            </div>
+            <div class="col-12">
+                <p>
+                    {{ bookroom.dateBookAt ? bookroom.dateBookAt|date('Y-m-d') : '' }}
+                </p>
+                <p>
+                    {{ bookroom.hourBookOpenAt ? bookroom.hourBookOpenAt|date('H:i:s') : '' }}
+                </p>
+                <p>
+                    {{ bookroom.hourBookClosedAt ? bookroom.hourBookClosedAt|date('H:i:s') : '' }}
+                </p>
+                <p>
+                    {{ bookroom.forme }}
+                </p>
+                <p>
+                    {{ bookroom.isActive ? 'Yes' : 'No' }}
+                </p>
+                <p>
+                    {{ bookroom.linkDistanciel }}
+                </p>
+                <p>
+                    {{ bookroom.createdAt ? bookroom.createdAt|date('Y-m-d') : '' }}
+                </p>
+                <p>
+                    {{ bookroom.updatedAt ? bookroom.updatedAt|date('Y-m-d') : '' }}
+                </p>
+            </div>
+        </section>
+
+    {% endif %}
 
     <a href="{{ path('op_appli_bookroom_index') }}">back to list</a>
 

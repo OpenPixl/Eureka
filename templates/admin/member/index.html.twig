@@ -29,6 +29,7 @@
                         <th>Nom</th>
                         <th>Email</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,7 +45,9 @@
                             <a href="#"><i class="fa-duotone fa-eye"></i></a>
                             {% endif %}
                             <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
+                            <a href="{{ path('op_forgot_password_request', {'id': member.id}) }}"><i class="fa-duotone fa-key"></i></a>
                         </td>
+                        <td><a><i class="fa-duotone fa-user-xmark"></i></a></td>
                     </tr>
                 {% else %}
                     <tr>
@@ -63,7 +66,9 @@
                                 <a href="#"><i class="fa-duotone fa-eye"></i></a>
                             {% endif %}
                             <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
+                            <a href="{{ path('op_forgot_password_request', {'id': member.id}) }}"><i class="fa-duotone fa-key"></i></a>
                         </td>
+                        <td><a><i class="fa-duotone fa-user-xmark"></i></a></td>
                     </tr>
                 {% else %}
                     <tr>
@@ -82,7 +87,9 @@
                                     <a href="#"><i class="fa-duotone fa-eye"></i></a>
                                 {% endif %}
                                 <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
+                                <a href="{{ path('op_forgot_password_request', {'id': member.id}) }}"><i class="fa-duotone fa-key"></i></a>
                             </td>
+                            <td><a><i class="fa-duotone fa-user-xmark"></i></a></td>
                         </tr>
                     {% else %}
                         <tr>

@@ -128,9 +128,9 @@ class BookroomController extends AbstractController
     public function editonteacher(Bookroom $bookroom, BookroomRepository $bookroomRepository, CourseRepository $courseRepository, Request $request)
     {
         $member = $this->getUser();
-        $course = $courseRepository->find($idcourse);
+        $course = $courseRepository->find($bookroom->getId());
         $form = $this->createForm(BookroomType::class, $bookroom, [
-            'action'=> $this->generateUrl('op_appli_bookroom_newonteacher', ['idcourse' => $idcourse]),
+            'action'=> $this->generateUrl('op_appli_bookroom_editonteacher', ['id' => $bookroom->getId()]),
             'method'=>'POST',
             'attr' => ['id'=>'formEditBookRoomOnTeacher']
         ]);

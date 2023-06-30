@@ -51,9 +51,6 @@ class Course
     #[ORM\OneToMany(mappedBy: 'course', targetEntity: Bookroom::class)]
     private Collection $seance;
 
-    #[ORM\Column(length: 255)]
-    private ?string $z = null;
-
     #[ORM\ManyToMany(targetEntity: Member::class, inversedBy: 'studientcourse')]
     private Collection $studients;
 
@@ -221,18 +218,6 @@ class Course
                 $seance->setCourse(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getZ(): ?string
-    {
-        return $this->z;
-    }
-
-    public function setZ(string $z): self
-    {
-        $this->z = $z;
 
         return $this;
     }
