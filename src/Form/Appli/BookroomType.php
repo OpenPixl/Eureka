@@ -63,7 +63,22 @@ class BookroomType extends AbstractType
             ->add('room', EntityType::class,[
                 'class' => Room::class,
             ])
-
+            ->add('isReplicate', CheckboxType::class, [
+                'label' => 'Répéter la séance ?',
+                'required' => false
+            ])
+            ->add('numberOfReplicate', TextType::class, [
+                'label' => 'Combien ?',
+                'required' => false
+            ])
+            ->add('choiceTime', ChoiceType::class, [
+                'label' => 'Forme',
+                'choices'  => [
+                    'Jours' => 'day',
+                    'Semaines' => 'week',
+                ],
+                'required' => false
+            ])
         ;
     }
 

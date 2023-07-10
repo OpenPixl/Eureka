@@ -54,6 +54,9 @@ class Course
     #[ORM\ManyToMany(targetEntity: Member::class, inversedBy: 'studientcourse')]
     private Collection $studients;
 
+    #[ORM\Column(length: 15, nullable: true)]
+    private ?string $color = null;
+
     public function __construct()
     {
         $this->bookrooms = new ArrayCollection();
@@ -242,6 +245,18 @@ class Course
     public function removeStudient(Member $studient): self
     {
         $this->studients->removeElement($studient);
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }

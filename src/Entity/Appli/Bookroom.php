@@ -60,6 +60,18 @@ class Bookroom
     #[ORM\OneToMany(mappedBy: 'seance', targetEntity: Registration::class)]
     private Collection $registrations;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isReplicate = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $numberOfReplicate = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $choiceTime = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $uniq = null;
+
     public function __construct()
     {
         $this->registrations = new ArrayCollection();
@@ -250,5 +262,53 @@ class Bookroom
     public function __toString()
     {
         return $this->dateBookAt->format('l d M Y');
+    }
+
+    public function isIsReplicate(): ?bool
+    {
+        return $this->isReplicate;
+    }
+
+    public function setIsReplicate(?bool $isReplicate): self
+    {
+        $this->isReplicate = $isReplicate;
+
+        return $this;
+    }
+
+    public function getNumberOfReplicate(): ?int
+    {
+        return $this->numberOfReplicate;
+    }
+
+    public function setNumberOfReplicate(?int $numberOfReplicate): self
+    {
+        $this->numberOfReplicate = $numberOfReplicate;
+
+        return $this;
+    }
+
+    public function getChoiceTime(): ?string
+    {
+        return $this->choiceTime;
+    }
+
+    public function setChoiceTime(?string $choiceTime): self
+    {
+        $this->choiceTime = $choiceTime;
+
+        return $this;
+    }
+
+    public function getUniq(): ?string
+    {
+        return $this->uniq;
+    }
+
+    public function setUniq(?string $uniq): self
+    {
+        $this->uniq = $uniq;
+
+        return $this;
     }
 }

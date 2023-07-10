@@ -1,39 +1,38 @@
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th class="col-10">Séances</th>
-            <th class="col-2">...</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for bookroom in bookrooms %}
-        <tr class="align-middle">
-            <td>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#editBookroom" data-bs-whatever="{{ bookroom.id }}">{{ bookroom.dateBookAt ? bookroom.dateBookAt|format_datetime('full', 'none', locale='fr') : '' }}</a> |
-                {{ bookroom.hourBookOpenAt ? bookroom.hourBookOpenAt|date('H:i') : '' }} -
-                {{ bookroom.hourBookClosedAt ? bookroom.hourBookClosedAt|date('H:i') : '' }} |
-                {% if bookroom.forme == "Presentiel" %}
-                    <i class="fa-duotone fa-chalkboard-user"></i>
-                {% else %}
-                    <i class="fa-duotone fa-podcast"></i>
-                {% endif %} |
-                {{ bookroom.place - bookroom.registrations|length}}
-            </td>
-
-            <td>
-                {% if bookroom.isActive == 0 %}
-                    <a class="js-star" href=""><i class="fa-duotone fa-circle-minus"></i></a>
-                {% else %}
-                    <a class="js-star" href=""><i class="fa-duotone fa-circle-check"></i></a>
-                {% endif %}
-                <a href="{{ path('op_appli_bookroom_show', {'id': bookroom.id}) }}"><i class="fa-duotone fa-eye"></i></a>
-                <a href="{{ path('op_appli_bookroom_editonteacher', {'id': bookroom.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
-            </td>
-        </tr>
+{% for sem in sems %}
+    {% if loop.first %}
+        <div id="{{ loop.index }}" class="row mt-1 mb-1" >
+            <div class="col-12">
+                <h5 class="text-end">
+                    <i class="fa-duotone fa-backward"></i>&nbsp;
+                    du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
+                    &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
+                </h5>
+                {{ include('appli/bookroom/_blockListe.html.twig') }}
+            </div>
+        </div>
+    {% elseif loop.last %}
+        <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
+            <div class="col-12">
+                <h5 class="text-end">
+                    <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
+                    du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
+                    &nbsp;<i class="fa-duotone fa-forward"></i>
+                </h5>
+                {# intégrer la liste #}
+                {{ include('appli/bookroom/_blockListe.html.twig') }}
+            </div>
+        </div>
     {% else %}
-        <tr>
-            <td colspan="5">Pas de séances enregistrées</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
+            <div class="col-12">
+                <h5 class="text-end">
+                    <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
+                    du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
+                    &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
+                </h5>
+                {# intégrer la liste #}
+                {{ include('appli/bookroom/_blockListe.html.twig') }}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}

@@ -7,7 +7,9 @@ use App\Entity\Appli\Course;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -18,7 +20,9 @@ class CourseType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('level')
+            ->add('level', TextType::class, [
+                'label' => 'Niveau'
+            ])
             ->add('logoFile',FileType::class,[
                 'mapped' => false,
                 'required' => false,
@@ -35,7 +39,7 @@ class CourseType extends AbstractType
                 ],
             ])
             ->add('teacher', EntityType::class, [
-                'label'=> 'Catégorie',
+                'label'=> "Choix de l'enseignant",
                 'class' => Member::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('m')
@@ -48,7 +52,19 @@ class CourseType extends AbstractType
                 },
                 'choice_attr' => function (Member $member, $key, $index) {
                     return ['data-data' => $member->getFirstName().' '.$member->getLastName() ];
-                }
+                },
+                'attr' => [
+                    'class' => 'form-select form-select-sm'
+                ]
+            ])
+            ->add('color', ColorType::class, [
+                'label' => 'Couleur',
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
+                'attr' => [
+                    'class' => 'form-control form-control-color'
+                ]
             ])
         ;
     }

@@ -58,7 +58,7 @@ class RegistrationRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->orderBy('r.id', 'ASC')
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
 

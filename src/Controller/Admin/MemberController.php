@@ -75,6 +75,7 @@ class MemberController extends AbstractController
             $teacher->setIsVerified(1);
             $teacher->setPassword($hashedPassword);
             $teacher->setTypemember('Enseignant');
+            $teacher->setRoles(["ROLE_ADMIN"]);
             $memberRepository->save($teacher, true);
 
             return $this->redirectToRoute('op_admin_member_listteacher', [], Response::HTTP_SEE_OTHER);
@@ -102,6 +103,7 @@ class MemberController extends AbstractController
             $studient->setIsVerified(1);
             $studient->setPassword($hashedPassword);
             $studient->setTypemember('Etudiant');
+            $studient->setRoles(["ROLE_USER"]);
             $memberRepository->save($studient, true);
 
             return $this->redirectToRoute('op_admin_member_liststudient', [], Response::HTTP_SEE_OTHER);

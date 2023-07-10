@@ -51,6 +51,34 @@ class BookroomRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * Récupére les infos d'une séance
+     */
+    public function bookroom($bookroom)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.forme, b.dateBookAt, b.uniq')
+            ->andWhere('b.id = :bookroom')
+            ->setParameter('bookroom', $bookroom)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * Liste les séances par l'identifiant "uniq"
+     */
+    public function listByUniq($uniq)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.id, b.uniq')
+            ->andWhere('b.uniq = :uniq')
+            ->setParameter('uniq', $uniq)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Bookroom[] Returns an array of Bookroom objects
 //     */

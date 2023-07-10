@@ -42,6 +42,7 @@ class RegistrationController extends AbstractController
             'form' => $form,
         ]);
     }
+
     #[Route('/newonstudient/{idbookroom}', name: 'app_appli_registration_newonstudient', methods: ['GET', 'POST'])]
     public function newonstudient(Request $request, EntityManagerInterface $entityManager, $idbookroom, BookroomRepository $bookroomRepository): Response
     {
@@ -57,8 +58,6 @@ class RegistrationController extends AbstractController
             'attr' => ['id'=>'formAddRegistrationOnStudient']
         ]);
         $form->handleRequest($request);
-
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $registration->setStudient($user);
@@ -82,16 +81,34 @@ class RegistrationController extends AbstractController
             'form' => $form
         ]);
 
-        //dd($view->getContent());
         return $this->json([
             'code'=> 200,
             'form' => $view->getContent()
         ], 200);
 
-        //return $this->renderForm('appli/registration/new.html.twig', [
-        //    'registration' => $registration,
-        //    'form' => $form,
-        //]);
+    }
+
+    #[Route('/dellonstudient/{id}', name: 'app_appli_registration_dellonstudient', methods: ['GET', 'POST'])]
+    public function dellonstudient(Registration $registration, BookroomRepository $bookroomRepository, RegistrationRepository $registrationRepository): Response
+    {
+        //dd($registration);
+        $user = $this->getUser();
+        $idbookroom = $registration->getSeance();
+        $bookroom = $bookroomRepository->find($idbookroom);
+
+        $now = new \DateTime('now') ;
+
+        $interval = new \DateInterval('P2W');
+        $twoweekbefore = date_diff($bookroom->getDateBookAt(), $now);
+        if ($twoweekbefore->days < 15) {
+            $AuthDell = 0;
+        } else {
+            $AuthDell = 1;
+        }
+        return $this->json([
+            'code' => 200,
+            'AuthDell' => $AuthDell
+        ]);
     }
 
     #[Route('/{id}', name: 'app_appli_registration_show', methods: ['GET'])]

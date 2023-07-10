@@ -7,6 +7,31 @@
     <script>
         window.onload = function(){
 
+            const btnSupprBookroom = document.getElementById('btnSupprBookroom')
+            const btnSupprAllBookroom = document.getElementById('btnSupprAllBookroom')
+
+            // -----------------------------------------------------------
+            // Avancée dans les semaines
+            // -----------------------------------------------------------
+            function forwardSem(event){
+                event.preventDefault()
+                let firstDiv = this.parentNode.parentNode.parentNode
+                let nextDiv = firstDiv.nextElementSibling
+                firstDiv.style.display = "none"
+                nextDiv.removeAttribute('style')
+            }
+
+            // -----------------------------------------------------------
+            // Reculer dans les semaines
+            // -----------------------------------------------------------
+            function backwardSem(event){
+                event.preventDefault()
+                let firstDiv = this.parentNode.parentNode.parentNode
+                let nextDiv = firstDiv.previousElementSibling
+                firstDiv.style.display = "none"
+                nextDiv.removeAttribute('style')
+            }
+
 
             // Ajout de Cours sur sa fiche Enseignant
             // -------------------------------------
@@ -39,11 +64,33 @@
                     .post(urlAddBookRoom, formAddBookRoom)
                     .then(function(response){
                         document.getElementById('liste').innerHTML = response.data.liste;
-                        document.getElementById('addBookroom').addEventListener('hide.bs.modal')
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.forwardSem').forEach(function (link) {
+                            link.addEventListener('click', forwardSem);
+                        })
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.backwardSem').forEach(function (link) {
+                            link.addEventListener('click', backwardSem);
+                        })
+                        document.getElementById('btnSupprBookroom').addEventListener('click', supprBookroom)
+                        document.getElementById('btnSupprAllBookroom').addEventListener('click', supprAllBookroom)
+                    })
+                    .catch(error => {
+                        // initialisation du toaster
+                        var toastHTMLElement = document.getElementById("liveToastAlerte");
+                        var message = error.message;
+                        var toastBody = toastHTMLElement.querySelector('.toast-body') // selection de l'élément possédant le message
+                        toastBody.textContent = message;
+                        var toastElement = new bootstrap.Toast(toastHTMLElement, {
+                            animation: true,
+                            autohide: true,
+                            delay: 3000,
+                        });
+                        toastElement.show();
                     })
             })
 
-            // Edition de Cours sur sa fiche Enseignant
+            // Edition d'une séance sur sa fiche Enseignant
             // -------------------------------------
             // I. Gestion de la modale
             const modalEditBookroom = document.getElementById('editBookroom')
@@ -52,7 +99,6 @@
                 const recipient = button.getAttribute('data-bs-whatever')
                 const modalBodyInput = modalEditBookroom.querySelector('.idcourse')
                 modalBodyInput.value = recipient
-                console.log(recipient)
                 axios
                     .get('/appli/bookroom/editonteacher/' + recipient)
                     .then(function (response) {
@@ -75,9 +121,88 @@
                     .post(urlEditBookRoom, formEditBookRoom)
                     .then(function(response){
                         document.getElementById('liste').innerHTML = response.data.liste;
-                        document.getElementById('EditBookroom').addEventListener('hide.bs.modal')
+                        if(document.getElementById('EditBookroom')){
+                            document.getElementById('EditBookroom').addEventListener('hide.bs.modal')
+                        }
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.forwardSem').forEach(function (link) {
+                            link.addEventListener('click', forwardSem);
+                        })
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.backwardSem').forEach(function (link) {
+                            link.addEventListener('click', backwardSem);
+                        })
+                        document.getElementById('btnSupprBookroom').addEventListener('click', supprBookroom)
+                        document.getElementById('btnSupprAllBookroom').addEventListener('click', supprAllBookroom)
                     })
             })
+
+            // Block Java - suppression de séance depuis la fiche Enseignant
+            // -------------------------------------
+            // I. Gestion de la modale
+            const modalSupprBookroom = document.getElementById('supprBookroom')
+            modalSupprBookroom.addEventListener('show.bs.modal', function (event){
+                const button = event.relatedTarget
+                const recipient = button.getAttribute('data-bs-whatever')
+                const modalBodyInput = modalSupprBookroom.querySelector('.idcourse')
+                axios
+                    .get('/appli/bookroom/listbyuuid/' + recipient)
+                    .then(function(response){
+                        const data = response.data.bookroom
+                        let uniqs = response.data.uniqs
+                        let dateJson = data.dateBookAt
+                        var dateObj = new Date(dateJson);
+                        var year = dateObj.getFullYear();
+                        var month = dateObj.getMonth() + 1;
+                        var day = dateObj.getDate();
+
+                        let html = "<div>" + "<p>Vous êtez sur le point de supprimer la séance du "+ day + '/' + month + '/' + year +" réalisée en "+ data.forme +" </p>"
+                        "</div>"
+                        document.getElementById('ModalBodySupprBookroom').innerHTML = html
+                        document.getElementById('btnSupprBookroom').href = "/appli/bookroom/del/" + recipient
+                        if(uniqs.length > 1){
+                            document.getElementById('btnSupprAllBookroom').href = "/appli/bookroom/delall/" + data.uniq
+                            document.getElementById('btnSupprAllBookroom').classList.remove("disabled")
+                        }
+
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.forwardSem').forEach(function (link) {
+                            link.addEventListener('click', forwardSem);
+                        })
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.backwardSem').forEach(function (link) {
+                            link.addEventListener('click', backwardSem);
+                        })
+                        document.getElementById('btnSupprBookroom').addEventListener('click', supprBookroom)
+                        document.getElementById('btnSupprAllBookroom').addEventListener('click', supprAllBookroom)
+                    })
+            })
+
+            function supprBookroom(event){
+                event.preventDefault()
+                let url = this.href
+                axios
+                    .post(url)
+                    .then(function(response){
+                        document.getElementById('liste').innerHTML = response.data.liste
+                    })
+            }
+            function supprAllBookroom(event){
+                event.preventDefault()
+                let url = this.href
+                console.log(url)
+            }
+
+            // Ajout d'un évènement sur le click supprcustomer
+            document.querySelectorAll('a.forwardSem').forEach(function (link) {
+                link.addEventListener('click', forwardSem);
+            })
+            // Ajout d'un évènement sur le click supprcustomer
+            document.querySelectorAll('a.backwardSem').forEach(function (link) {
+                link.addEventListener('click', backwardSem);
+            })
+            document.getElementById('btnSupprBookroom').addEventListener('click', supprBookroom)
+            document.getElementById('btnSupprAllBookroom').addEventListener('click', supprAllBookroom)
 
         }
     </script>
@@ -86,9 +211,6 @@
 {% block main %}
     {{ include('include/_blockuser.html.twig') }}
     <div id="blockAdmin">
-        <div class="row mt-1 mb-1 justify-content-center">
-            <h2 class="text-end">Mon espace Enseignant.e</h2>
-        </div>
         {% for course in courses %}
         <div class="row mt-1 mb-1 justify-content-center">
             <div class="col-12">
@@ -120,11 +242,15 @@
                 <div class="modal-body">
                     <input class="idcourse" type="hidden" value="">
                     <div id="ModalBodyNewBookroom">
-
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnAddBookroom" type="button" class="btn btn-sm btn-primary">Ajouter le cours</button>
+                    <button id="btnAddBookroom" type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Ajouter le cours</button>
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
@@ -141,14 +267,56 @@
                 <div class="modal-body">
                     <input class="idcourse" type="hidden" value="">
                     <div id="ModalBodyEditBookroom">
-
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnEditBookroom" type="button" class="btn btn-sm btn-primary">Ajouter le cours</button>
+                    <button id="btnEditBookroom" type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Ajouter le cours</button>
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>
     </div>
+    <!-- suppression de séances -->
+    <div class="modal fade" id="supprBookroom" tabindex="-1" aria-labelledby="supprBookroom" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Suppression d'une ou de plusieurs séances</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="ModalBodySupprBookroom">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-warning" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="btnSupprBookroom" type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">Supprimer le cours</a>
+                    <a id="btnSupprAllBookroom" type="button" class="btn btn-sm btn-warning disabled" data-bs-dismiss="modal">Supprimer les cours liés</a>
+                    <button type="button" class="btn btn-sm btn-secondary " data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Message d'erreur -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToastAlerte" class="toast text-bg-warning" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="..." class="rounded me-2" alt="">
+                <strong class="me-auto">Alerte</strong>
+                <small>à l'instant</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

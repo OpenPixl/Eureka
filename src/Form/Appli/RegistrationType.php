@@ -20,7 +20,7 @@ class RegistrationType extends AbstractType
             ->add('seance', EntityType::class, [
                 'label'=> 'Catégorie',
                 'attr' => [
-                    'class' => 'form-control form-control-sm',
+                    'class' => 'form-select form-select-sm',
                 ],
                 'class' => Bookroom::class,
                 'query_builder' => function (EntityRepository $er) {

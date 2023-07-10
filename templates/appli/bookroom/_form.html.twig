@@ -39,7 +39,18 @@
     </table>
     <table class="mt-3">
         <tr>
-            <td colspan="2"><h5>Répétition</h5></td>
+            <td class="col-7"><h5>Récurrence de la séance</h5></td>
+            <td class="col-2"></td>
+            <td class="col-3"></td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.isReplicate) }}</td>
+            <td colspan="2">{{ form_widget(form.isReplicate, {'attr':{'class':'form-check-input'}}) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.numberOfReplicate) }}</td>
+            <td>{{ form_widget(form.numberOfReplicate, {'attr':{'class':'form-control form-control-sm'}}) }}</td>
+            <td>{{ form_widget(form.choiceTime, {'attr':{'class':'form-select form-select-sm'}}) }}</td>
         </tr>
     </table>
 {{ form_end(form) }}

@@ -62,6 +62,28 @@
                     .then(function(response){
                     })
             })
+
+            // Suppression de Cours sur sa fiche Client
+            // -------------------------------------
+            // I. Gestion de la modale
+            const modalDellRegistration = document.getElementById('DellRegistration')
+            modalDellRegistration.addEventListener('show.bs.modal', function (event){
+                const button = event.relatedTarget
+                const recipient = button.getAttribute('data-bs-whatever')
+                const modalBodyInput = modalDellRegistration.querySelector('.idBookroom2')
+                modalBodyInput.value = recipient
+                axios
+                    .get('/appli/registration/dellonstudient/' + recipient)
+                    .then(function (response) {
+                        let AuthDell = response.data.AuthDell;
+                        if(AuthDell === 0){
+                            document.getElementById('ModalBodyDellRegistration').innerHTML = "<p>Malheusement, il ne vous est pas possible de supprimer ce cours. Vous êtes en dessous des 15 jours de réservation.</p>"
+                            document.getElementById('btnDellRegistration').classList.add("disabled")
+                        }else{
+                            document.getElementById('ModalBodyDellRegistration').innerHTML = '<p><b>Attention</b><br>En cliquant sur le bouton "Débloquer la réservation", Vous allez supprimer votre réservation.</p>'
+                        }
+                    })
+            })
         }
     </script>
 {% endblock %}
@@ -69,54 +91,68 @@
 {% block main %}
     {{ include('include/_blockuser.html.twig') }}
     <section id="blockAdmin" class="container-sm">
-            <div class="row mt-1 mb-1">
+            <div class="row mt-3 mb-1">
                 <div class="col-12">
-                    <h2 class="text-end">{{ course.name }}</h2>
+                    <table class="table">
+                        <tr class="align-middle">
+                            <td class="col-2">
+                                <a href="{{ path('op_webapp_public_home') }}"><i class="fa-duotone fa-turn-down-left fa-xl"></i></a>
+                            </td>
+                            <td class="col-10">
+                                <h2 class="text-end">{{ course.name }}</h2>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         {% for sem in sems %}
             {% if loop.first %}
-            <div id="{{ loop.index }}" class="row mt-1 mb-1" >
-                <div class="col-12">
-                    <h5 class="text-end">
-                        <i class="fa-duotone fa-backward"></i>&nbsp;
-                        du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
-                        &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
-                    </h5>
-                    {{ include('appli/course/include/_blockCourses.html.twig') }}
+                {# Première semaine de la boucle #}
+                <div id="{{ loop.index }}" class="row mt-1 mb-1" >
+                    <div class="col-12">
+                        <h5 class="text-end">
+                            <i class="fa-duotone fa-backward"></i>&nbsp;
+                            du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
+                            &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
+                        </h5>
+                        {# Vue des séances disponibles #}
+                        {{ include('appli/course/include/_blockCourses.html.twig') }}
+                    </div>
                 </div>
-            </div>
             {% elseif loop.last %}
-            <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
-                <div class="col-12">
-                    <h5 class="text-end">
-                        <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
-                        du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
-                        &nbsp;<i class="fa-duotone fa-forward"></i>
-                    </h5>
-                    {{ include('appli/course/include/_blockCourses.html.twig') }}
+                {# Dernière semaine de la boucle #}
+                <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
+                    <div class="col-12">
+                        <h5 class="text-end">
+                            <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
+                            du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
+                            &nbsp;<i class="fa-duotone fa-forward"></i>
+                        </h5>
+                        {# Vue des séances disponibles #}
+                        {{ include('appli/course/include/_blockCourses.html.twig') }}
+                    </div>
                 </div>
-            </div>
             {% else %}
-            <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
-                <div class="col-12">
-                    <h5 class="text-end">
-                        <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
-                        du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
-                        &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
-                    </h5>
-                    {{ include('appli/course/include/_blockCourses.html.twig') }}
+                {# Semaines dans la boucle #}
+                <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
+                    <div class="col-12">
+                        <h5 class="text-end">
+                            <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
+                            du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
+                            &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
+                        </h5>
+                        {# Vue des séances disponibles #}
+                        {{ include('appli/course/include/_blockCourses.html.twig') }}
+                    </div>
                 </div>
-            </div>
             {% endif %}
         {% endfor %}
     </section>
-
     {{ include('appli/course/_delete_form.html.twig') }}
 {% endblock %}
 
 {% block modals %}
-    <!-- Réservetion d'une séance au profil -->
+    <!-- Réservation d'une séance au profil -->
     <div class="modal fade" id="AddRegistration" tabindex="-1" aria-labelledby="AddRegistration" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -132,6 +168,31 @@
                 </div>
                 <div class="modal-footer">
                     <button id="btnAddRegistration" type="button" class="btn btn-sm btn-primary">Bloquer la réservation</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Réservation d'une séance au profil -->
+    <div class="modal fade" id="DellRegistration" tabindex="-1" aria-labelledby="DellRegistration" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Réservation de la séance</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input class="idBookroom2" type="hidden" value="">
+                    <div id="ModalBodyDellRegistration">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-warning" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnDellRegistration" type="button" class="btn btn-sm btn-primary">Débloquer la réservation</button>
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 </div>
             </div>
