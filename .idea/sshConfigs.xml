@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="51.210.149.29" id="8fda553a-2c3e-4dd5-921e-61c78ad2062f" port="22" customName="OVH - SERVER Mutualisé" nameFormat="CUSTOM" username="ubuntu" useOpenSSHConfig="true">
+        <option name="customName" value="OVH - SERVER Mutualisé" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

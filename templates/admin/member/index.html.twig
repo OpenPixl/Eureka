@@ -23,7 +23,7 @@
             {% else %}
                 <h2 class="text-end">Liste des membres</h2>
             {% endif %}
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Nom</th>
@@ -36,7 +36,7 @@
                 {% if app.request.attributes.get('_route') == 'op_admin_member_listteacher' %}
                 {% for member in members|filter(member => member.typemember == 'Enseignant') %}
                     <tr>
-                        <td>{{ member.firstName }} {{ member.lastName }}</td>
+                        <td><a href="">{{ member.firstName }} {{ member.lastName }}</a>{{ member.firstName }} {{ member.lastName }}</td>
                         <td>{{ member.email }}</td>
                         <td>
                             {% if member.typemember == 'Enseignant.e' %}

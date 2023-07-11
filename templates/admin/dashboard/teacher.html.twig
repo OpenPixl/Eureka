@@ -211,15 +211,17 @@
 {% block main %}
     {{ include('include/_blockuser.html.twig') }}
     <div id="blockAdmin">
-        {% for course in courses %}
         <div class="row mt-1 mb-1 justify-content-center">
             <div class="col-12">
                 <h2 class="text-center">Mon planning</h2>
             </div>
+        </div>
+        {% for course in courses %}
+        <div id="Course-{{ course.id }}" class="row mt-1 mb-1 justify-content-center">
             <div>
                 <p>{% if course.logoName is not null %}<img src="" alt="{{ course.name }}">{% else %}{% endif %}{{ course.name|upper }}</p>
             </div>
-            <div id="liste">
+            <div class="col-12" id="liste">
                 {{ render(controller('App\\Controller\\Appli\\BookroomController::listbyCourse', {'idcourse':course.id})) }}
             </div>
             <div class="col-12">

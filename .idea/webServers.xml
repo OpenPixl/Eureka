@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="669e7765-35cd-4992-ad35-3a6b3259ca08" name="OVH - SERVER Mutualisé">
+        <fileTransfer rootFolder="/var/www/html/Eureka" accessType="SFTP" host="51.210.149.29" port="22" sshConfigId="8fda553a-2c3e-4dd5-921e-61c78ad2062f" sshConfig="OVH - SERVER Mutualisé">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
