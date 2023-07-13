@@ -1,0 +1,48 @@
+<button id="bookroom-{{ b.id }}"
+        class="btn btn-sm
+            {# Boucle pour préciser le style du bouton selon les cas de figure #}
+            {% if b.registrations|length >= b.place %}
+                {% for r in registrations|filter(r => r.idbook == b.id) %}
+                    btn-success
+                {% else %}
+                    btn-outline-secondary
+                {% endfor %}
+            {% else %}
+                {% for r in registrations|filter(r => r.idbook == b.id) %}
+                btn-success
+                {% else %}
+                btn-outline-success
+                {% endfor %}
+            {% endif %}
+            "
+        data-bs-toggle="modal"
+        {% for r in registrations|filter(r => r.idbook == b.id) %}
+            data-bs-target="#DellRegistration"
+        {% else %}
+            data-bs-target="#AddRegistration"
+        {% endfor %}
+        {% for r in registrations|filter(r => r.idbook == b.id) %}
+            data-bs-whatever="{{ r.id }}"
+        {% else %}
+            data-bs-whatever="{{ b.id }}"
+        {% endfor %}
+
+        {# Boucle pour disactiver le bouton si le cours est complet #}
+        {% if b.registrations|length >= b.place %}
+            {% for r in registrations|filter(r => r.idbook == b.id) %}
+            {% else %}
+                disabled
+            {% endfor %}
+        {% endif %}
+>
+    {# Boucle pour adapter le contenu du bouton si le cours estr complet #}
+    {% if b.registrations|length >= b.place %}
+        {% for r in registrations|filter(r => r.idbook == b.id) %}
+            {{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}
+        {% else %}
+            Complet
+        {% endfor %}
+    {% else %}
+        {{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}
+    {% endif %}
+</button>

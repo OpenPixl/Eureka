@@ -44,7 +44,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/newonstudient/{idbookroom}', name: 'app_appli_registration_newonstudient', methods: ['GET', 'POST'])]
-    public function newonstudient(Request $request, EntityManagerInterface $entityManager, $idbookroom, BookroomRepository $bookroomRepository): Response
+    public function newonstudient(Request $request, EntityManagerInterface $entityManager, $idbookroom, BookroomRepository $bookroomRepository, RegistrationRepository $registrationRepository): Response
     {
         $user = $this->getUser();
         //dd($user);
@@ -64,9 +64,21 @@ class RegistrationController extends AbstractController
             $entityManager->persist($registration);
             $entityManager->flush();
 
+            $registrations = array();
+            $registration = $registrationRepository->searchRegistrationByUserAndBookrooms($bookroom->getId(), $user->getId());
+            if($registration){
+                array_push($registrations, $registration);
+            }
+            //dd($registrations);
+
             return $this->json([
                 'code' => 200,
                 'message' => "Vous êtes enregistré sur cette séance.",
+                'idbookroom' => $bookroom->getId(),
+                'button' => $this->renderView('appli/registration/include/_buttonRegistration.html.twig', [
+                    'b' => $bookroom,
+                    'registrations' =>$registrations
+                ])
             ]);
         }
 
@@ -100,14 +112,23 @@ class RegistrationController extends AbstractController
             'attr' => ['id'=>'formDellRegistrationOnStudient']
         ]);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->remove($registration);
             $entityManager->flush();
 
+            $registrations = $registrationRepository->findBy(['seance' => $bookroom->getId()]);
+
+            //dd($registrations);
 
             return $this->json([
                 'code' => 200,
                 'message' => "Votre désinscription a été prise en compte.",
+                'idbookroom' => $bookroom->getId(),
+                'button' => $this->renderView('appli/registration/include/_buttonRegistration.html.twig', [
+                    'b' => $bookroom,
+                    'registrations' =>$registrations
+                ])
             ]);
         }
         $view = $this->renderForm('appli/registration/new.html.twig', [

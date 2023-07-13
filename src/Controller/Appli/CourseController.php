@@ -63,7 +63,7 @@ class CourseController extends AbstractController
     {
         $user = $this->getUser();
         $rows = $timeService->Sems();
-        // Liste des séances rattachées à la matières
+        // Liste des séances rattachées à la matière
         $bookrooms = $bookroomRepository->findBy(['course'=> $course], ['hourBookOpenAt' => 'ASC']);
         $seances = $bookroomRepository->seance($course->getId());
 
