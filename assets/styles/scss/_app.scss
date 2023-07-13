@@ -48,6 +48,10 @@ body{
       font-family: 'Comfortaa-Light', sans-serif;
       a{
         color:$green;
+        text-decoration: none;
+      }
+      a.red{
+        color: $red;
       }
       .btn-primary{
         font-family: 'Comfortaa-Light', sans-serif;

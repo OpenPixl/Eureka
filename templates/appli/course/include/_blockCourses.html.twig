@@ -2,16 +2,25 @@
     {# Affiche les séances comprisent entre le Lundi et le Vendredi #}
     {% for seance in seances|filter(seance => seance.dateBookAt >= sem.monday and seance.dateBookAt <= sem.friday) %}
         <div class="col-12 p-2 mt-2" style="border: 1px solid #fff;border-radius: 5px;">
-            <b>{{ seance.dateBookAt|format_datetime('full', 'none', locale='fr') }}</b>
+            {{ seance.dateBookAt|format_datetime('full', 'none', locale='fr') }}
             {# Boucle sur les séances pésente à la date #}
             {% for b in bookrooms|filter(b => b.dateBookAt == seance.dateBookAt) %}
-                <button
+                <button id="bookroom-{{ b.id }}"
                     class="btn btn-sm
-                    {% for r in registrations|filter(r => r.idbook == b.id) %}
-                    btn-success
+                    {# Boucle pour préciser le style du bouton selon les cas de figure #}
+                    {% if b.registrations|length >= b.place %}
+                        {% for r in registrations|filter(r => r.idbook == b.id) %}
+                            btn-success
+                        {% else %}
+                            btn-outline-secondary
+                        {% endfor %}
                     {% else %}
-                    btn-secondary
-                    {% endfor %}
+                        {% for r in registrations|filter(r => r.idbook == b.id) %}
+                        btn-success
+                        {% else %}
+                        btn-outline-success
+                        {% endfor %}
+                    {% endif %}
                     "
                     data-bs-toggle="modal"
                     {% for r in registrations|filter(r => r.idbook == b.id) %}
@@ -25,9 +34,24 @@
                         data-bs-whatever="{{ b.id }}"
                     {% endfor %}
 
-                    {% if b.registrations|length >= b.place %}disabled{% endif %}
+                    {# Boucle pour disactiver le bouton si le cours est complet #}
+                    {% if b.registrations|length >= b.place %}
+                        {% for r in registrations|filter(r => r.idbook == b.id) %}
+                        {% else %}
+                            disabled
+                        {% endfor %}
+                    {% endif %}
                 >
-                    {{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}
+                    {# Boucle pour adapter le contenu du bouton si le cours estr complet #}
+                    {% if b.registrations|length >= b.place %}
+                        {% for r in registrations|filter(r => r.idbook == b.id) %}
+                            {{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}
+                        {% else %}
+                            Complet
+                        {% endfor %}
+                    {% else %}
+                        {{ b.hourBookOpenAt|date('H:i') }} - {{ b.hourBookClosedAt|date('H:i') }}
+                    {% endif %}
                 </button>
             {% endfor %}
         </div>

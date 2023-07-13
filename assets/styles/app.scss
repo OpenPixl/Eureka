@@ -1,4 +1,5 @@
 $green : #92B923;
+$red : #CC1521;
 
 
 //*** ------------- Import Variables of bootstrap ---------------- ***//
@@ -6,6 +7,7 @@ $green : #92B923;
 //*** ------------- Import Variables of my theme ---------------- ***//
 @import 'assets/styles/scss/app';
 @import 'assets/styles/scss/table';
+@import 'assets/styles/scss/modal';
 //*** ------------- Import fonts ---------------- ***//
 @import "scss/mixins/fontface";
 @include fontface('Comfortaa-light', '../../fonts/comfortaa/Comfortaa-Light', 300, normal);

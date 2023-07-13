@@ -64,14 +64,9 @@ class RegistrationController extends AbstractController
             $entityManager->persist($registration);
             $entityManager->flush();
 
-
-
-            //return $this->redirectToRoute('app_appli_registration_index', [], Response::HTTP_SEE_OTHER);
-
             return $this->json([
                 'code' => 200,
                 'message' => "Vous êtes enregistré sur cette séance.",
-
             ]);
         }
 
@@ -89,25 +84,44 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/dellonstudient/{id}', name: 'app_appli_registration_dellonstudient', methods: ['GET', 'POST'])]
-    public function dellonstudient(Registration $registration, BookroomRepository $bookroomRepository, RegistrationRepository $registrationRepository): Response
+    public function dellonstudient(Registration $registration, EntityManagerInterface $entityManager, BookroomRepository $bookroomRepository, RegistrationRepository $registrationRepository, Request $request, ): Response
     {
-        //dd($registration);
         $user = $this->getUser();
         $idbookroom = $registration->getSeance();
         $bookroom = $bookroomRepository->find($idbookroom);
-
+        // Controle des 15 jours + création de la variable de condition.
         $now = new \DateTime('now') ;
-
-        $interval = new \DateInterval('P2W');
         $twoweekbefore = date_diff($bookroom->getDateBookAt(), $now);
-        if ($twoweekbefore->days < 15) {
-            $AuthDell = 0;
-        } else {
-            $AuthDell = 1;
+        if ($twoweekbefore->days < 15) { $AuthDell = 0; } else { $AuthDell = 1; }
+
+        $form = $this->createForm(RegistrationType::class, $registration, [
+            'action'=> $this->generateUrl('app_appli_registration_dellonstudient', ['id' => $registration->getId()]),
+            'method'=>'POST',
+            'attr' => ['id'=>'formDellRegistrationOnStudient']
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->remove($registration);
+            $entityManager->flush();
+
+
+            return $this->json([
+                'code' => 200,
+                'message' => "Votre désinscription a été prise en compte.",
+            ]);
         }
+        $view = $this->renderForm('appli/registration/new.html.twig', [
+            'registration' => $registration,
+            'bookroom' => $bookroom,
+            'form' => $form,
+            'AuthDell' => $AuthDell,
+        ]);
+
+
         return $this->json([
             'code' => 200,
-            'AuthDell' => $AuthDell
+            'AuthDell' => $AuthDell,
+            'form' => $view->getContent()
         ]);
     }
 

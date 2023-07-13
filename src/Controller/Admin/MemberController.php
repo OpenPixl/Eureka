@@ -118,8 +118,12 @@ class MemberController extends AbstractController
     #[Route('/admin/member/{id}', name: 'app_admin_member_show', methods: ['GET'])]
     public function show(Member $member): Response
     {
-        return $this->render('admin/member/show.html.twig', [
-            'member' => $member,
+        return $this->json([
+            'code' => 200,
+            'message' => "Action sur lme membre sélectionné",
+            'actions' => $this->renderView('admin/member/show.html.twig', [
+                'member' => $member,
+            ])
         ]);
     }
 
@@ -203,5 +207,23 @@ class MemberController extends AbstractController
         }
 
         return $this->redirectToRoute('op_admin_member_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/admin/member/disactivated/{id}', name: 'op_admin_member_disactivated', methods: ['POST'])]
+    public function disactivated(Member $member, MemberRepository $memberRepository)
+    {
+        $who = $member->getFirstName().' '.$member->getLastName();
+        $member->setIsVerified(0);
+        $memberRepository->save($member, true);
+
+        $members = $memberRepository->findAll();
+
+        return $this->json([
+            'code' => 200,
+            'message' => "Le profil du membre ".$who." a été correctement désactivé.",
+            'liste' => $this->renderView('admin/member/include/_liste.html.twig', [
+                'members' => $members
+            ])
+        ], 200);
     }
 }

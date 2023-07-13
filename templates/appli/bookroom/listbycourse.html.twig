@@ -2,22 +2,22 @@
     {% if loop.first %}
         <div id="{{ loop.index }}" class="row mt-1 mb-1" >
             <div class="col-12">
-                <h5 class="text-end">
+                <h6 class="text-end">
                     <i class="fa-duotone fa-backward"></i>&nbsp;
                     du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
                     &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
-                </h5>
+                </h6>
                 {{ include('appli/bookroom/_blockListe.html.twig') }}
             </div>
         </div>
     {% elseif loop.last %}
         <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
             <div class="col-12">
-                <h5 class="text-end">
+                <h6 class="text-end">
                     <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
                     du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
                     &nbsp;<i class="fa-duotone fa-forward"></i>
-                </h5>
+                </h6>
                 {# intégrer la liste #}
                 {{ include('appli/bookroom/_blockListe.html.twig') }}
             </div>
@@ -25,11 +25,11 @@
     {% else %}
         <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
             <div class="col-12">
-                <h5 class="text-end">
+                <h6 class="text-end">
                     <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
                     du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
                     &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
-                </h5>
+                </h6>
                 {# intégrer la liste #}
                 {{ include('appli/bookroom/_blockListe.html.twig') }}
             </div>

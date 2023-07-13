@@ -1,0 +1,78 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Member{% endblock %}
+
+{% block main %}
+    <section id="blockUser">
+        <div class="row mt-1 mb-1 align-items-center">
+            <div class="col-3">
+                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
+            </div>
+            <div class="col-9">
+                <h1 class="text-end" style="color: #FFFFFF;">Espace Administrateur</h1>
+            </div>
+        </div>
+    </section>
+    {% if app.request.attributes.get('_route') == 'op_admin_member_showteacher' %}
+    <section>
+        <div class="row mt-1 mb-1">
+            <div class="col-12">
+                <h1>Enseignants</h1>
+            </div>
+        </div>
+        <div class="col-12">
+            <p>
+                {{ member.firstName }} {{ member.lastname }}
+                {{ member.home }} / {{ member.email }}
+            </p>
+            <p>
+
+            </p>
+        </div>
+    </section>
+    {% elseif app.request.attributes.get('_route') == 'op_admin_member_showstudent' %}
+    <section>
+        <div class="row mt-1 mb-1">
+            <div class="col-12">
+                <h1>Etudiant</h1>
+            </div>
+        </div>
+        <div class="col-12">
+            <p>
+                {{ member.firstName }} {{ member.lastname }}
+                {{ member.home }} / {{ member.email }}
+            </p>
+            <p>
+
+            </p>
+        </div>
+
+    </section>
+    {% else %}
+    <section>
+        <div class="row mt-1 mb-1">
+            <div class="col-12">
+                <h1>Enseignants</h1>
+            </div>
+        </div>
+        <div class="col-12">
+            <p>
+                {{ member.firstName }} {{ member.lastname }}
+                {{ member.home }} / {{ member.email }}
+            </p>
+            <p>
+
+            </p>
+        </div>
+
+    </section>
+    {% endif %}
+
+
+
+    <a href="{{ path('op_admin_member_index') }}">back to list</a>
+
+    <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}">edit</a>
+
+
+{% endblock %}

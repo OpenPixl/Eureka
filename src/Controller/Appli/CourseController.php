@@ -62,9 +62,7 @@ class CourseController extends AbstractController
         ): Response
     {
         $user = $this->getUser();
-
         $rows = $timeService->Sems();
-        // -------------- Bloc complémentaire à la fonction
         // Liste des séances rattachées à la matières
         $bookrooms = $bookroomRepository->findBy(['course'=> $course], ['hourBookOpenAt' => 'ASC']);
         $seances = $bookroomRepository->seance($course->getId());
@@ -77,7 +75,6 @@ class CourseController extends AbstractController
                 array_push($registrations, $registration);
             }
         }
-        //dd($registrations);
 
         return $this->render('appli/course/showforstudient.html.twig', [
             'sems' => $rows,

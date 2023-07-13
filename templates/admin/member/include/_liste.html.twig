@@ -1,0 +1,61 @@
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if app.request.attributes.get('_route') == 'op_admin_member_listteacher' %}
+        {% for member in members|filter(member => member.typemember == 'Enseignant') %}
+            <tr>
+                <td>
+                    {% if member.isVerified == 'true' %}
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalStudient" data-bs-whatever="{{ member.id }}">{{ member.firstName }} {{ member.lastName }}</a>
+                    {% else %}
+                        <a class="red" href="#" data-bs-toggle="modal" data-bs-target="#modalStudient" data-bs-whatever="{{ member.id }}">{{ member.firstName }} {{ member.lastName }}</a>
+                    {% endif %}
+                </td>
+                <td>{{ member.email }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">Pas d'enregistrement</td>
+            </tr>
+        {% endfor %}
+    {% elseif app.request.attributes.get('_route') == 'op_admin_member_liststudient'%}
+        {% for member in members|filter(member => member.typemember == 'Etudiant') %}
+            <tr>
+                <td>{{ member.firstName }} {{ member.lastName }}</td>
+                <td>{{ member.email }}</td>
+                <td>
+                    {% if member.typemember == 'Enseignant.e' %}
+                        <a href="#"><i class="fa-duotone fa-eye"></i></a>
+                    {% elseif member.typemember == 'Etudiant.e' %}
+                        <a href="#"><i class="fa-duotone fa-eye"></i></a>
+                    {% endif %}
+                    <a href="{{ path('op_admin_member_edit', {'id': member.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
+                    <a href="{{ path('op_forgot_password_request', {'id': member.id}) }}"><i class="fa-duotone fa-key"></i></a>
+                </td>
+                <td><a><i class="fa-duotone fa-user-xmark"></i></a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">Pas d'enregistrement</td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        {% for member in members %}
+            <tr>
+                <td>{{ member.firstName }} {{ member.lastName }}</td>
+                <td>{{ member.email }}</td>
+                <td><a><i class="fa-duotone fa-user-xmark"></i></a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">Pas d'enregistrement</td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+</table>

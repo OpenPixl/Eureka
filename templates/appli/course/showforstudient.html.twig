@@ -60,10 +60,19 @@
                 axios
                     .post(urlAddRegistration, formAddRegistration)
                     .then(function(response){
+                        // Mettre à jour le bloc des cours
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.forwardSem').forEach(function (link) {
+                            link.addEventListener('click', forwardSem);
+                        })
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.backwardSem').forEach(function (link) {
+                            link.addEventListener('click', backwardSem);
+                        })
                     })
             })
 
-            // Suppression de Cours sur sa fiche Client
+            // Désinscription du cours sur sa fiche Client
             // -------------------------------------
             // I. Gestion de la modale
             const modalDellRegistration = document.getElementById('DellRegistration')
@@ -80,9 +89,30 @@
                             document.getElementById('ModalBodyDellRegistration').innerHTML = "<p>Malheusement, il ne vous est pas possible de supprimer ce cours. Vous êtes en dessous des 15 jours de réservation.</p>"
                             document.getElementById('btnDellRegistration').classList.add("disabled")
                         }else{
-                            document.getElementById('ModalBodyDellRegistration').innerHTML = '<p><b>Attention</b><br>En cliquant sur le bouton "Débloquer la réservation", Vous allez supprimer votre réservation.</p>'
+                            document.getElementById('ModalBodyDellRegistration').innerHTML = response.data.form
                         }
                     })
+            })
+            // II. Soumission du formulaire
+            document.getElementById('btnDellRegistration').addEventListener('click', function (event){
+                event.preventDefault()
+                let formDellRegistration = document.getElementById('formDellRegistrationOnStudient')
+                let urlDellRegistration = formDellRegistration.action
+                axios
+                    .post(urlDellRegistration, formDellRegistration)
+                    .then(function(response){
+                        // Mettre à jour le bloc des cours
+                        document.getElementById('bookroom-151').outerHTML = '<button class="btn btn-sm btn-outline-warning">test</button>'
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.forwardSem').forEach(function (link) {
+                            link.addEventListener('click', forwardSem);
+                        })
+                        // Ajout d'un évènement sur le click supprcustomer
+                        document.querySelectorAll('a.backwardSem').forEach(function (link) {
+                            link.addEventListener('click', backwardSem);
+                        })
+                    })
+
             })
         }
     </script>
@@ -167,7 +197,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnAddRegistration" type="button" class="btn btn-sm btn-primary">Bloquer la réservation</button>
+                    <button id="btnAddRegistration" type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Bloquer la réservation</button>
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 </div>
             </div>
@@ -192,7 +222,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnDellRegistration" type="button" class="btn btn-sm btn-primary">Débloquer la réservation</button>
+                    <button id="btnDellRegistration" type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Débloquer la réservation</button>
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 </div>
             </div>

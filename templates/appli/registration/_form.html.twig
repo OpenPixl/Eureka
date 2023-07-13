@@ -1,11 +1,22 @@
-{{ form_start(form) }}
-    <p>
-        Nombre de place restantes : {{ bookroom.place - bookroom.registrations|length }}
-    </p>
-    <p>
-        Vous êtes sur le point de réserver la séance du :<br>
-        {{ bookroom.dateBookAt|format_datetime('medium', 'none', locale='fr') }}, de {{ bookroom.hourBookOpenAt|date("H:i") }} à {{ bookroom.hourBookClosedAt|date("H:i") }}
-    </p>
-    {{ form_widget(form.seance, {'attr':{'class': 'd-none'}}) }}
-    {{ form_widget(form) }}
-{{ form_end(form) }}
+{% if AuthDell is defined %}
+    {{ form_start(form) }}
+        <p>
+            <b>Attention</b><br>
+            En cliquant sur le bouton "Débloquer la réservation", Vous allez supprimer votre réservation.
+        </p>
+        {{ form_widget(form.seance, {'attr':{'class': 'd-none'}}) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% else %}
+    {{ form_start(form) }}
+        <p>
+            Nombre de place restantes : {{ bookroom.place - bookroom.registrations|length }}
+        </p>
+        <p>
+            Vous êtes sur le point de réserver la séance du :<br>
+            {{ bookroom.dateBookAt|format_datetime('medium', 'none', locale='fr') }}, de {{ bookroom.hourBookOpenAt|date("H:i") }} à {{ bookroom.hourBookClosedAt|date("H:i") }}
+        </p>
+        {{ form_widget(form.seance, {'attr':{'class': 'd-none'}}) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endif %}

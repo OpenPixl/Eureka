@@ -32,6 +32,27 @@
                 nextDiv.removeAttribute('style')
             }
 
+            // -----------------------------------------------------------
+            // Avancée dans les matières
+            // -----------------------------------------------------------
+            function forwardMat(event){
+                event.preventDefault()
+                let firstDiv = this.parentNode.parentNode.parentNode
+                let nextDiv = firstDiv.nextElementSibling
+                firstDiv.style.display = "none"
+                nextDiv.removeAttribute('style')
+            }
+
+            // -----------------------------------------------------------
+            // Reculer dans les matières
+            // -----------------------------------------------------------
+            function backwardMat(event){
+                event.preventDefault()
+                let firstDiv = this.parentNode.parentNode.parentNode
+                let nextDiv = firstDiv.previousElementSibling
+                firstDiv.style.display = "none"
+                nextDiv.removeAttribute('style')
+            }
 
             // Ajout de Cours sur sa fiche Enseignant
             // -------------------------------------
@@ -217,17 +238,55 @@
             </div>
         </div>
         {% for course in courses %}
-        <div id="Course-{{ course.id }}" class="row mt-1 mb-1 justify-content-center">
-            <div>
-                <p>{% if course.logoName is not null %}<img src="" alt="{{ course.name }}">{% else %}{% endif %}{{ course.name|upper }}</p>
-            </div>
-            <div class="col-12" id="liste">
-                {{ render(controller('App\\Controller\\Appli\\BookroomController::listbyCourse', {'idcourse':course.id})) }}
-            </div>
-            <div class="col-12">
-                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addBookroom" data-bs-whatever="{{ course.id }}">Nouvelle séance</button>
-            </div>
-        </div>
+            {% if loop.first %}
+                <div id="Course-{{ course.id }}" class="row mt-1 mb-1 justify-content-center" >
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-1"><a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;</div>
+                            <div class="col-4 text-center"><p>{% if course.logoName is not null %}<img src="" alt="{{ course.name }}">{% else %}{% endif %}{{ course.name|upper }}</p></div>
+                            <div class="col-1"><a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a></div>
+                        </div>
+                    </div>
+                    <div class="col-12" id="liste">
+                        {{ render(controller('App\\Controller\\Appli\\BookroomController::listbyCourse', {'idcourse':course.id})) }}
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addBookroom" data-bs-whatever="{{ course.id }}">Nouvelle séance</button>
+                    </div>
+                </div>
+            {% elseif loop.last %}
+                <div id="Course-{{ course.id }}" class="row mt-1 mb-1 justify-content-center" style="display: none;">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-1"><a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;</div>
+                            <div class="col-4 text-center"><p>{% if course.logoName is not null %}<img src="" alt="{{ course.name }}">{% else %}{% endif %}{{ course.name|upper }}</p></div>
+                            <div class="col-1"><a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a></div>
+                        </div>
+                    </div>
+                    <div class="col-12" id="liste">
+                        {{ render(controller('App\\Controller\\Appli\\BookroomController::listbyCourse', {'idcourse':course.id})) }}
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addBookroom" data-bs-whatever="{{ course.id }}">Nouvelle séance</button>
+                    </div>
+                </div>
+            {% else %}
+                <div id="Course-{{ course.id }}" class="row mt-1 mb-1 justify-content-center" style="display: none;">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-1"><a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;</div>
+                            <div class="col-4 text-center"><p>{% if course.logoName is not null %}<img src="" alt="{{ course.name }}">{% else %}{% endif %}{{ course.name|upper }}</p></div>
+                            <div class="col-1"><a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a></div>
+                        </div>
+                    </div>
+                    <div class="col-12" id="liste">
+                        {{ render(controller('App\\Controller\\Appli\\BookroomController::listbyCourse', {'idcourse':course.id})) }}
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addBookroom" data-bs-whatever="{{ course.id }}">Nouvelle séance</button>
+                    </div>
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
