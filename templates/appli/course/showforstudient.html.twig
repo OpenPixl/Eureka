@@ -92,6 +92,9 @@
                             document.getElementById('ModalBodyDellRegistration').innerHTML = "<p>Malheusement, il ne vous est pas possible de supprimer ce cours. Vous êtes en dessous des 15 jours de réservation.</p>"
                             document.getElementById('btnDellRegistration').classList.add("disabled")
                         }else{
+                            if(document.getElementById('btnDellRegistration').classList.contains("disabled")){
+                                document.getElementById('btnDellRegistration').classList.remove("disabled")
+                            }
                             document.getElementById('ModalBodyDellRegistration').innerHTML = response.data.form
                         }
                     })
@@ -144,11 +147,11 @@
                 {# Première semaine de la boucle #}
                 <div id="{{ loop.index }}" class="row mt-1 mb-1" >
                     <div class="col-12">
-                        <h5 class="text-end">
+                        <h6 class="text-end">
                             <i class="fa-duotone fa-backward"></i>&nbsp;
                             du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
                             &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
-                        </h5>
+                        </h6>
                         {# Vue des séances disponibles #}
                         {{ include('appli/course/include/_blockCourses.html.twig') }}
                     </div>
@@ -157,11 +160,11 @@
                 {# Dernière semaine de la boucle #}
                 <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
                     <div class="col-12">
-                        <h5 class="text-end">
+                        <h6 class="text-end">
                             <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
                             du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
                             &nbsp;<i class="fa-duotone fa-forward"></i>
-                        </h5>
+                        </h6>
                         {# Vue des séances disponibles #}
                         {{ include('appli/course/include/_blockCourses.html.twig') }}
                     </div>
@@ -170,11 +173,11 @@
                 {# Semaines dans la boucle #}
                 <div id="{{ loop.index }}" class="row mt-1 mb-1" style="display: none;">
                     <div class="col-12">
-                        <h5 class="text-end">
+                        <h6 class="text-end">
                             <a href="#" class="backwardSem"><i class="fa-duotone fa-backward"></i></a>&nbsp;
                             du {{ sem.monday|date('d/m/Y') }} au {{ sem.friday|date('d/m/Y') }}
                             &nbsp;<a href="#" class="forwardSem"><i class="fa-duotone fa-forward"></i></a>
-                        </h5>
+                        </h6>
                         {# Vue des séances disponibles #}
                         {{ include('appli/course/include/_blockCourses.html.twig') }}
                     </div>
