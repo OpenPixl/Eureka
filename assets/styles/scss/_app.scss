@@ -58,7 +58,7 @@ body{
         font-size: 1rem;
         line-height: 2rem;
         background: #2E6699;
-        border: 2px solid #FFFFFF;
+        border: 1px solid #FFFFFF;
         border-radius: 8px;
         color: #FFFFFF;
 
@@ -75,7 +75,7 @@ body{
         font-size: 1rem;
         line-height: 2rem;
         background: #E5700E;
-        border: 2px solid #FFFFFF;
+        border: 1px solid #FFFFFF;
         border-radius: 8px;
         color: #FFFFFF;
       }
@@ -158,6 +158,13 @@ body{
   }
   footer{
     color:#ffffff;
+    a{
+      color: #ffffff;
+      text-decoration:none;
+    }
+    a:hover{
+      color:$green;
+    }
     p{
       font-family: 'Comfortaa-Light', sans-serif;
     }
