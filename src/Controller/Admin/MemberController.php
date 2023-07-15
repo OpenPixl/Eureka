@@ -9,10 +9,12 @@ use App\Repository\Appli\BookroomRepository;
 use App\Repository\Appli\CourseRepository;
 use App\Repository\Appli\RegistrationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 class MemberController extends AbstractController
@@ -41,13 +43,34 @@ class MemberController extends AbstractController
     }
 
     #[Route('/admin/member/new', name: 'op_admin_member_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, MemberRepository $memberRepository): Response
+    public function new(Request $request, MemberRepository $memberRepository, SluggerInterface $slugger): Response
     {
         $member = new Member();
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Enregistrement de l'avatar du Membre
+            /** @var UploadedFile $avatarFile */
+            $avatarFile = $form->get('avatarName')->getData();
+            if ($avatarFile) {
+                $originalavatarFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeavatarFilename = $slugger->slug($originalavatarFilename);
+                $newavatarFilename = $safeavatarFilename . $avatarFile->guessExtension();
+                try {
+                    $avatarFile->move(
+                        $this->getParameter('banniere_directory'),
+                        $newavatarFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+            }
+
+            $member->setAvatarName($newavatarFilename);
+
             $memberRepository->save($member, true);
 
             return $this->redirectToRoute('app_admin_member_index', [], Response::HTTP_SEE_OTHER);
@@ -60,13 +83,33 @@ class MemberController extends AbstractController
     }
 
     #[Route('/admin/member/teacher', name: 'op_admin_member_newteacher', methods: ['GET', 'POST'])]
-    public function teacher(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $passwordHasher): Response
+    public function teacher(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger): Response
     {
         $teacher = new Member();
         $form = $this->createForm(MemberType::class, $teacher);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Enregistrement de l'avatar du Membre
+            /** @var UploadedFile $avatarFile */
+            $avatarFile = $form->get('avatarName')->getData();
+            if ($avatarFile) {
+                $originalavatarFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeavatarFilename = $slugger->slug($originalavatarFilename);
+                $newavatarFilename = $safeavatarFilename . $avatarFile->guessExtension();
+                try {
+                    $avatarFile->move(
+                        $this->getParameter('banniere_directory'),
+                        $newavatarFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+            }
+
+            $teacher->setAvatarName($newavatarFilename);
 
             $hashedPassword = $passwordHasher->hashPassword(
                 $teacher,
@@ -88,13 +131,33 @@ class MemberController extends AbstractController
     }
 
     #[Route('/admin/member/studient', name: 'op_admin_member_newstudient', methods: ['GET', 'POST'])]
-    public function studient(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $passwordHasher): Response
+    public function studient(Request $request, MemberRepository $memberRepository, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger): Response
     {
         $studient = new Member();
         $form = $this->createForm(MemberType::class, $studient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Enregistrement de l'avatar du Membre
+            /** @var UploadedFile $avatarFile */
+            $avatarFile = $form->get('avatarName')->getData();
+            if ($avatarFile) {
+                $originalavatarFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeavatarFilename = $slugger->slug($originalavatarFilename);
+                $newavatarFilename = $safeavatarFilename . $avatarFile->guessExtension();
+                try {
+                    $avatarFile->move(
+                        $this->getParameter('banniere_directory'),
+                        $newavatarFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+            }
+
+            $studient->setAvatarName($newavatarFilename);
 
             $hashedPassword = $passwordHasher->hashPassword(
                 $studient,
