@@ -23,6 +23,20 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    #[Route('/bookroom/{idbookroom}', name: 'app_appli_registration_listbybookroom', methods: ['GET'])]
+    public function listByBookroom(RegistrationRepository $registrationRepository, $idbookroom,BookroomRepository $bookroomRepository): Response
+    {
+        $bookroom = $bookroomRepository->find($idbookroom);
+
+        return $this->json([
+            'code' => 200,
+            'message' => 'Ok',
+            'liste' => $this->render('appli/registration/index.html.twig', [
+                'registrations' => $registrationRepository->findBy(['seance' => $bookroom->getId()]),
+            ])
+        ],200);
+    }
+
     #[Route('/new', name: 'app_appli_registration_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
