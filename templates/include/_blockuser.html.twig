@@ -17,12 +17,12 @@
                         <h2 class="text-end">Mon espace Enseignant.e</h2>
                     </div>
                 {% elseif is_granted('ROLE_ADMIN') %}
-                    <h1 class="text-end" style="color: #FFFFFF;">Administration</h1><br>
+                    <h1 class="text-end" style="color: #FFFFFF;">Administration</h1>
                     <div class="row mt-1 mb-1 justify-content-center">
                         <h2 class="text-end">Mon espace Enseignant.e</h2>
                     </div>
                 {% elseif is_granted('ROLE_USER') %}
-                    <h1 class="text-end" style="color: #FFFFFF;">Espace Etudiants</h1><br>
+                    <h1 class="text-end" style="color: #FFFFFF;">Espace Etudiants</h1>
                 {% endif %}
             {% endif %}
         </div>
