@@ -1,16 +1,14 @@
 <table class="table table-bordered">
     <thead>
     <tr>
-        <th class="col-9">Séances</th>
-        <th class="col-3">...</th>
+        <th class="col-12">Séances</th>
     </tr>
     </thead>
     <tbody>
-
     {% for bookroom in bookrooms|filter(bookroom => bookroom.dateBookAt >= sem.monday and bookroom.dateBookAt <= sem.friday) %}
         <tr class="align-middle">
             <td>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#editBookroom" data-bs-whatever="{{ bookroom.id }}">{{ bookroom.dateBookAt ? bookroom.dateBookAt|format_datetime('full', 'none', locale='fr') : '' }}</a> |
+                <a href="#" data-bs-toggle="modal" data-bs-target="#optionsBookroom" data-bs-whatever="{{ bookroom.id }}">{{ bookroom.dateBookAt ? bookroom.dateBookAt|format_datetime('full', 'none', locale='fr') : '' }}</a> |
                 {{ bookroom.hourBookOpenAt ? bookroom.hourBookOpenAt|date('H:i') : '' }} -
                 {{ bookroom.hourBookClosedAt ? bookroom.hourBookClosedAt|date('H:i') : '' }} |
                 {% if bookroom.forme == "Presentiel" %}
@@ -19,27 +17,6 @@
                     <i class="fa-duotone fa-podcast"></i>
                 {% endif %} |
                 {{ bookroom.place - bookroom.registrations|length}}
-            </td>
-
-            <td>
-                <div class="row">
-                    <div class="col-8">
-                        <div class="text-start">
-                            {% if bookroom.isActive == 0 %}
-                                <a class="js-star" href=""><i class="fa-duotone fa-circle-minus"></i></a>
-                            {% else %}
-                                <a class="js-star" href=""><i class="fa-duotone fa-circle-check"></i></a>
-                            {% endif %}
-                            <a href="{{ path('op_appli_bookroom_show', {'id': bookroom.id}) }}"><i class="fa-duotone fa-eye"></i></a>
-                            <a href="{{ path('op_appli_bookroom_editonteacher', {'id': bookroom.id}) }}"><i class="fa-duotone fa-pen-to-square"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="text-end">
-                            <a href="#" class="text-danger" data-bs-toggle="modal" data-bs-target="#supprBookroom" data-bs-whatever="{{ bookroom.id }}"><i class="fa-duotone fa-screen-users"></i></a>
-                        </div>
-                    </div>
-                </div>
             </td>
         </tr>
     {% else %}

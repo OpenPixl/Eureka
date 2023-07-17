@@ -17,6 +17,12 @@ body{
       font-family: 'Comfortaa-Light', sans-serif;
       font-size: 1.2rem;
     }
+    .green{
+      color: $green;
+    }
+    .blue{
+      color:#0d6efd;
+    }
     .btn:disabled{
       opacity:1;
     }

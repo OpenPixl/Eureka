@@ -1,12 +1,19 @@
 .modal{
-  a{
-    color : $green;
-    text-decoration: none;
+  .modal-body{
+    a{
+      color : $green;
+      text-decoration: none;
+    }
+    a.red{
+      color: $red;
+    }
+    .card{
+      border: none;
+    }
   }
-  a.red{
-    color: $red;
-  }
-  .card{
-    border: none;
+  .modal-footer{
+    a{
+      color: #ffffff;
+    }
   }
 }

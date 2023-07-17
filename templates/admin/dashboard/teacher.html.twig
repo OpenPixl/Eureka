@@ -54,6 +54,23 @@
                 nextDiv.removeAttribute('style')
             }
 
+
+            // Modal des options de la séance
+            // -------------------------------------
+            // I. Gestion de la modale
+            const modalOptionsBookroom = document.getElementById('optionsBookroom')
+            modalOptionsBookroom.addEventListener('show.bs.modal', function (event){
+                const button = event.relatedTarget
+                const recipient = button.getAttribute('data-bs-whatever')
+                const modalBodyInput = modalOptionsBookroom.querySelector('.idoptions')
+                modalBodyInput.value = recipient
+                axios
+                    .get('/appli/bookroom/modal/' + recipient)
+                    .then(function(response){
+                        document.getElementById('ModalBodyOptionsBookroom').innerHTML = response.data.content
+                    })
+            })
+
             // Ajout de Cours sur sa fiche Enseignant
             // -------------------------------------
             // I. Gestion de la modale
@@ -248,6 +265,23 @@
 
 {% block modals %}
     {{ parent() }}
+    <!-- Réservation d'une séance au profil -->
+    <div class="modal fade" id="optionsBookroom" tabindex="-1" aria-labelledby="optionsBookroom" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <input class="idoptions" type="hidden" value="">
+                    <div id="ModalBodyOptionsBookroom">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Ajout de séances -->
     <div class="modal fade" id="addBookroom" tabindex="-1" aria-labelledby="addBookroom" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

@@ -47,7 +47,7 @@ class BookroomController extends AbstractController
     #[Route('/listbycourse/{idcourse}', name: 'op_appli_bookroom_listbycourse', methods: ['GET'])]
     public function listbyCourse(BookroomRepository $bookroomRepository, $idcourse): Response
     {
-        $now = new \DateTime('now') ;
+        $now = new \DateTime('now');
         $now = strtotime($now->format('Y/m/d'));
         $rows = array();
 
@@ -56,22 +56,27 @@ class BookroomController extends AbstractController
             if(date('w',$now) == 1 ){
                 $interval = new \DateInterval('P'.($i*7).'D');
                 $monday = date_add(new \DateTime('now'), $interval);
+                $monday->setTime(0, 0, 0);
                 $friday = date_add(new \DateTime('now'), new \DateInterval('P'.(($i*7)+5).'D'));
+                $friday->setTime(0, 0, 0);
                 $row = array('monday' => $monday, 'friday' => $friday);
             }else{
                 $interval = new \DateInterval('P'.($i*7).'D');
                 $lastMonday = date('Y/m/d',strtotime('this week', $now));
                 $monday = date_add(new \DateTime($lastMonday), $interval);
+                $monday->setTime(0, 0, 0);
                 $friday = date_add(new \DateTime($lastMonday), new \DateInterval('P'.(($i*7)+5).'D'));
+                $friday->setTime(0, 0, 0);
                 $row = array('monday' => $monday, 'friday' => $friday);
             }
             //dd($interval, $monday, $friday, $row);
             array_push($rows, $row);
         }
+        //dd($bookroomRepository->findBy(['course'=> $idcourse]));
 
         return $this->render('appli/bookroom/listbycourse.html.twig', [
             'sems' => $rows,
-            'bookrooms' => $bookroomRepository->findBy(['course'=> $idcourse]),
+            'bookrooms' => $bookroomRepository->findBy(['course'=> $idcourse], ['dateBookAt' => 'ASC']),
         ]);
     }
 
@@ -187,6 +192,22 @@ class BookroomController extends AbstractController
         return $this->render('appli/bookroom/show.html.twig', [
             'bookroom' => $bookroom,
         ]);
+    }
+
+    /*
+     * Affiche la séance dans une modal
+     */
+    #[Route('/modal/{id}', name:'op_appli_bookroom_modal', methods: ['GET'])]
+    public function showOnModal(Bookroom $bookroom)
+    {
+
+        return $this->json([
+            'code' => 200,
+            'message' => '',
+            'content' => $this->renderView('appli/bookroom/include/_modalBookroomTeacher.html.twig', [
+                'bookroom' => $bookroom,
+            ])
+        ],200);
     }
 
     #[Route('/{id}/edit', name: 'op_appli_bookroom_edit', methods: ['GET', 'POST'])]
