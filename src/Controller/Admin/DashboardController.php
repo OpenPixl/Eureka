@@ -28,7 +28,11 @@ class DashboardController extends AbstractController
     #[Route('/super/dashboard', name: 'op_admin_dashboard_super')]
     public function super(): Response
     {
-        return $this->render('admin/dashboard/super.html.twig');
+        $hasAccessSuper = $this->isGranted('ROLE_SUPER_ADMIN');
+        if($hasAccessSuper == true){
+            return $this->render('admin/dashboard/super.html.twig');
+        }
+        return $this->redirectToRoute('op_public_security_login');
     }
 
     #[Route('/admin/teacher', name: 'op_admin_dashboard_teacher')]
