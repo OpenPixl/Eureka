@@ -31,7 +31,7 @@ class RegistrationController extends AbstractController
         return $this->json([
             'code' => 200,
             'message' => 'Ok',
-            'liste' => $this->render('appli/registration/index.html.twig', [
+            'liste' => $this->renderView('appli/registration/index.html.twig', [
                 'registrations' => $registrationRepository->findBy(['seance' => $bookroom->getId()]),
             ])
         ],200);

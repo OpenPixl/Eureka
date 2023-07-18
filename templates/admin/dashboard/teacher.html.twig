@@ -9,6 +9,7 @@
 
             const btnSupprBookroom = document.getElementById('btnSupprBookroom')
             const btnSupprAllBookroom = document.getElementById('btnSupprAllBookroom')
+            const btnPublishBookroom = document.getElementById('btnPublishBookroom')
 
             // -----------------------------------------------------------
             // Avancée dans les semaines
@@ -55,9 +56,9 @@
             }
 
 
-            // Modal des options de la séance
+            // Gestion des options de la séance
             // -------------------------------------
-            // I. Gestion de la modale
+            // I. Ouverture de la modale
             const modalOptionsBookroom = document.getElementById('optionsBookroom')
             modalOptionsBookroom.addEventListener('show.bs.modal', function (event){
                 const button = event.relatedTarget
@@ -68,6 +69,7 @@
                     .get('/appli/bookroom/modal/' + recipient)
                     .then(function(response){
                         document.getElementById('ModalBodyOptionsBookroom').innerHTML = response.data.content
+                        document.getElementById('btnPublishBookroom').addEventListener('click', publishBookroom)
                     })
             })
 
@@ -83,7 +85,7 @@
                 axios
                     .get('/appli/registration/bookroom/' + recipient)
                     .then(function(response){
-                        document.getElementById('ModalBodylistStudiant').innerHTML = response.data.content
+                        document.getElementById('ModalBodylistStudiant').innerHTML = response.data.liste
                     })
             })
 
@@ -241,10 +243,22 @@
                         document.getElementById('liste').innerHTML = response.data.liste
                     })
             }
+
             function supprAllBookroom(event){
                 event.preventDefault()
                 let url = this.href
                 console.log(url)
+            }
+
+            function publishBookroom(event){
+                event.preventDefault()
+                let url = this.href
+                axios
+                    .post(url)
+                    .then(function(response){
+                        document.getElementById('cardPublish').innerHTML = response.data.card
+                        document.getElementById('btnPublishBookroom').addEventListener('click', publishBookroom)
+                    })
             }
 
             // Ajout d'un évènement sur le click supprcustomer
@@ -257,6 +271,10 @@
             })
             document.getElementById('btnSupprBookroom').addEventListener('click', supprBookroom)
             document.getElementById('btnSupprAllBookroom').addEventListener('click', supprAllBookroom)
+            if(btnPublishBookroom){
+                btnPublishBookroom.addEventListener('click', publishBookroom)
+            }
+
 
         }
     </script>

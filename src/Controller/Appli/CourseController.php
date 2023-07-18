@@ -53,6 +53,9 @@ class CourseController extends AbstractController
         ]);
     }
 
+    /*
+     * Liste les séances par créneaux d'une semaine : Partei étudiant
+     */
     #[Route('/showforstudient/{id}', name: 'op_appli_course_showforstudient', methods: ['GET'])]
     public function showForStudient(
         Course $course,
@@ -64,7 +67,7 @@ class CourseController extends AbstractController
         $user = $this->getUser();
         $rows = $timeService->Sems();
         // Liste des séances rattachées à la matière
-        $bookrooms = $bookroomRepository->findBy(['course'=> $course], ['hourBookOpenAt' => 'ASC']);
+        $bookrooms = $bookroomRepository->findBy(['course'=> $course, 'isActive' => 1], ['hourBookOpenAt' => 'ASC']);
         $seances = $bookroomRepository->seance($course->getId());
 
         $registrations = array();

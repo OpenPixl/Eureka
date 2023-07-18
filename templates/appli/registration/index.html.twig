@@ -1,17 +1,19 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Nom & Prénom</th>
+            <th class="col-11">Nom & Prénom</th>
+            <th class="col-1"></th>
         </tr>
     </thead>
     <tbody>
     {% for registration in registrations %}
         <tr>
             <td>{{ registration.studient.firstName }} {{ registration.studient.firstName }}</td>
+            <td class="red"><i class="fa-duotone fa-user-minus"></i></td>
         </tr>
     {% else %}
         <tr>
-            <td colspan="4">Pas d'étudiant.e inscrit.e</td>
+            <td colspan="4">Pas d'étudiant.e inscrit.e pour l'instant.</td>
         </tr>
     {% endfor %}
     </tbody>

@@ -186,6 +186,36 @@ class BookroomController extends AbstractController
         ], 200);
     }
 
+    #[Route('/publish/{id}', name: 'op_appli_bookroom_publish', methods: ['GET', 'POST'])]
+    public function publishBookroom(Bookroom $bookroom, BookroomRepository $bookroomRepository)
+    {
+        $isActiv = $bookroom->isIsActive();
+        if($isActiv == true){
+            $bookroom->setIsActive(0);
+            $bookroomRepository->add($bookroom, true);
+            return $this->json([
+                'code' => 200,
+                'message' => 'La séance a été mise à jour avec la publication mise à : '.$bookroom->isIsActive(),
+                'card' => $this->renderView('appli/bookroom/include/_cardPublishBookroom.html.twig', [
+                    'bookroom' => $bookroom
+                ])
+            ], 200);
+        }else{
+            $bookroom->setIsActive(1);
+            $bookroomRepository->add($bookroom, true);
+            return $this->json([
+                'code' => 200,
+                'message' => 'La séance a été mise à jour avec la publication mise à : '.$bookroom->isIsActive(),
+                'card' => $this->renderView('appli/bookroom/include/_cardPublishBookroom.html.twig', [
+                    'bookroom' => $bookroom
+                ])
+            ], 200);
+        }
+
+
+
+    }
+
     #[Route('/{id}', name: 'op_appli_bookroom_show', methods: ['GET'])]
     public function show(Bookroom $bookroom): Response
     {

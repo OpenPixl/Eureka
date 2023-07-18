@@ -44,8 +44,11 @@ class BookroomRepository extends ServiceEntityRepository
             ->select('
                 DISTINCT b.dateBookAt        
             ')
+            ->andWhere('b.isActive = :isActive')
+            ->setParameter('isActive', 1)
             ->andWhere('b.course = :course')
             ->setParameter('course', $course)
+            ->orderBy('b.dateBookAt', 'ASC')
             ->getQuery()
             ->getResult()
         ;
