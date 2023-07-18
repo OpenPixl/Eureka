@@ -6,6 +6,7 @@ use App\Entity\Appli\Registration;
 use App\Form\Appli\RegistrationType;
 use App\Repository\Appli\BookroomRepository;
 use App\Repository\Appli\RegistrationRepository;
+use App\Service\timeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +36,19 @@ class RegistrationController extends AbstractController
                 'registrations' => $registrationRepository->findBy(['seance' => $bookroom->getId()]),
             ])
         ],200);
+    }
+
+    #[Route('/studient/{idstudient}', name: 'app_appli_registration_listbystudient', methods: ['GET'])]
+    public function listByStudient(RegistrationRepository $registrationRepository, $idstudient ,BookroomRepository $bookroomRepository, timeService $timeService): Response
+    {
+        $registrations = $registrationRepository->findBy(["studient" => $idstudient]);
+        $sems = $timeService->Sems();
+        //dd($registrations);
+
+        return $this->render('appli/registration/listByStudient.html.twig', [
+            'registrations' => $registrations,
+            'sems' => $sems
+        ]);
     }
 
     #[Route('/new', name: 'app_appli_registration_new', methods: ['GET', 'POST'])]

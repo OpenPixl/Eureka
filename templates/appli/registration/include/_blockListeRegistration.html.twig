@@ -1,0 +1,27 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th class="col-1"></th>
+        <th class="col-4">Matière</th>
+        <th class="col-7">Horaires</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for registration in registrations %}
+        <tr class="align-middle">
+            <td>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                    <rect x="0" y="0" width="30" height="30" rx="5" ry="5" fill="{{ registration.seance.course.color }}" stroke="rgba(255, 255, 255, 0.5)" stroke-width="1" />
+                </svg>
+            </td>
+            <td>{{ registration.seance.course.name }}</td>
+            <td>{{ registration.seance.dateBookAt|date('d/m/Y') }} | {{ registration.seance.hourBookOpenAt|date('H:i') }} - {{ registration.seance.hourBookClosedAt|date('H:i') }}</td>
+
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
