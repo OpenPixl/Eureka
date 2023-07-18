@@ -7,7 +7,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for registration in registrations %}
+    {% for registration in registrations|filter(registration => registration.seance.dateBookAt >= sem.monday and registration.seance.dateBookAt <= sem.friday) %}
         <tr class="align-middle">
             <td>
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30">
@@ -20,7 +20,7 @@
         </tr>
     {% else %}
         <tr>
-            <td colspan="4">no records found</td>
+            <td colspan="4">Pas de cours prévu cette semaine.</td>
         </tr>
     {% endfor %}
     </tbody>
