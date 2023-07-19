@@ -89,7 +89,7 @@
                     })
             })
 
-            // Ajout de Cours sur sa fiche Enseignant
+            // Ajout de Cours depuis sa fiche Enseignant
             // -------------------------------------
             // I. Gestion de la modale
             const modalAddBookroom = document.getElementById('addBookroom')
@@ -217,7 +217,7 @@
                         document.getElementById('ModalBodySupprBookroom').innerHTML = html
                         document.getElementById('btnSupprBookroom').href = "/appli/bookroom/del/" + recipient
                         if(uniqs.length > 1){
-                            document.getElementById('btnSupprAllBookroom').href = "/appli/bookroom/delAll/" + data.uniq
+                            document.getElementById('btnSupprAllBookroom').href = "/appli/bookroom/delall/" + data.uniq
                             document.getElementById('btnSupprAllBookroom').classList.remove("disabled")
                         }
 
@@ -415,8 +415,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a id="btnSupprBookroom" type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">Supprimer le cours</a>
-                    <a id="btnSupprAllBookroom" type="button" class="btn btn-sm btn-warning disabled" data-bs-dismiss="modal">Supprimer les cours liés</a>
+                    <a id="btnSupprBookroom" class="btn btn-sm btn-warning" data-bs-dismiss="modal">Supprimer le cours</a>
+                    <a id="btnSupprAllBookroom" class="btn btn-sm btn-warning disabled" data-bs-dismiss="modal">Supprimer les cours liés</a>
                     <button type="button" class="btn btn-sm btn-secondary " data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>

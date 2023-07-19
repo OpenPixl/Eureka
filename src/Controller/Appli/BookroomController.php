@@ -337,10 +337,8 @@ class BookroomController extends AbstractController
                 $bookroom->removeRegistration($registration);
             }
         }
-        //dd($bookroom);
         // Suppression de la séance
         $bookroomRepository->remove($bookroom, true);
-
 
         // renvoie vers la page
         $sems = $timeService->Sems();
@@ -355,19 +353,18 @@ class BookroomController extends AbstractController
     }
 
     /**
-     * @return void
-     * Supression d'une séance depuis la page des enseignants
+     * Suppression d'une séance depuis la page des enseignants
      */
-    #[Route('/delAll/{uniq}', name: 'op_appli_bookroom_delall', methods: ['POST'])]
-    public function DelAll($uniq, BookroomRepository $bookroomRepository, RegistrationRepository $registrationRepository)
+    #[Route('/delall/{uniq}', name: 'op_appli_bookroom_delall', methods: ['POST'])]
+    public function DelAll($uniq, BookroomRepository $bookroomRepository, RegistrationRepository $registrationRepository) : response
     {
         // Récupéretion des séances ayant la même uniq
         $uniqs = $bookroomRepository->findBy(['uniq' => $uniq]);
 
         foreach ($uniqs as $u){
             // Supression des inscriptions
-            $inscriptions = $registrationRepository->findBy(['seance'=> $u]);
-            dd($inscriptions);
+            $inscriptions = $registrationRepository->findBy(['seance'=> $u->getId()]);
+            //dd($inscriptions);
             foreach ($inscriptions as $inscr) {
                 $registrationRepository->remove($inscr, true);
                 // Mettre en place le mail d'information

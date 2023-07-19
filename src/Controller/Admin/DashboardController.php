@@ -39,19 +39,27 @@ class DashboardController extends AbstractController
     public function teacher(CourseRepository $courseRepository): Response
     {
         $user = $this->getUser();
-        $courses = $courseRepository->findBy(['teacher'=> $user]);
-        return $this->render('admin/dashboard/teacher.html.twig',[
-            'courses' => $courses,
-        ]);
+        if($user->getTypemember() == 'Enseignant'){
+            $courses = $courseRepository->findBy(['teacher'=> $user]);
+            return $this->render('admin/dashboard/teacher.html.twig',[
+                'courses' => $courses,
+            ]);
+        }
+        return $this->redirectToRoute('op_public_security_login');
+
     }
 
     #[Route('/student/dashboard', name: 'op_admin_dashboard_studient')]
     public function studient(CourseRepository $courseRepository): Response
     {
         $user = $this->getUser();
-        $courses = $courseRepository->findAll();
-        return $this->render('admin/dashboard/studient.html.twig',[
-            'courses' => $courses,
-        ]);
+
+        if($user->getTypemember() == 'etudiant'){
+            $courses = $courseRepository->findAll();
+            return $this->render('admin/dashboard/studient.html.twig',[
+                'courses' => $courses,
+            ]);
+        }
+        return $this->redirectToRoute('op_public_security_login');
     }
 }
