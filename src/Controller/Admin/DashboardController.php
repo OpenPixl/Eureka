@@ -54,7 +54,7 @@ class DashboardController extends AbstractController
     {
         $user = $this->getUser();
 
-        if($user->getTypemember() == 'etudiant'){
+        if($user->getTypemember() == 'Etudiant'){
             $courses = $courseRepository->findAll();
             return $this->render('admin/dashboard/studient.html.twig',[
                 'courses' => $courses,

@@ -12,6 +12,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -323,7 +325,8 @@ class BookroomController extends AbstractController
         BookroomRepository $bookroomRepository,
         CourseRepository $courseRepository,
         RegistrationRepository $registrationRepository,
-        timeService $timeService
+        timeService $timeService,
+        MailerInterface $mailer
     )
     {
         // Supression des inscriptions
@@ -335,6 +338,19 @@ class BookroomController extends AbstractController
         {
             foreach($registrations as $registration){
                 $bookroom->removeRegistration($registration);
+                // mettre en place le mail d'annulation
+                $email = (new Email())
+                    ->from('contact@openpixl.fr')
+                    ->to('xavier.burke@gmail.com')
+                    //->cc('cc@example.com')
+                    //->bcc('bcc@example.com')
+                    //->replyTo('fabien@example.com')
+                    //->priority(Email::PRIORITY_HIGH)
+                    ->subject('test d\'annulation !')
+                    //->text('Sending emails is fun again!')
+                    ->html('<p>See Twig integration for better HTML integration!</p>');
+
+                $mailer->send($email);
             }
         }
         // Suppression de la séance
@@ -372,5 +388,7 @@ class BookroomController extends AbstractController
             // Suppression de la séance
             $bookroomRepository->remove($u, true);
         }
+
+        return $this->json([], 200);
     }
 }
