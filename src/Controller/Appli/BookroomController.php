@@ -337,7 +337,7 @@ class BookroomController extends AbstractController
         if($registrations)
         {
             foreach($registrations as $registration){
-                $bookroom->removeRegistration($registration);
+                $registrationRepository->remove($registration);
                 // mettre en place le mail d'annulation
                 $email = (new Email())
                     ->from('contact@openpixl.fr')
