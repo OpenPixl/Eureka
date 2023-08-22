@@ -20,38 +20,59 @@
                 </div>
             </div>
             {% endfor %}
+            {% for flash_success in app.flashes('success') %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-primary" role="alert">{{ success.messageKey|trans(success.messageData, 'security') }}</div>
+                    </div>
+                </div>
+            {% endfor %}
             <div class="row">
                 <div class="col-12">
                     <h1 class="text-center">Login</h1>
                 </div>
             </div>
+            {% if app.user %}
+            <div class="row">
+                <div class="col-12">
+                    <p class="text-center">
+                        Vous êtes déjà connecté sous le nom : {{ app.user.firstName }} {{ app.user.lastName }}. <br>
+                        Au choix :<br>
+                        <a href="{{ path('op_public_security_logout') }}" class="btn btn-sm btn-success">Se déconnecter</a> | <a href="{{ path('op_webapp_public') }}" class="btn btn-sm btn-success">Accéder à la plateforme</a>
+                    </p>
 
-            <div class="row justify-content-center">
-                <div class="col-11">
-                    <form action="{{ path('op_public_security_login') }}" method="post">
 
-                        {# STRING : Ligne du mail du membre #}
-                        <div class="row mb-1 mt-1 g-1">
-                            <div class="col-12">
-                                <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Utilisateur"/>
-                            </div>
-                        </div>
-                        {# STRING : Ligne du password du membre #}
-                        <div class="row mb-1 mt-1 g-1">
-                            <div class="col-12">
-                                <input type="password"  name="_password" class="form-control" id="password" name="_password" value="{{ last_username }}" placeholder="Mot de passe"/>
-                            </div>
-                        </div>
-
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                        {# If you want to control the URL the user is redirected to on success
-        <input type="hidden" name="_target_path" value="/account"/> #}
-                        <div class="row mb-1 mt-1 g-1">
-                            <button type="submit" class="btn btn-success w-100">login</button>
-                        </div>
-                    </form>
                 </div>
             </div>
+            {% else %}
+                <div class="row justify-content-center">
+                    <div class="col-11">
+                        <form action="{{ path('op_public_security_login') }}" method="post">
+
+                            {# STRING : Ligne du mail du membre #}
+                            <div class="row mb-1 mt-1 g-1">
+                                <div class="col-12">
+                                    <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Utilisateur"/>
+                                </div>
+                            </div>
+                            {# STRING : Ligne du password du membre #}
+                            <div class="row mb-1 mt-1 g-1">
+                                <div class="col-12">
+                                    <input type="password"  name="_password" class="form-control" id="password" name="_password" value="{{ last_username }}" placeholder="Mot de passe"/>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            {# If you want to control the URL the user is redirected to on success
+        <input type="hidden" name="_target_path" value="/account"/> #}
+                            <div class="row mb-1 mt-1 g-1">
+                                <button type="submit" class="btn btn-success w-100">login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+
         </div>
     </div>
 

@@ -49,7 +49,7 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('contact@openpixl.fr', 'contact'))
                     ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('[Eureka] Confirmation de votre e-mail.')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
@@ -73,11 +73,11 @@ class RegistrationController extends AbstractController
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('op_webapp_public');
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'Votre adresse mail a été correctement vérifiée.');
 
         return $this->redirectToRoute('app_register');
     }

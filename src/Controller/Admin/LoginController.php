@@ -13,7 +13,7 @@ class LoginController extends AbstractController
     #[Route('/login', name: 'op_public_security_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
-        // retour si errue de connexion
+        // retour si erreur de connexion
         $error = $authenticationUtils->getLastAuthenticationError();
         // Récupération du denier "username" de l'utilisateur
         $lastUsername = $authenticationUtils->getLastUsername();

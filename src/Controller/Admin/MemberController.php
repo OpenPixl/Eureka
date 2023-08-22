@@ -191,7 +191,7 @@ class MemberController extends AbstractController
     }
 
     #[Route('/admin/member/{id}/edit', name: 'op_admin_member_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Member $member, MemberRepository $memberRepository): Response
+    public function edit(Request $request, Member $member, MemberRepository $memberRepository, SluggerInterface $slugger): Response
     {
         $typemember = $member->getTypemember();
 
@@ -199,6 +199,26 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Enregistrement de l'avatar du Membre
+            /** @var UploadedFile $avatarFile */
+            $avatarFile = $form->get('avatarName')->getData();
+            dd($avatarFile);
+            if ($avatarFile) {
+                $originalavatarFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeavatarFilename = $slugger->slug($originalavatarFilename);
+                $newavatarFilename = $safeavatarFilename . $avatarFile->guessExtension();
+                try {
+                    $avatarFile->move(
+                        $this->getParameter('banniere_directory'),
+                        $newavatarFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+            }
+
             $memberRepository->save($member, true);
             if($typemember == "Enseignant"){
                 return $this->redirectToRoute('op_admin_member_listteacher', [], Response::HTTP_SEE_OTHER);
