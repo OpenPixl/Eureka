@@ -1,8 +1,10 @@
 <section id="blockUser">
     <div class="row mt-1 mb-1 align-items-center">
+
+        {{ dump(app.user.typemember) }}
         <div class="col-3">
         {% if app.user.avatarName is not empty %}
-            <img src="{{ asset('images/member/' ~ app.user.avatarName)|imagine_filter('profil_card_user') }}" alt="{{ app.user.avatarName }}" class="img-fluid rounded-circle">
+            <img src="{{ asset('uploads/images/avatar/' ~ app.user.avatarName)|imagine_filter('profil_card_user') }}" alt="{{ app.user.avatarName }}" class="img-fluid rounded-circle">
         {% else %}
             <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
         {% endif %}
@@ -11,12 +13,7 @@
             {% if app.request.pathInfo starts with "/super/" %}
                 <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
             {% else %}
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <h1 class="text-end" style="color: #FFFFFF;">Administration</h1>
-                    <div class="row mt-1 mb-1 justify-content-center">
-                        <h2 class="text-end">Mon espace Enseignant.e</h2>
-                    </div>
-                {% elseif is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <h1 class="text-end" style="color: #FFFFFF;">Administration</h1>
                     <div class="row mt-1 mb-1 justify-content-center">
                         <h2 class="text-end">Mon espace Enseignant.e</h2>

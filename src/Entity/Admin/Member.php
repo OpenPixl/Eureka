@@ -96,6 +96,9 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Course::class, mappedBy: 'studients')]
     private Collection $studientcourse;
 
+    #[ORM\Column]
+    private ?bool $isSupprAvatar = false;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
@@ -488,6 +491,18 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->studientcourse->removeElement($studientcourse)) {
             $studientcourse->removeStudient($this);
         }
+
+        return $this;
+    }
+
+    public function isIsSupprAvatar(): ?bool
+    {
+        return $this->isSupprAvatar;
+    }
+
+    public function setIsSupprAvatar(bool $isSupprAvatar): self
+    {
+        $this->isSupprAvatar = $isSupprAvatar;
 
         return $this;
     }

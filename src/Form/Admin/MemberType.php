@@ -4,6 +4,7 @@ namespace App\Form\Admin;
 
 use App\Entity\Admin\Member;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,6 +39,10 @@ class MemberType extends AbstractType
                         'mimeTypesMessage' => 'Attention, veuillez charger un fichier au format jpg ou png',
                     ])
                 ],
+            ])
+            ->add('isSupprAvatar', CheckboxType::class,[
+                'label' => 'Supprimer l\'avatar',
+                'required' => false
             ])
             ->add('ddn', DateType::class, [
                 'required' => false,

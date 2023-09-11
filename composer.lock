@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b306f25d1f7b0f821363ca0205452b1",
+    "content-hash": "bd60ff128d19404cfd05ae4b2999036b",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1521,16 +1521,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "2.10.0",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "93bfc6dde87f135f9c3e63330cff23122448f4ee"
+                "reference": "2e943e6be4309ec90fcff90227053898203c1c8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/93bfc6dde87f135f9c3e63330cff23122448f4ee",
-                "reference": "93bfc6dde87f135f9c3e63330cff23122448f4ee",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/2e943e6be4309ec90fcff90227053898203c1c8e",
+                "reference": "2e943e6be4309ec90fcff90227053898203c1c8e",
                 "shasum": ""
             },
             "require": {
@@ -1618,9 +1618,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipImagineBundle/issues",
-                "source": "https://github.com/liip/LiipImagineBundle/tree/2.10.0"
+                "source": "https://github.com/liip/LiipImagineBundle/tree/2.11.0"
             },
-            "time": "2022-12-01T13:19:59+00:00"
+            "time": "2023-05-16T06:13:14+00:00"
         },
         {
             "name": "monolog/monolog",

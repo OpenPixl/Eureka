@@ -93,15 +93,15 @@ class MemberController extends AbstractController
 
             // Enregistrement de l'avatar du Membre
             /** @var UploadedFile $avatarFile */
-            $avatarFile = $form->get('avatarName')->getData();
+            $avatarFile = $form->get('avatarFile')->getData();
             if ($avatarFile) {
                 $originalavatarFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
                 $safeavatarFilename = $slugger->slug($originalavatarFilename);
-                $newavatarFilename = $safeavatarFilename . $avatarFile->guessExtension();
+                $newavatarFilename = $safeavatarFilename .".". $avatarFile->guessExtension();
                 try {
                     $avatarFile->move(
-                        $this->getParameter('banniere_directory'),
+                        $this->getParameter('avatar_directory'),
                         $newavatarFilename
                     );
                 } catch (FileException $e) {
@@ -199,19 +199,44 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Suppression de l'avatar précedente
+            $supprLogoInput = $form->get('isSupprAvatar')->getData();
+            if($supprLogoInput && $supprLogoInput == true){
+                // récupération du nom de l'image
+                $logoName = $member->getAvatarName();
+                $pathheader = $this->getParameter('avatar_directory').'/'.$logoName;
+                // On vérifie si l'image existe
+                if(file_exists($pathheader)){
+                    unlink($pathheader);
+                }
+                $member->setAvatarName(null);
+                $member->setIsSupprAvatar(0);
+            }
 
             // Enregistrement de l'avatar du Membre
             /** @var UploadedFile $avatarFile */
-            $avatarFile = $form->get('avatarName')->getData();
-            dd($avatarFile);
+            $avatarFile = $form->get('avatarFile')->getData();
+            //dd($avatarFile);
+            // Modification de l'image
             if ($avatarFile) {
+                // Effacement du fichier avatar si il est présent en BDD
+                // récupération du nom de l'image
+                $avatarName = $member->getAvatarName();
+                // suppression du Fichier
+                if($avatarName){
+                    $pathAvatar = $this->getParameter('logo_directory').'/'.$avatarName;
+                    // On vérifie si l'image existe
+                    if(file_exists($pathAvatar)){
+                        unlink($pathAvatar);
+                    }
+                }
                 $originalavatarFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
                 $safeavatarFilename = $slugger->slug($originalavatarFilename);
-                $newavatarFilename = $safeavatarFilename . $avatarFile->guessExtension();
+                $newavatarFilename = $safeavatarFilename.".".$avatarFile->guessExtension();
                 try {
                     $avatarFile->move(
-                        $this->getParameter('banniere_directory'),
+                        $this->getParameter('avatar_directory'),
                         $newavatarFilename
                     );
                 } catch (FileException $e) {

@@ -11,22 +11,23 @@ class PublicController extends AbstractController
     #[Route('/', name: 'op_webapp_public')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->redirectToRoute('op_webapp_public_home');
     }
 
     #[Route('/home', name: 'op_webapp_public_home')]
     public function home(): Response
     {
-        $hasAccessSuper = $this->isGranted('ROLE_SUPER_ADMIN');
-        $hasAccessAdmin = $this->isGranted('ROLE_ADMIN');
-        $hasAccessUser = $this->isGranted('ROLE_USER');
-        if($hasAccessSuper == true){
+        $user = $this->getUser();
+        $type = $user->getTypemember();
+        //dd($type);
+        if($type == 'Administrateur'){
             return $this->redirectToRoute('op_admin_dashboard_super');
         }
-        else if($hasAccessAdmin == true){
+        else if($type == 'Enseignant'){
             return $this->redirectToRoute('op_admin_dashboard_teacher');
         }
-        else if($hasAccessUser == true){
+        else if($type == 'Etudiant'){
             return $this->redirectToRoute('op_admin_dashboard_studient');
         }
         return $this->redirectToRoute('op_public_security_login');

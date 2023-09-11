@@ -102,7 +102,7 @@
                             {% endif %}
                         </div>
                         <div class="col-4 d-flex justify-content-center">
-                            <a href="{% if app.user.typemember == 'Administrateur' %}{{ path('op_admin_dashboard_teacher') }}{% elseif app.user.typemember == 'Enseignant'%}{{ path('op_admin_dashboard_teacher') }}{% else %}{{ path('op_admin_dashboard_studient') }}{% endif %}"><i class="fa-thin fa-house fa-2xl"></i></a>
+                            <a href="{% if app.user.typemember == 'Administrateur' %}{{ path('op_admin_dashboard_super') }}{% elseif app.user.typemember == 'Enseignant'%}{{ path('op_admin_dashboard_teacher') }}{% else %}{{ path('op_admin_dashboard_studient') }}{% endif %}"><i class="fa-thin fa-house fa-2xl"></i></a>
                         </div>
                     </div>
                 </section>

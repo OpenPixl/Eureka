@@ -3,16 +3,7 @@
 {% block title %}Euréka - Ajout d'une matière{% endblock %}
 
 {% block main %}
-    <section id="blockUser">
-        <div class="row mt-1 mb-1 align-items-center">
-            <div class="col-3">
-                <img src="{{ asset('images/svg/LogoIntro.svg') }}" class="img-fluid rounded-circle" alt="SansAvatar">
-            </div>
-            <div class="col-9">
-                <h1 class="text-end" style="color: #FFFFFF;">Espace WebMaster</h1>
-            </div>
-        </div>
-    </section>
+    {{ include('include/_blockuser.html.twig') }}
     <section id="blockAdmin">
         <div class="row mt-1 mb-1">
             <div class="col-12">
